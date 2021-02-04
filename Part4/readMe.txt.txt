@@ -1,3 +1,7 @@
+Things Left:
+  Randomzing shuffle
+  adding info for goods and actions
+
 Structure Card:
   Will represent a single card
   Contains the following Info: title,good and action

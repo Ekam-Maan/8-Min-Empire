@@ -1,4 +1,6 @@
 #include <string>
+#include <bits/stdc++.h> 
+
 #pragma once
 
 using namespace::std;
@@ -9,7 +11,7 @@ struct Card
     string title,good,action;
     Card();
     Card(string t,string g,string a);
-    string show();
+    void show();
 };
 
 
@@ -26,8 +28,15 @@ class Deck
         ~Deck();
 };
 
-class Hand
+class Hand : public Deck
 {
-    
+    private:
+        vector<Card> faceup_cards;
+    public:
+        Hand(int number_of_players);
+        void Show();
+        Card exchange(int pos);
+        ~Hand();
+
 };
 

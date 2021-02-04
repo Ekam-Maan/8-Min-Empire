@@ -1,7 +1,9 @@
 #include "Cards.h"
 #include <iostream>
 #include <string>
+#include <queue>
 #include <bits/stdc++.h>
+#include <iomanip>   
 
 using namespace::std;
 
@@ -44,8 +46,8 @@ Card::Card(string t,string g,string a)
     action = a;
 }
 
-string Card::show()
-{ return title+" "+good+" "+action; }
+void Card::show()
+{ cout<<title<<setw(20)<<good<<setw(20)<<action<<"\n"; }
 
 
 /*Class Deck*/
@@ -71,18 +73,13 @@ Deck::Deck(int number_of_players = 2)
     for ( int i = 0; i < number_of_cards; ++i )
         pack_of_cards[i] = Card(title[i],title[i],title[i]);
 
-  /*
-    For randomly shuffling the array
-
     random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
-  */  
-
 }
 
 void Deck::Show()
 {  
     for ( int i = 0; i < number_of_cards; ++i )
-        cout<<pack_of_cards[i].show()<<"\n";
+        pack_of_cards[i].show();
 }
 
 
@@ -94,10 +91,56 @@ Card Deck::draw()
 
 Deck::~Deck()
 {
-    delete pack_of_cards;
-    cout<<"Destroyed Deck Object";
+    delete[] pack_of_cards;
+    cout<<"Destroyed Deck Object\n";
 }
 
 
 
 /*Class Hand*/
+
+Hand::Hand(int number_of_players = 2) : Deck(number_of_players)
+{
+    for (int i = 0; i < 6; ++i)
+        faceup_cards.push_back(draw());    
+}
+
+void Hand::Show()
+{
+    cout<<"FACEUP CARDS"<<"\n-------------------------------------------\n";
+    cout<<"Cost: "<<0<<setw(20);
+    faceup_cards.at(0).show();
+
+    cout<<"Cost: "<<1<<setw(20);
+    faceup_cards.at(1).show();
+
+    cout<<"Cost: "<<1<<setw(20);
+    faceup_cards.at(2).show();
+
+    cout<<"Cost: "<<2<<setw(20);
+    faceup_cards.at(3).show();
+
+    cout<<"Cost: "<<2<<setw(20);
+    faceup_cards.at(4).show();
+
+    cout<<"Cost: "<<3<<setw(20);
+    faceup_cards.at(5).show();
+
+    cout<<"\n";
+}
+
+
+Card Hand::exchange(int pos)
+{
+    Card temp = faceup_cards.at(pos);
+    faceup_cards.erase(faceup_cards.begin()+pos);
+
+    faceup_cards.push_back(draw());
+
+    return temp;
+}
+
+Hand::~Hand()
+{
+    cout<<"Destroyed Hand Object\n";
+}
