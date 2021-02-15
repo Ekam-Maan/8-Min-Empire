@@ -1,6 +1,5 @@
 #pragma once
 #include<string>
-#include"Territory.h"
 using namespace std;
 
 
