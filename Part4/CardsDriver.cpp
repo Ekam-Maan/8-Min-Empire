@@ -2,7 +2,6 @@
 
 int main()
 {
-    
     Hand* obj = new Hand();
     obj->Show();
 
