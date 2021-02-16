@@ -19,15 +19,14 @@ struct Card
 class Deck
 {
     private:
-        int number_of_players;
         int number_of_cards;
         Card* pack_of_cards;
         int curr_top;
     public:
         Deck(int number_of_players);
+        Deck(const Deck &D);
         void Show();
         Card draw();
-        int get_number_of_players();
         ~Deck();
 };
 

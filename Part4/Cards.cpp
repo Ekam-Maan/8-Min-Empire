@@ -103,10 +103,9 @@ void Card::show()
 //Constuctor Chaining is not allowed
 
 
-Deck::Deck(int players = 2)
+Deck::Deck(int number_of_players = 2)
 {
     curr_top = 0;
-    number_of_players = players;
 
     if ( number_of_players == 2 )
         number_of_cards = 27;
@@ -116,6 +115,19 @@ Deck::Deck(int players = 2)
 
     else 
         number_of_cards = 34;
+
+    pack_of_cards = new Card[number_of_cards];
+
+    for ( int i = 0; i < number_of_cards; ++i )
+        pack_of_cards[i] = Card(titles[i],goods[i],actions[i]);
+
+    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+}
+
+
+Deck::Deck(const Deck &D)
+{
+    number_of_cards = D.number_of_cards;
 
     pack_of_cards = new Card[number_of_cards];
 
@@ -137,8 +149,6 @@ Card Deck::draw()
     return pack_of_cards[curr_top++];
 }
 
-int Deck::get_number_of_players()
-{ return number_of_players; }
 
 Deck::~Deck()
 {
@@ -156,12 +166,13 @@ Hand::Hand(int number_of_players = 2) : Deck(number_of_players)
         faceup_cards.push_back(draw());    
 }
 
-/*
-Hand::Hand(const Hand &H) : Deck(H.get_number_of_players())
-{
 
+Hand::Hand(const Hand &H) : Deck(H)
+{
+    for (int i = 0; i < 6; ++i)
+        faceup_cards.push_back(draw());
 }
-*/
+
 
 void Hand::Show()
 {
