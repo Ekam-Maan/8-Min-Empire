@@ -1,5 +1,5 @@
 #include<string>
-#include<iostream>;
+#include<iostream>
 #include"Map.h"
 
 AdjlistNode::AdjlistNode():id(-1),type(0),next(NULL) {

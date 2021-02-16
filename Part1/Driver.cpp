@@ -1,7 +1,6 @@
 #include<iostream>
 #include<string>
-#include"Map.h"
-#include"Territory.h"
+#include"Map.cpp"
 using namespace std;
 
 
