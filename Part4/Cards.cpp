@@ -9,8 +9,9 @@ using namespace::std;
 
 
 /*Card Information*/
+//https://cdn.1j1ju.com/medias/18/ae/df-eight-minute-empire-rulebook.pdf
 
-string title[] = {
+string titles[] = {
   "Ancient Phoenix",     "Ancient Sage",
   "Ancient Tree Spirit", "Ancient Woods",
   "Cursed Banshee",      "Cursed Gargoyles",
@@ -30,6 +31,45 @@ string title[] = {
   "Castle",              "Castle 2"
 };
 
+string goods[] = {
+    "Crystal",         "Coin",
+    "2X Crystal",      "2X Coin",
+    "3X Crystal",      "Wing",
+    "4X Crystal",      "2X Wing",
+    "Place Army",      "Move Army",
+    "VP Point",        "Cystal AND 2X Coin",
+    "Crystal",         "Coin",
+    "2X Crystal",      "2X Coin",
+    "3X Crystal",      "Wing",
+    "4X Crystal",      "2X Wing",
+    "Place Army",      "Move Army",
+    "VP Point",        "Cystal AND 2X Coin",
+    "Crystal",         "Coin",
+    "2X Crystal",      "2X Coin",
+    "3X Crystal",      "Wing",
+    "4X Crystal",      "2X Wing",
+    "Place Army",      "Move Army"
+};
+
+string actions[] = {
+    "Place new armies",             "Move armies",
+    "Move over land/water",         "Build City",
+    "Destroy army",                 "Move armies OR Destroy army", 
+    "Destroy army OR Build City",   "Place new armies OR Move over Land",
+    "Move armies AND Destroy army", "Build City AND Move armies",
+    "Destroy army AND Build City",  "Place new armies AND Move over Land",
+    "Place new armies",             "Move armies",
+    "Move over land/water",         "Build City",
+    "Destroy army",                 "Move armies OR Destroy army", 
+    "Destroy army OR Build City",   "Place new armies OR Move over Land",
+    "Move armies AND Destroy army", "Build City AND Move armies",
+    "Destroy army AND Build City",  "Place new armies AND Move over Land",
+    "Place new armies",             "Move armies",
+    "Move over land/water",         "Build City",
+    "Destroy army",                 "Move armies OR Destroy army", 
+    "Destroy army OR Build City",   "Place new armies OR Move over Land",
+    "Move armies AND Destroy army", "Build City AND Move armies"
+};
 
 /*Structure Card*/
 Card::Card()
@@ -46,8 +86,16 @@ Card::Card(string t,string g,string a)
     action = a;
 }
 
+
+Card::Card(const Card &C)
+{
+    title = C.title;
+    good = C.good;
+    action = C.action;
+}
+
 void Card::show()
-{ cout<<title<<setw(20)<<good<<setw(20)<<action<<"\n"; }
+{ cout<<title<<setw(30)<<good<<setw(50)<<action<<"\n"; }
 
 
 /*Class Deck*/
@@ -55,9 +103,10 @@ void Card::show()
 //Constuctor Chaining is not allowed
 
 
-Deck::Deck(int number_of_players = 2)
+Deck::Deck(int players = 2)
 {
     curr_top = 0;
+    number_of_players = players;
 
     if ( number_of_players == 2 )
         number_of_cards = 27;
@@ -71,7 +120,7 @@ Deck::Deck(int number_of_players = 2)
     pack_of_cards = new Card[number_of_cards];
 
     for ( int i = 0; i < number_of_cards; ++i )
-        pack_of_cards[i] = Card(title[i],title[i],title[i]);
+        pack_of_cards[i] = Card(titles[i],goods[i],actions[i]);
 
     random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
 }
@@ -88,6 +137,8 @@ Card Deck::draw()
     return pack_of_cards[curr_top++];
 }
 
+int Deck::get_number_of_players()
+{ return number_of_players; }
 
 Deck::~Deck()
 {
@@ -104,6 +155,13 @@ Hand::Hand(int number_of_players = 2) : Deck(number_of_players)
     for (int i = 0; i < 6; ++i)
         faceup_cards.push_back(draw());    
 }
+
+/*
+Hand::Hand(const Hand &H) : Deck(H.get_number_of_players())
+{
+
+}
+*/
 
 void Hand::Show()
 {

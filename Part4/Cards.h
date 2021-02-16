@@ -11,6 +11,7 @@ struct Card
     string title,good,action;
     Card();
     Card(string t,string g,string a);
+    Card(const Card &C);
     void show();
 };
 
@@ -18,6 +19,7 @@ struct Card
 class Deck
 {
     private:
+        int number_of_players;
         int number_of_cards;
         Card* pack_of_cards;
         int curr_top;
@@ -25,6 +27,7 @@ class Deck
         Deck(int number_of_players);
         void Show();
         Card draw();
+        int get_number_of_players();
         ~Deck();
 };
 
@@ -34,6 +37,7 @@ class Hand : public Deck
         vector<Card> faceup_cards;
     public:
         Hand(int number_of_players);
+        Hand(const Hand &H);
         void Show();
         Card exchange(int pos);
         ~Hand();
