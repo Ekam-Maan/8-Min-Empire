@@ -5,22 +5,20 @@ using namespace std;
 
 
 int main() {
-    int totalVertices = 4;
-    Graph* graph;
-    graph = new  Graph(totalVertices);
-    //connect edges
-    //addEdge(graph, 0, 1,0);
-    //addEdge(graph, 0, 2,0);
-    addEdge(graph, 0, 3,1);
-    //addEdge(graph, 1, 3,1);
-    addEdge(graph, 1, 2,0);
+   // -------------------------DISCLAIMER: PLS USE MAPLOADER CLASS TO CREATE MAP FOR THE GAME-------------------------
+Graph* map = new  Graph(4); 
+    // adding edge between two nodes with the indication to the type of edge(0=land, 1=water)
+   addEdge(map,0, 1, 0); // ( (0,1,0) first 0 represents id of first region: 1 represent id of second region and last zero represents type of edge
+   
+   addEdge(map, 0, 2, 1);
+   addEdge(map, 0, 3, 0);
+   addEdge(map, 3, 2, 1);
+   addEdge(map, 3, 1, 0);
 
-    printGraph(graph);
+   printGraph(map);
+   validate(map);
 
-    validate(graph);
-
-    delete graph;
-    graph = NULL;
-
-	return 0;
+   delete map;
+   map = NULL;
+   return 0;
 }
