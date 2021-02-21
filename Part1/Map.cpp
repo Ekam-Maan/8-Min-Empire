@@ -51,6 +51,19 @@ Graph::Graph(int v):V(v){
 	arr = new Vertex[v];
 }
 
+bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not
+	AdjlistNode* itr;
+	itr= g->arr[id1].head;
+	while (itr != NULL) {
+		if (itr->id == id2) {
+			cout << itr->id << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" <<id2;
+			return true;
+		}
+		itr = itr->next;
+	}
+	return false;
+}
+
 void addEdge(Graph* g, int src, int dest, bool type) {
 	AdjlistNode* ptr = new AdjlistNode(dest, type, NULL); // creating node 
 	ptr->next = g->arr[src].head;

@@ -1,6 +1,6 @@
 #pragma once
 #include<string>
-#include"Territory.h"
+//#include"Territory.h"
 using namespace std;
 
 
@@ -42,7 +42,7 @@ struct Vertex {// each vertex stores a pointer to a region and a header pointer 
 
 struct Graph { // this represent the whole map 
     int V;
-    Vertex* arr; // it is the array consisting all vertices( a vertex =(Region + list of its adjacant regions))
+    Vertex* arr; // it is the array consisting all vertices (a vertex =(Region + list of its adjacant regions))
 
 	Graph();
 	~Graph();
@@ -52,5 +52,6 @@ struct Graph { // this represent the whole map
 
 void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first region ; dest= id of second region;
 void validate(Graph* g);
+bool isAdj(Graph*g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
 void printGraph(Graph* g);
 
