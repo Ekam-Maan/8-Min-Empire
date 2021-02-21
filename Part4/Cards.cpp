@@ -107,6 +107,7 @@ Deck::Deck(int number_of_players = 2)
 {
     curr_top = 0;
 
+    //Determing the number of cards from the number of players
     if ( number_of_players == 2 )
         number_of_cards = 27;
     
@@ -116,12 +117,14 @@ Deck::Deck(int number_of_players = 2)
     else 
         number_of_cards = 34;
 
+    //Creating pack_of_cards array which will store all the cards
     pack_of_cards = new Card[number_of_cards];
 
     for ( int i = 0; i < number_of_cards; ++i )
         pack_of_cards[i] = Card(titles[i],goods[i],actions[i]);
 
-    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards); 
+    //Shuffles the deck randomly
 }
 
 
@@ -162,7 +165,7 @@ Deck::~Deck()
 
 Hand::Hand(int number_of_players = 2) : Deck(number_of_players)
 {
-    for (int i = 0; i < 6; ++i)
+    for (int i = 0; i < 6; ++i)     //Adding 6 cards to the faceup_cards array
         faceup_cards.push_back(draw());    
 }
 
@@ -201,10 +204,10 @@ void Hand::Show()
 
 Card Hand::exchange(int pos)
 {
-    Card temp = faceup_cards.at(pos);
-    faceup_cards.erase(faceup_cards.begin()+pos);
+    Card temp = faceup_cards.at(pos); //Selects the card at specific index
+    faceup_cards.erase(faceup_cards.begin()+pos);   //removes it from faceup_cards
 
-    faceup_cards.push_back(draw());
+    faceup_cards.push_back(draw()); //Adding a new card to the back of faceup_cards
 
     return temp;
 }
