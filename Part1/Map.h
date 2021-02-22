@@ -53,5 +53,6 @@ struct Graph { // this represent the whole map
 void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first region ; dest= id of second region;
 void validate(Graph* g);
 bool isAdj(Graph*g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
+bool isLandConn(Graph* g, int id1, int id2);
 void printGraph(Graph* g);
 

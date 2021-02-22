@@ -19,11 +19,11 @@ Graph* map = new  Graph(4);
 
    printGraph(map);
    validate(map);
-   if (isAdj(map, 1, 2)) {
-       cout << "\nYES, the regions are adjacant.";
+   if (isLandConn(map, 2, 0)) {
+       cout << "\n yes";
    }
    else {
-       cout << "NO, the regions are NOT adjacant.";
+       cout << "\nNO, the regions are NOT adjacant.";
    }
 
    delete map;
