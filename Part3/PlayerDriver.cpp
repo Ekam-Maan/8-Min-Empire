@@ -2,6 +2,8 @@
 #include "../Part1/Map.cpp"
 #include "Player.cpp"
 #include "../Part4/Cards.cpp"
+#include"../Part5/bidding.cpp"
+#include"../Part5/player.cpp"
 
 int main()
 { 
@@ -17,7 +19,9 @@ int main()
     hand->Show();
     Player *player1 = new Player(graph, "Smit", 12, 13, 40,hand);
     Player *player2 = new Player(graph, "Sanyam", 12, 13, 40,hand);
-
+    Player *player3 = new Player(graph, "Rosh", 12, 13, 40,hand);
+    Player *player4 = new Player(graph, "Rajat", 12, 13, 40,hand);
+    Player *player5 = new Player(graph, "Smit", 12, 13, 40,hand);
     player1->display();
     
     player1->PLaceNewArmies(10,1);
