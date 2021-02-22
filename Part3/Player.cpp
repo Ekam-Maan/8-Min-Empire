@@ -138,18 +138,21 @@ bool Player :: MoveOverLand(int armiesNum, int src, int des)
     bool adjacency = isAdj(graph,src,des);
     if (adjacency == false) 
     {
-        
+
         cout << src << " and " << des << " are not adjacent." << endl;
         return false;
     }
     else if(adjacency == true)
     {
+        bool checkLand = isLandConn(graph, src, des);
+        if(checkLand == false)
+        {
+            cout << "You can only move from " << src << " to " << des << " by water." << endl;
+            return false;
+        }
         
         
-        cout << "You can only move from " << src << " to " << des << " by water." << endl;
-        return false;
     }
-
     return MoveArmies(armiesNum, src, des);
 }
 bool Player :: DestroyArmy(int vertex)
