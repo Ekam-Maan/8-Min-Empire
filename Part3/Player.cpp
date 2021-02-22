@@ -52,8 +52,8 @@ void Player :: pickCard()
 {
     hand->Show();
     Card card = hand->exchange(2);
-    cout<<card.show();
-    handList->push_back(make_pair(card.show(),0));
+    cout<<card.toString();
+    //handList->push_back(make_pair(card.show(),0));
     PayCoin(2);
     hand->Show();
 }
@@ -138,6 +138,7 @@ bool Player :: MoveOverLand(int armiesNum, int src, int des)
     bool adjacency = isAdj(graph,src,des);
     if (adjacency == false) 
     {
+        
         cout << src << " and " << des << " are not adjacent." << endl;
         return false;
     }

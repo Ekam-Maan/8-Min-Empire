@@ -1,5 +1,5 @@
 #include "../Part1/Map.h"
-#include "../Part4/Cards.h"
+#include "../Part4/Cards.cpp"
 
 class Player
 {
