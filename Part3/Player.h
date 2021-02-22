@@ -4,27 +4,25 @@
 class Player
 {
 
-    //typedef pair<Graph*, int> countryValue;
-    Graph *graph;
-    
-    
-    
     public :
-        string *name;
-        int *disks;
-        int *tokens;
+        string *playerName;
+        int *noOfDisks;
+        int *money;
         int *armies;
-        int *age;
-    
-        int getTotalScore();
-        typedef pair<int, int> countryValue;
-        vector<Card*> *hand;
-        vector<countryValue> *citiesIn;
-        vector<countryValue> *armiesIn;
+        static int *startingRegion;
+        Graph *graph;
 
-        pair<int, int>* getArmiesInCountry(int country);
-        pair<int, int>* getCitiesInCountry(int country);
-        Player(Graph *graph, string playerName, int diskNum, int tokenNum, int armyNum);
+        Hand *hand;
+        
+        typedef pair<int, int> valueVertex;
+        typedef pair<string,int> valueHandList;
+        vector<valueHandList> *handList;
+        vector<valueVertex> *cityList;
+        vector<valueVertex> *armyList;
+
+        pair<int, int>* NoOfArmiesInCountry(int country);
+        pair<int, int>* NoOfCitiesInCountry(int country);
+        Player(Graph *graph, string playerName, int diskNum, int playerNum, int armyNum, Hand *hand);
         bool PayCoin(int coins);
         bool PLaceNewArmies(int armiesNum, int country);
         bool MoveArmies(int armiesNum, int src, int des);
@@ -32,5 +30,7 @@ class Player
         bool BuildCity(int country);
         bool DestroyArmy(int country);
         void display();
+        void displayCards();
+        void pickCard();
 
 };
