@@ -12,6 +12,7 @@ struct Card
     Card(string t,string g,string a); 
     Card(const Card &C);
     void show();
+    string toString();
 };
 
 

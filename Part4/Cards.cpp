@@ -97,6 +97,9 @@ Card::Card(const Card &C)
 void Card::show()
 { cout<<title<<setw(30)<<good<<setw(50)<<action<<"\n"; }
 
+string Card::toString()
+{ return title+"\t\t"+good+"\t\t"+action; }
+
 
 /*Class Deck*/
 

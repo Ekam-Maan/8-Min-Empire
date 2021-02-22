@@ -1,11 +1,15 @@
 #include "Cards.cpp"
+#include <iostream>
+
+using namespace::std;
 
 int main()
 {
     Hand* obj = new Hand();
     obj->Show();
 
-    obj->exchange(2);
+    Card card = obj->exchange(2);
+
     obj->Show();
     
     delete obj;
