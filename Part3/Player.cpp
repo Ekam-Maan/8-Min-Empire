@@ -1,100 +1,133 @@
 #include <iostream>
 #include "Player.h"
-#include "../Part1/Map.h"
+#include "../Part1/Map.cpp"
+#include "../Part4/Cards.cpp"
 
 
-
-Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNum )
+Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNum,Hand *hand)
 {
-    disks = new int(diskNum);
-    tokens = new int(tokenNum);
+    noOfDisks = new int(diskNum);
+    money = new int(tokenNum);
     armies = new int(armyNum);
-    name = new string(Name);
+    playerName = new string(Name);
+
     this->graph = graph;
-    citiesIn = new vector<countryValue>;
+    this->hand=hand;
+
+    cityList = new vector<valueVertex>;
     for (int i =0;i<4;i++) 
     {
-        citiesIn->push_back(make_pair(i, 0));
+        cityList->push_back(make_pair(i, 0));
     }
 
-    armiesIn = new vector<countryValue>;
+    armyList = new vector<valueVertex>;
     for (int i=0;i<4;i++) {
-        armiesIn->push_back(make_pair(i, 0));
+        armyList->push_back(make_pair(i, 0));
     }
-
+    *startingRegion = 1;
+    handList = new vector<valueHandList>;
 }
 void Player :: display()
 {
-    cout << "\n----------- " << *name << " ---------------------------------" << endl;
-    cout << left <<  setw(10) << "Disks: " << *disks << endl;
-    cout << left <<  setw(10) << "Tokens: " << *tokens << endl;
-    cout << left <<  setw(10) << "Armies: " << *armies << endl;
-    cout << "\nArmies in:\t";
-    vector<countryValue>::iterator i;
-    for (i = (armiesIn)->begin(); i !=(armiesIn)->end(); ++i) {
-        cout << "\t" << (i->first) << ": " << i->second;
+    cout << "\n** " << *playerName << " **" << endl;
+    cout << "No of Disks of the player: " << *noOfDisks << endl;
+    cout << "Amount of Money of the player: " << *money << endl;
+    cout << "No of armies of the player: " << *armies << endl;
+    cout << "\nArmies of the player \t";
+
+    vector<valueVertex>::iterator index;
+    for (index = (armyList)->begin(); index !=(armyList)->end(); ++index) {
+        cout << "\t" << (index->first) << ": " << index->second;
     }
-    cout << "\nCities in:\t";
-    vector<countryValue>::iterator t;
-    for (t = (citiesIn)->begin(); t !=(citiesIn)->end(); ++t) {
-        cout << "\t" << (t->first) << ": " << t->second;
+    cout << "\nCities of the player:\t";
+   // vector<valueVertex>::iterator index;
+    for (index = (cityList)->begin(); index !=(cityList)->end(); ++index) {
+        cout << "\t" << (index->first) << ": " << index->second;
     }
     cout << "\n\n" << endl;
-    
+
+}
+
+void Player :: pickCard()
+{
+    hand->Show();
+    Card card = hand->exchange(2);
+    cout<<card.show();
+    handList->push_back(make_pair(card.show(),0));
+    PayCoin(2);
+    hand->Show();
+}
+void Player:: displayCards()
+{
+    cout<<"Cards list:";
+    vector<valueHandList>::iterator j;
+    for (j = (handList)->begin(); j !=(handList)->end(); ++j) {
+            cout<<(j->first);
+    }
 }
 bool Player :: PayCoin(int coins)
 {
-      if(*tokens<coins){
-        cout << "Player cannot afford that many coins." << endl;
-        return false;
-    }
-    else{
-        cout << "Player payed." << endl;
-        *tokens-=coins;
-        return true;
-    }
-}
-bool Player :: PLaceNewArmies(int armiesNum, int country)
-{
-    int startingRegion = 1;
-     if (*armies < armiesNum) 
-     {
-            cout << "Player does not have enough armies to place." << endl;
+    if(*money<coins)
+    {
+            cout << "The player doesn't have enough money to pay." << endl;
             return false;
     }
-    countryValue *cityIn = getCitiesInCountry(country);
+    else
+    {
+            cout << "Payment Successfull. Player payed:" <<coins<< endl;
+            *money=*money-coins;
+            return true;
+    }
+}
+bool Player :: PLaceNewArmies(int armiesNum, int vertex)
+{
+    
+     if (*armies < armiesNum) 
+     {
+            cout << "The player doesn't have armies to move." << endl;
+            return false;
+     }
+     else
+     {
+        valueVertex *cityIn = NoOfCitiesInCountry(vertex);
         
-    if (cityIn->first == country) {
-            if (cityIn->second <= 0 && country != startingRegion) {
-                cout << "Player does not have cities in that country. Cannot place armies." << endl;
+        if (cityIn->first == vertex) {
+            if (cityIn->second <= 0 && vertex != *startingRegion) {
+                cout << "Player does not have cities in that country.  Cant add armies" << endl;
                 return false;
             }
         }
 
-    countryValue *armyIn = getArmiesInCountry(country);
-        *armies -= armiesNum;
+    valueVertex *armyIn = NoOfArmiesInCountry(vertex);
+        *armies =*armies - armiesNum;
         armyIn->second = armyIn->second + armiesNum;
         cout<<"Successfully added the armies";
-
+         return true;
+     }
+    
 
 }
 bool Player :: MoveArmies(int armiesNum, int src, int des)
 {
-     countryValue *armyInTo = getArmiesInCountry(des);
-    countryValue *armyInFrom = getArmiesInCountry(src);
+    valueVertex *armyTo = NoOfArmiesInCountry(des);
+    valueVertex *armyFrom = NoOfArmiesInCountry(src);
 
-    if (isAdj(graph,des,src)==false) {
+    if (isAdj(graph,des,src)==false) 
+    {
         cout << src << " and " << des << " are not adjacent." << endl;
         return false;
     }
 
-    if (armyInFrom->second < armiesNum) {
-        cout << "Not enough armies to move." << endl;
-        return false; //there are not enough to country to move
-    } else {
-        armyInTo->second+= armiesNum;
-        armyInFrom->second-=armiesNum;
-        cout << "Moved " << armiesNum << " armies from " << src << " to " << des << endl;
+    else if (armyFrom->second < armiesNum) 
+    {
+        cout << "Cant move the armies. Not enough amrmies available" << endl;
+        return false; 
+    } 
+    else 
+    {
+        armyTo->second= armyTo->second+ armiesNum;
+        armyFrom->second= armyFrom->second-armiesNum;
+        cout << "Succesfully moved " << armiesNum << " armies from " << src << " to " << des << endl;
         return true;
     }
 
@@ -103,73 +136,88 @@ bool Player :: MoveArmies(int armiesNum, int src, int des)
 bool Player :: MoveOverLand(int armiesNum, int src, int des)
 {
     bool adjacency = isAdj(graph,src,des);
-    if (adjacency == false) {
+    if (adjacency == false) 
+    {
         cout << src << " and " << des << " are not adjacent." << endl;
         return false;
     }
-    if (adjacency == true) {
+    else if(adjacency == true)
+    {
+        
+        
         cout << "You can only move from " << src << " to " << des << " by water." << endl;
         return false;
     }
 
     return MoveArmies(armiesNum, src, des);
 }
-bool Player :: DestroyArmy(int country)
+bool Player :: DestroyArmy(int vertex)
 {
-    countryValue *armyIn = getArmiesInCountry(country);
+    valueVertex *armyIn = NoOfArmiesInCountry(vertex);
 
     if (armyIn->second > 0) {
-        cout << "Destroyed army of " << *(name) << " in " << country << endl;
-        *armies+=1;
+        cout << "Successfully Destroyed army of " << *(playerName) << " in " << vertex << endl;
+        *armies=*armies+1;
         armyIn->second--;
         return true;
     }
-
-    else {
-        cout << "Cannot destroy army" << endl;
-    }
-
-    return false;
-}
-bool Player:: BuildCity(int country)
-{
-     if(*disks < 1) {
-        cout << "Not enough disks." << endl;
+    else 
+    {
+        cout << "Army cannot be destroyed" << endl;
         return false;
     }
 
-    countryValue *armyIn = getArmiesInCountry(country);
-
-    if (armyIn->second > 0) {
-        *disks-=1;
-        countryValue *cityIn = getCitiesInCountry(country);
-        cityIn->second++;
-        cout << "Built a city in " << country << endl;
-        return true;
+}
+bool Player:: BuildCity(int country)
+{
+    if(*noOfDisks < 1) 
+    {
+        cout << "Not enough disks available." << endl;
+        return false;
     }
+    else
+    {
+        valueVertex *armyIn = NoOfArmiesInCountry(country);
 
-    else {
-        cout << "Cannot build a city where player has no armies." << endl;
+        if(armyIn->second > 0) 
+        {
+            *noOfDisks=*noOfDisks-1;
+            valueVertex *cityIn = NoOfCitiesInCountry(country);
+            cityIn->second++;
+            cout << "Successfully built a city in " << country << endl;
+            return true;
+        }
+        else 
+        {
+            cout << "Oops. Cannot build a city where player has no armies." << endl;
+            return false;
+        }
+    
     }
-
-    return false;
+    
 }
  
 
 
-pair<int, int>* Player::getArmiesInCountry(int country) {
-    vector<countryValue>::iterator i;
-    for (i = (armiesIn)->begin(); i !=(armiesIn)->end(); ++i) {
-        if (i->first == country) {
+pair<int, int>* Player::NoOfArmiesInCountry(int vertex) 
+{
+    vector<valueVertex>::iterator i;
+    for (i = (armyList)->begin(); i !=(armyList)->end(); ++i) 
+    {
+        if (i->first == vertex) 
+        {
             return &(*i);
         }
     }
 }
 
-pair<int, int>* Player::getCitiesInCountry(int country) {
-    vector<countryValue>::iterator i;
-    for (i = (citiesIn)->begin(); i !=(citiesIn)->end(); ++i) {
-        if (i->first == country) {
+pair<int, int>* Player::NoOfCitiesInCountry(int vertex) 
+{
+    vector<valueVertex>::iterator i;
+    for (i = (cityList)->begin(); i !=(cityList)->end(); ++i) 
+    {
+        if (i->first == vertex) 
+        {
             return &(*i);
         }
     }
