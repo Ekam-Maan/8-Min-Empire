@@ -1,29 +1,33 @@
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include "player.h"
-getAmount ();
+#include<cstdlib>
+#include"player.h"
+using namespace std;
 
-class player
-{
-public:	//access control
-  string firstName;
-  string secondName;
-  int amount;			
-   
-    // Constructor with parameters
-    player (string fName, string lName)
-  {				
-    firstName = fName;
-    secondName = lName;
-    amount = getAmount ();
-  }
+//from anywhere
+player::player() {
+	cout << "Default constructer of PLAYER called.";
+}
+player::player(string fName, string lName, int amt)
+{				// Constructor with parameters
+	firstName = fName;
+	secondName = lName;
+	amount = amt;
+}
+player::player(string fName, string lName)
+{				// Constructor with parameters
+	firstName = fName;
+	secondName = lName;
+	amount = getAmount();
+}
+player::~player() {
+	cout << "\nplayer destructer called";
+}
 // the method generates a random number aka the number they'll bid and assigns it to each player.
 
-  int getAmount ()
-  {
-    int randomNumber = rand () * 9;
-    return randomNumber;
-  }
-
-};
+int player::getAmount()
+{
+    srand(time(0));
+	int randomNumber = (rand()  % 100)+1;
+	return randomNumber;
+  
+ 
+}

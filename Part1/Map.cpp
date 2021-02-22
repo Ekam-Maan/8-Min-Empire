@@ -56,7 +56,17 @@ bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions
 	itr= g->arr[id1].head;
 	while (itr != NULL) {
 		if (itr->id == id2) {
-			cout << itr->id << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" <<id2;
+			return true;
+		}
+		itr = itr->next;
+	}
+	return false;
+}
+bool isLandConn(Graph* g, int id1, int id2) {
+	AdjlistNode* itr;
+	itr = g->arr[id1].head;
+	while (itr != NULL) {
+		if (itr->id==id2 && itr->type) {
 			return true;
 		}
 		itr = itr->next;
