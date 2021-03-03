@@ -1,7 +1,5 @@
 #include <iostream>
 #include "Player.h"
-#include "../Part1/Map.cpp"
-#include "../Part4/Cards.cpp"
 
 
 Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNum,Hand *hand)
@@ -213,6 +211,8 @@ pair<int, int>* Player::NoOfArmiesInCountry(int vertex)
             return &(*i);
         }
     }
+
+    return &(*i);
 }
 
 pair<int, int>* Player::NoOfCitiesInCountry(int vertex) 
@@ -225,4 +225,6 @@ pair<int, int>* Player::NoOfCitiesInCountry(int vertex)
             return &(*i);
         }
     }
+
+    return &(*i);
 }

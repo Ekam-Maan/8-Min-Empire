@@ -1,7 +1,5 @@
 #include <iostream>
-#include "../Part1/Map.cpp"
 #include "Player.cpp"
-#include "../Part4/Cards.cpp"
 #include"../Part5/bidding.cpp"
 #include"../Part5/player.cpp"
 
