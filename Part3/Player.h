@@ -34,3 +34,5 @@ class Player
         void pickCard();
 
 };
+
+int* Player::startingRegion = new int(-1);

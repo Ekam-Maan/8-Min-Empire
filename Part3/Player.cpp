@@ -22,7 +22,7 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     for (int i=0;i<4;i++) {
         armyList->push_back(make_pair(i, 0));
     }
-    *startingRegion = 1;
+    startingRegion = new int(1);
     handList = new vector<valueHandList>;
 }
 void Player :: display()

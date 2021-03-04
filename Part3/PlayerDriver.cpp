@@ -13,8 +13,8 @@ int main()
     Hand* hand = new Hand();
     hand->Show();
 
-    hand->exchange(2);
-    hand->Show();
+    // hand->exchange(2);
+    // hand->Show();
     Player *player1 = new Player(graph, "Smit", 12, 13, 40,hand);
     Player *player2 = new Player(graph, "Sanyam", 12, 13, 40,hand);
     Player *player3 = new Player(graph, "Rosh", 12, 13, 40,hand);
