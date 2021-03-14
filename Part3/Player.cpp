@@ -2,12 +2,14 @@
 #include "Player.h"
 
 
+Player::Player(){}
+
 Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNum,Hand *hand)
 {
     noOfDisks = new int(diskNum);
-    money = new int(tokenNum);
+    money = tokenNum;
     armies = new int(armyNum);
-    playerName = new string(Name);
+    playerName = Name;
 
     this->graph = graph;
     this->hand=hand;
@@ -27,9 +29,9 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
 }
 void Player :: display()
 {
-    cout << "\n** " << *playerName << " **" << endl;
+    cout << "\n** " << getname() << " **" << endl;
     cout << "No of Disks of the player: " << *noOfDisks << endl;
-    cout << "Amount of Money of the player: " << *money << endl;
+    cout << "Amount of Money of the player: " << getmoney() << endl;
     cout << "No of armies of the player: " << *armies << endl;
     cout << "\nArmies of the player \t";
 
@@ -65,15 +67,15 @@ void Player:: displayCards()
 }
 bool Player :: PayCoin(int coins)
 {
-    if(*money<coins)
+    if(getmoney()<coins)
     {
             cout << "The player doesn't have enough money to pay." << endl;
             return false;
     }
     else
     {
-            cout << "Payment Successfull. Player payed:" <<coins<< endl;
-            *money=*money-coins;
+            cout << "Payment Successfull. Player payed: " <<coins<< endl;
+            setmoney( getmoney()-coins );
             return true;
     }
 }
@@ -158,7 +160,7 @@ bool Player :: DestroyArmy(int vertex)
     valueVertex *armyIn = NoOfArmiesInCountry(vertex);
 
     if (armyIn->second > 0) {
-        cout << "Successfully Destroyed army of " << *(playerName) << " in " << vertex << endl;
+        cout << "Successfully Destroyed army of " << getname() << " in " << vertex << endl;
         *armies=*armies+1;
         armyIn->second--;
         return true;

@@ -1,8 +1,9 @@
 
 #include<iostream>
-#include<string>
-#include"MapLoader.h";
-#include"Map.h";
+#include <string>
+#include "MapLoader.h"
+#include "../Part1/Map.cpp"
+
 using namespace std;
 MapLoader::MapLoader() {
 	Graph* g=NULL;

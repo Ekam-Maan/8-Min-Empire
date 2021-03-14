@@ -2,7 +2,7 @@
 #include<fstream>
 #include<iostream>
 #include<string>
-#include"Map.h";
+#include "../Part1/Map.h"
 using namespace std;
 class MapLoader {
 public:

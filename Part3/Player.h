@@ -1,13 +1,17 @@
 #include "../Part1/Map.cpp"
 #include "../Part4/Cards.cpp"
 
+#pragma once
+
 class Player
 {
+    private:
+        string playerName;
+        int money;
 
-    public :
-        string *playerName;
+    public:
         int *noOfDisks;
-        int *money;
+  
         int *armies;
         static int *startingRegion;
         Graph *graph;
@@ -22,6 +26,7 @@ class Player
 
         pair<int, int>* NoOfArmiesInCountry(int country);
         pair<int, int>* NoOfCitiesInCountry(int country);
+        Player();
         Player(Graph *graph, string playerName, int diskNum, int playerNum, int armyNum, Hand *hand);
         bool PayCoin(int coins);
         bool PLaceNewArmies(int armiesNum, int country);
@@ -32,6 +37,12 @@ class Player
         void display();
         void displayCards();
         void pickCard();
+
+        string getname(){ return playerName; }
+        void setname(string name){ playerName = name; }
+
+        int getmoney(){ return money; }
+        void setmoney(int m){ money = m; }
 
 };
 
