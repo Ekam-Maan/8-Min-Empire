@@ -1,5 +1,5 @@
 #include <string>
-#include <bits/stdc++.h> 
+#include <vector>
 
 #pragma once
 
@@ -40,6 +40,7 @@ class Hand : public Deck
     private:
         vector<Card> faceup_cards; //Represents the 6 cards placed in front of players
     public:
+        Hand();
         Hand(int number_of_players);
         Hand(const Hand &H);
         void Show();

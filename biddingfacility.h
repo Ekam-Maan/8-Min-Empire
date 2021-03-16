@@ -1,4 +1,4 @@
-#include "../Part3/Player.cpp"
+#include "Player.h"
 #include <queue>
 
 using namespace std;

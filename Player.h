@@ -1,5 +1,5 @@
-#include "../Part1/Map.cpp"
-#include "../Part4/Cards.cpp"
+#include "Map.h"
+#include "Cards.h"
 
 #pragma once
 
@@ -8,14 +8,12 @@ class Player
     private:
         string playerName;
         int money;
+        int noOfDisks;
+        int armies;
 
     public:
-        int *noOfDisks;
-  
-        int *armies;
-        static int *startingRegion;
+        static int startingRegion;
         Graph *graph;
-
         Hand *hand;
         
         typedef pair<int, int> valueVertex;
@@ -44,6 +42,10 @@ class Player
         int getmoney(){ return money; }
         void setmoney(int m){ money = m; }
 
+        int getdisks() { return noOfDisks; }
+        void setdisks(int d) { noOfDisks = d; }
+
+        int getarmies() { return armies; }
+        void setarmies(int a) { armies = a; }
 };
 
-int* Player::startingRegion = new int(-1);

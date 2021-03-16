@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <queue>
-#include <bits/stdc++.h>
 #include <iomanip>   
 
 using namespace::std;
@@ -165,6 +164,8 @@ Deck::~Deck()
 
 
 /*Class Hand*/
+
+Hand::Hand() : Hand::Hand(2) {}
 
 Hand::Hand(int number_of_players = 2) : Deck(number_of_players)
 {
