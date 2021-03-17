@@ -4,10 +4,8 @@ int main()
 {
     Game game;
 
-    game.showQ();
-    // game.showQ();
-    // game.showQ();
-
+;
+    game.loop();
 
     return 0;
 }

@@ -9,11 +9,9 @@ Game::Game()
 
     graph = MapLoader::loadBoard();
 
+    cout << "\n\nCreating Deck and drawing 6 cards\n\n";
     hand = new Hand();
-
     hand->Show();
-
-    bidfac = new biddingfacility();
 
     cout << "Enter number of Players: "; cin >> numOfPlayers;
     cout << "\n";
@@ -30,9 +28,20 @@ Game::Game()
         players[i] = Player(graph, name, 3, 14, 18, hand);
     }
 
-    //---------------------Bidding---------------------
+    cout << "\n\nDisplaying PlayerList\n";
+    cout << "\n--------------------------------------------------\n";
+    
+    for (int i = 0; i < numOfPlayers; ++i)
+        players[i].display();
 
+    //---------------------Bidding---------------------
+    bidfac = new biddingfacility();
     Queue = bidfac->bid(players, numOfPlayers);
+
+    cout << "\nPlayer's Queue\n";
+    cout << "--------------------------------------------------\n";
+
+    showQ();
 }
 
 void Game::showQ()
@@ -45,6 +54,32 @@ void Game::showQ()
         Queue.push(p);
     }
     cout << endl;
+}
+
+void Game::loop()
+{
+    cout << "\n\nStarting Game Loop";
+    cout << "\n--------------------------------------------------\n";
+    int brk = 0;
+    Player* temp = nullptr;
+
+    while (true)
+    {
+        temp = &Queue.front();
+        cout << "\n"<<temp->getname()<<"'s turn\n\n";
+
+        temp->pickCard();
+
+        Queue.push(*temp);
+        Queue.pop();
+
+        ++brk;
+        if (brk == 5)
+            break;
+
+        temp = nullptr;
+    }
+
 }
 
 Game::~Game()

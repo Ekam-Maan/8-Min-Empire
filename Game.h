@@ -21,6 +21,7 @@ public:
     int getstash() { return stash; }
     void setstash(int num) { stash = num; }
     void showQ();
+    void loop();
     Game();
     ~Game();
 };

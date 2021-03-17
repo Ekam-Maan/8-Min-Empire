@@ -39,11 +39,13 @@ class Hand : public Deck
 {
     private:
         vector<Card> faceup_cards; //Represents the 6 cards placed in front of players
+        const int CardCost[6] = {0,1,1,2,2,3};
     public:
         Hand();
         Hand(int number_of_players);
         Hand(const Hand &H);
         void Show();
+        int getCardCost(int index) { return CardCost[index]; };
         Card exchange(int pos);     //Returns the card from the specified index
                                     //Moves all other cards to the left 
                                     //and adds a new card at the end;

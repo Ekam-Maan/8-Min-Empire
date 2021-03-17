@@ -32,7 +32,7 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
 
 void Player :: display()
 {
-    cout << "\n** " << getname() << " **" << endl;
+    cout << "\n** " << playerName << " **" << endl;
     cout << "No of Disks of the player: " << getdisks() << endl;
     cout << "Amount of Money of the player: " << getmoney() << endl;
     cout << "No of armies of the player: " << getarmies() << endl;
@@ -53,11 +53,34 @@ void Player :: display()
 
 void Player :: pickCard()
 {
+   // cout << "1" << playerName;
+    int cost, index = -1;
+    //cout << "2" << playerName;
+
     hand->Show();
-    Card card = hand->exchange(2);
+    //cout << "3" << playerName;
+
+    while (index > 6 || index < 1)
+    {
+        cout << "\nEnter Index to Buy card (1-Index): "; cin >> index;
+    }
+   // cout << "4" << playerName;
+
+    --index;
+    cost = hand->getCardCost(index);
+   // cout << "5" << playerName;
+
+    while (!PayCoin(cost))
+    {
+        cout << "\nYou donot have enough money, pick another card";
+        cout << "\nEnter Index to Buy card: "; cin >> index;
+        --index;
+        cost = hand->getCardCost(index);
+    }
+    //cout << "6" << playerName;
+
+    Card card = hand->exchange(index);
     handList->push_back(make_pair(card.toString(),0));
-    PayCoin(2);
-    hand->Show();
 }
 
 

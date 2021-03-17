@@ -39,11 +39,10 @@ Graph* MapLoader::loadBoard()
 	while (loader >> r1 >> r2 >> type) 
 	{
 		addEdge(g, r1, r2, type);
-		cout << r1 << ", " << r2 << ", " << type<<"\n";
+		//cout << r1 << ", " << r2 << ", " << type<<"\n";
 	}
 
 	loader.close();
-	// printGraph(g);
 	validate(g);
 
 	return g;
