@@ -1,15 +1,22 @@
 #pragma once
 #include<string>
-//#include"Territory.h"
+#include <unordered_map>
 using namespace std;
 
 
 class Territory { // it represent a region/country
 private:
 	string name;
-	//int numofArmies;
+	unordered_map<string, int> armylist;
+	unordered_map<string, int> citylist;
+	string owner;
 	int id;
 public:
+	int getnumOfarmies(string name) { return armylist[name]; }
+	int getnumOfcities(string name) { return citylist[name]; }
+	void updatearmylist(string name, int ChangeInnumOfarmies);
+	void updatecitylist(string name, int ChangeInnumOfcities);
+	void updateowner();
 	Territory();
 	~Territory();
 	Territory(string s, int id);

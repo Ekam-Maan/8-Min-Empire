@@ -31,11 +31,64 @@ Vertex::Vertex( int id, AdjlistNode* hd) :id(sid++), head(nullptr) {
 	t = new Territory(name, id);
 }
 
-Territory::Territory() : name("not defined"), id(-1) {}
-Territory::Territory(string s, int id1) : name(s), id(id1) {}
+
+//----------------------------Terrritory----------------------------------
+Territory::Territory() : name("not defined"), id(-1) 
+{
+	owner = "";
+}
+
+Territory::Territory(string s, int id1) : name(s), id(id1) 
+{
+	owner = "";
+}
+
 Territory::~Territory() {
 	cout << "\nTerritory object DESTROYED.";
 }
+
+void Territory::updatearmylist(string name, int changeInNumOfarmy)
+{
+	armylist[name] = armylist[name] + changeInNumOfarmy;
+	updateowner();
+}
+
+void Territory::updatecitylist(string name, int changeInNumOfcity)
+{
+	citylist[name] = citylist[name] + changeInNumOfcity;
+	updateowner();
+}
+
+//Count VP for each player, Player with highest VP is owner
+//if 2 players has same VP then no owner.
+//army and cities are equivalent while counting VP
+
+//Since a player can't have city where he doesn't have a army
+//Iterate over amrylist and see if the player has a city.
+
+void Territory::updateowner()	
+{
+	int maxVP = 0;
+	int temp = 0;
+
+	unordered_map<string, int>::iterator it = armylist.begin();
+
+	while (it != armylist.end())
+	{
+		temp = it->second + citylist[ it->first ];
+
+		if (temp > maxVP)
+			owner = it->first;
+
+		if (temp == maxVP)
+			owner = "";
+
+		temp = 0;
+	}
+
+}
+//------------------------------Graph---------------------------------------
+
 Graph::Graph():V(0){
 	arr = new Vertex[0];
 }

@@ -53,22 +53,17 @@ void Player :: display()
 
 void Player :: pickCard()
 {
-   // cout << "1" << playerName;
     int cost, index = -1;
-    //cout << "2" << playerName;
 
     hand->Show();
-    //cout << "3" << playerName;
 
     while (index > 6 || index < 1)
     {
         cout << "\nEnter Index to Buy card (1-Index): "; cin >> index;
     }
-   // cout << "4" << playerName;
 
     --index;
     cost = hand->getCardCost(index);
-   // cout << "5" << playerName;
 
     while (!PayCoin(cost))
     {
@@ -77,7 +72,6 @@ void Player :: pickCard()
         --index;
         cost = hand->getCardCost(index);
     }
-    //cout << "6" << playerName;
 
     Card card = hand->exchange(index);
     handList->push_back(make_pair(card.toString(),0));
