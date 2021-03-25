@@ -52,11 +52,14 @@ Territory::~Territory() {
 	cout << "\nTerritory object DESTROYED.";
 }
 
-void Territory::updatearmylist(string name, int changeInNumOfarmy)
+void Territory::updatearmylist(string name, int changeInNumOfarmy) 
 {
 	armylist[name] = armylist[name] + changeInNumOfarmy;
 	updateowner();
 }
+
+ 
+
 
 
 void Territory::updatecitylist(string name, int changeInNumOfcity)
@@ -71,7 +74,14 @@ void Territory::updatecitylist(string name, int changeInNumOfcity)
 
 //Since a player can't have city where he doesn't have a army
 //Iterate over amrylist and see if the player has a city.
-
+void Territory::printRegionDetails() {
+	unordered_map<string, int>::iterator index = armylist.begin();
+	int sn = 0;
+	for (index = (armylist).begin(); index != (armylist).end(); ++index) {
+		cout << sn++ << ". Player Name: " << index->first << " Armies:  " << index->second << ".\n";
+	}
+	
+}
 void Territory::updateowner()
 {
 	int maxVP = 0;
@@ -129,11 +139,19 @@ void Graph::placeNewArmies(string name, int numOfArmies, int dest) {
 	{
 		cout << "Destination was not found";
 	}
-
+	
 	else 
 	{
 		(arr+dest)->t->updatearmylist(name, numOfArmies);
 	}
+}
+
+void Graph::buildCity(string name, int dest) {
+	arr[dest].t->updatecitylist(name, 1);
+}
+
+void Graph::destroyArmy(string name, int numOfArmies, int dest) {
+	arr[dest].t->updatearmylist(name, -numOfArmies);
 }
 
 bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not
@@ -168,37 +186,17 @@ void addEdge(Graph* g, int src, int dest, bool type) {
 	ptr->next = g->arr[dest].head;
 	g->arr[dest].head = ptr;
 };
-
 void printGraph(Graph* g) {
 	for (int i = 0; i < g->V; i++) {
-		AdjlistNode* itr = g->arr[i].head;
-		cout << "\nAdjacency list of vertex " << i << endl;
-		while (itr != NULL) {
-			if (itr->type == 0) {
-				cout << " ->[" << itr->id << "-Land]";
-			}
-			else {
-				cout << " ->[" << itr->id << "-Water]";
-			}
-			itr = itr->next;
-		}
-		cout << endl;
-
+		cout << "\nShowing details of Region" << i << ": \n";
+		cout<<"ID: "<< g->arr[i].t->getID();
+		cout << "\ncont_ID: " << g->arr[i].t->getCID();
+		g->arr[i].t->printRegionDetails();
+		cout << "\n=============================================\n";
 	}
-}
+};
 
 
-//bool graph::movearmies(string name, int movearmy, int src, int dest) {
-//	if (arr[src].t->getnumofarmies(name) < movearmy) {
-//		cout << "not sufficient armies to move.";
-//		return false;
-//	}
-//	else {
-//		arr[dest].t.updatearmylist(name, movearmy);
-//		g->arr[src].t.updatearmylist(name, -movearmy);
-//		return true;
-//	}
-//}
 
 void validate(Graph* g) {
 	int nedge = 0;

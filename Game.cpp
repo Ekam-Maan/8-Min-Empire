@@ -9,7 +9,7 @@ Game::Game()
 
     graph = MapLoader::loadBoard();
 
-    graph->placeNewArmies("SPD",0,0);
+    //graph->placeNewArmies("SPD",0,0);
 
     cout << "\n\nCreating Deck and drawing 6 cards\n\n";
     hand = new Hand();
@@ -33,8 +33,14 @@ Game::Game()
     cout << "\n\nDisplaying PlayerList\n";
     cout << "\n--------------------------------------------------\n";
     
-    for (int i = 0; i < numOfPlayers; ++i)
-        players[i].display();
+    for (int i = 0; i < numOfPlayers; ++i) {
+       players[i].display();
+      /*  graph->placeNewArmies(players[i].getname(), 4, 0);
+        printGraph(graph);
+        graph->moveArmies(players[i].getname(), 2, 0, 1);
+        printGraph(graph);*/
+    }
+        
 
     //---------------------Bidding---------------------
     bidfac = new biddingfacility();
@@ -82,6 +88,7 @@ void Game::loop()
 
         temp = nullptr;
     }
+    
 
 }
 
