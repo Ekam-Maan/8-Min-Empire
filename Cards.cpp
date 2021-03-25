@@ -33,20 +33,20 @@ string titles[] = {
 string goods[] = {
     "Crystal",         "Coin",
     "2X Crystal",      "2X Coin",
-    "3X Crystal",      "Wing",
-    "4X Crystal",      "2X Wing",
+    "3X Crystal",      "Coin",
+    "4X Crystal",      "2X Coin",
     "Place Army",      "Move Army",
     "VP Point",        "Cystal AND 2X Coin",
     "Crystal",         "Coin",
     "2X Crystal",      "2X Coin",
     "3X Crystal",      "Wing",
-    "4X Crystal",      "2X Wing",
+    "4X Crystal",      "2X Coin",
     "Place Army",      "Move Army",
     "VP Point",        "Cystal AND 2X Coin",
     "Crystal",         "Coin",
     "2X Crystal",      "2X Coin",
-    "3X Crystal",      "Wing",
-    "4X Crystal",      "2X Wing",
+    "3X Crystal",      "Coin",
+    "4X Crystal",      "2X Coin",
     "Place Army",      "Move Army"
 };
 
@@ -149,9 +149,9 @@ void Deck::Show()
 }
 
 
-Card Deck::draw()
+Card* Deck::draw()
 {
-    return pack_of_cards[curr_top++];
+    return &pack_of_cards[curr_top++];
 }
 
 
@@ -185,22 +185,22 @@ void Hand::Show()
 {
     cout<<"FACEUP CARDS"<<"\n-------------------------------------------\n";
     cout<<"Cost: "<<0<<setw(20);
-    faceup_cards.at(0).show();
+    faceup_cards.at(0)->show();
 
     cout<<"Cost: "<<1<<setw(20);
-    faceup_cards.at(1).show();
+    faceup_cards.at(1)->show();
 
     cout<<"Cost: "<<1<<setw(20);
-    faceup_cards.at(2).show();
+    faceup_cards.at(2)->show();
 
     cout<<"Cost: "<<2<<setw(20);
-    faceup_cards.at(3).show();
+    faceup_cards.at(3)->show();
 
     cout<<"Cost: "<<2<<setw(20);
-    faceup_cards.at(4).show();
+    faceup_cards.at(4)->show();
 
     cout<<"Cost: "<<3<<setw(20);
-    faceup_cards.at(5).show();
+    faceup_cards.at(5)->show();
 
     cout<<"\n";
 }
@@ -208,12 +208,12 @@ void Hand::Show()
 
 Card Hand::exchange(int pos)
 {
-    Card temp = faceup_cards.at(pos); //Selects the card at specific index
+    Card *temp = faceup_cards.at(pos); //Selects the card at specific index
     faceup_cards.erase(faceup_cards.begin()+pos);   //removes it from faceup_cards
 
     faceup_cards.push_back(draw()); //Adding a new card to the back of faceup_cards
 
-    return temp;
+    return *temp;
 }
 
 Hand::~Hand()

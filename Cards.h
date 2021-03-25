@@ -29,7 +29,7 @@ class Deck
         Deck(int number_of_players);
         Deck(const Deck &D);
         void Show();
-        Card draw();    //returns the card at index curr_top
+        Card* draw();    //returns the card at index curr_top
                         //and increments curr_top
         ~Deck();
 };
@@ -38,7 +38,7 @@ class Deck
 class Hand : public Deck
 {
     private:
-        vector<Card> faceup_cards; //Represents the 6 cards placed in front of players
+        vector<Card*> faceup_cards; //Represents the 6 cards placed in front of players
         const int CardCost[6] = {0,1,1,2,2,3};
     public:
         Hand();
