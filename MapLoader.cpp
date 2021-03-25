@@ -33,13 +33,11 @@ Graph* MapLoader::loadBoard()
 		loader.open(lsh);
 	
 	loader >> numV;
-	//cout << numV;
 	Graph* g = new Graph(numV);
 
 	while (loader >> r1 >> r2 >> type) 
 	{
 		addEdge(g, r1, r2, type);
-		//cout << r1 << ", " << r2 << ", " << type<<"\n";
 	}
 
 	loader.close();

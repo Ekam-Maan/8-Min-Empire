@@ -69,6 +69,7 @@ void Game::loop()
         cout << "\n"<<temp->getname()<<"'s turn\n\n";
 
         temp->pickCard();
+        //temp->displayCards();
 
         Queue.push(*temp);
         Queue.pop();

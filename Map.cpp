@@ -4,8 +4,7 @@
 
 static int sid = 0;
 
-AdjlistNode::AdjlistNode():id( -1),type(0),next(NULL) {
-}
+AdjlistNode::AdjlistNode():id( -1),type(0),next(NULL) {}
 AdjlistNode::~AdjlistNode() {
 	delete next;
 	next = NULL;
@@ -13,11 +12,10 @@ AdjlistNode::~AdjlistNode() {
 }
 
 
-AdjlistNode::AdjlistNode(int id, bool tp, AdjlistNode* nxt) : id(id), type(tp), next(nxt){
-}
+AdjlistNode::AdjlistNode(int id, bool tp, AdjlistNode* nxt) : id(id), type(tp), next(nxt){}
 
-Vertex::Vertex() : t(nullptr), id(sid++), head(nullptr) {
-}
+Vertex::Vertex() : t(nullptr), id(sid++), head(nullptr) {}
+
 Vertex::~Vertex() {
 	//t->~Territory();
 	delete t;
@@ -115,6 +113,8 @@ bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions
 	}
 	return false;
 }
+
+
 bool isLandConn(Graph* g, int id1, int id2) {
 	AdjlistNode* itr;
 	itr = g->arr[id1].head;
