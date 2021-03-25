@@ -11,11 +11,16 @@ private:
 	unordered_map<string, int> citylist;
 	string owner;
 	int id;
+	int cont_id;
 public:
 	int getnumOfarmies(string name) { return armylist[name]; }
 	int getnumOfcities(string name) { return citylist[name]; }
+	void setCont_id(int cid) {
+		cont_id = cid;
+	}
 	void updatearmylist(string name, int ChangeInnumOfarmies);
 	void updatecitylist(string name, int ChangeInnumOfcities);
+
 	void updateowner();
 	Territory();
 	~Territory();
@@ -46,18 +51,22 @@ struct Vertex {// each vertex stores a pointer to a region and a header pointer 
 
 
 struct Graph { // this represent the whole map 
-    int V;
-    Vertex* arr; // it is the array consisting all vertices (a vertex =(Region + list of its adjacant regions))
-
+	int V;
+	Vertex* arr; // it is the array consisting all vertices (a vertex =(Region + list of its adjacant regions))
 	Graph();
 	~Graph();
 	Graph(int v);
-	
+	void placeNewArmies(string name, int numOfArmies, int dest);
+	void moveArmies(string name, int moveArmy, int src, int dest);
+
 };
 
 void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first region ; dest= id of second region;
 void validate(Graph* g);
-bool isAdj(Graph*g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
+bool isAdj(Graph* g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
 bool isLandConn(Graph* g, int id1, int id2);
 void printGraph(Graph* g);
+//bool placeNewArmies(Graph* g, string name, int numOfArmies, int dest);
+//bool moveArmies(Graph* g, string name, int moveArmy, int src, int dest);
+bool moveOverLand(Graph* g, string name, int move);
 

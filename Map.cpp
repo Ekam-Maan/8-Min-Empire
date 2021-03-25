@@ -4,7 +4,8 @@
 
 static int sid = 0;
 
-AdjlistNode::AdjlistNode():id( -1),type(0),next(NULL) {}
+AdjlistNode::AdjlistNode() :id(-1), type(0), next(NULL) {
+}
 AdjlistNode::~AdjlistNode() {
 	delete next;
 	next = NULL;
@@ -12,10 +13,16 @@ AdjlistNode::~AdjlistNode() {
 }
 
 
-AdjlistNode::AdjlistNode(int id, bool tp, AdjlistNode* nxt) : id(id), type(tp), next(nxt){}
+AdjlistNode::AdjlistNode(int id, bool tp, AdjlistNode* nxt) : id(id), type(tp), next(nxt) {
+}
 
-Vertex::Vertex() : t(nullptr), id(sid++), head(nullptr) {}
-
+//Vertex::Vertex() : t(nullptr), id(sid++), head(nullptr) {
+//
+//}
+Vertex::Vertex() : id(sid++), head(nullptr) {
+	string name = "T" + id;
+	t = new Territory(name, id);
+}
 Vertex::~Vertex() {
 	//t->~Territory();
 	delete t;
@@ -24,19 +31,19 @@ Vertex::~Vertex() {
 	head = NULL;
 	//cout << "\nVertex object DESTROYED.";
 }
-Vertex::Vertex( int id, AdjlistNode* hd) :id(sid++), head(nullptr) {
+Vertex::Vertex(int id, AdjlistNode* hd) :id(sid++), head(nullptr) {
 	string name = "T" + id;
 	t = new Territory(name, id);
 }
 
 
 //----------------------------Terrritory----------------------------------
-Territory::Territory() : name("not defined"), id(-1) 
+Territory::Territory() : name("not defined"), id(-1)
 {
 	owner = "";
 }
 
-Territory::Territory(string s, int id1) : name(s), id(id1) 
+Territory::Territory(string s, int id1) : name(s), id(id1)
 {
 	owner = "";
 }
@@ -51,6 +58,7 @@ void Territory::updatearmylist(string name, int changeInNumOfarmy)
 	updateowner();
 }
 
+
 void Territory::updatecitylist(string name, int changeInNumOfcity)
 {
 	citylist[name] = citylist[name] + changeInNumOfcity;
@@ -64,7 +72,7 @@ void Territory::updatecitylist(string name, int changeInNumOfcity)
 //Since a player can't have city where he doesn't have a army
 //Iterate over amrylist and see if the player has a city.
 
-void Territory::updateowner()	
+void Territory::updateowner()
 {
 	int maxVP = 0;
 	int temp = 0;
@@ -73,7 +81,7 @@ void Territory::updateowner()
 
 	while (it != armylist.end())
 	{
-		temp = it->second + citylist[ it->first ];
+		temp = it->second + citylist[it->first];
 
 		if (temp > maxVP)
 			owner = it->first;
@@ -87,24 +95,47 @@ void Territory::updateowner()
 }
 //------------------------------Graph---------------------------------------
 
-Graph::Graph():V(0){
+Graph::Graph() :V(0) {
 	arr = new Vertex[0];
 }
 
 Graph::~Graph() {
+
 	delete[] arr;
 	cout << "\nAll Vertex objects are DESTROYED. ";
 	arr = NULL;
 	cout << "\nGraph object DESTROYED.";
 }
 
-Graph::Graph(int v):V(v){
+Graph::Graph(int v) :V(v) {
+
 	arr = new Vertex[v];
+}
+
+void Graph::moveArmies(string name, int movearmy, int src, int dest) {
+
+	arr[dest].t->updatearmylist(name, movearmy);
+	arr[src].t->updatearmylist(name, -movearmy);
+
+
+}
+void Graph::placeNewArmies(string name, int numOfArmies, int dest) {
+
+	if (dest < 0 || dest >= V) {
+
+		cout << "Destination was not found";
+
+	}
+	else {
+
+		arr->t->updatearmylist(name, numOfArmies);
+
+	}
 }
 
 bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not
 	AdjlistNode* itr;
-	itr= g->arr[id1].head;
+	itr = g->arr[id1].head;
 	while (itr != NULL) {
 		if (itr->id == id2) {
 			return true;
@@ -113,13 +144,11 @@ bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions
 	}
 	return false;
 }
-
-
 bool isLandConn(Graph* g, int id1, int id2) {
 	AdjlistNode* itr;
 	itr = g->arr[id1].head;
 	while (itr != NULL) {
-		if (itr->id==id2 && itr->type) {
+		if (itr->id == id2 && itr->type) {
 			return true;
 		}
 		itr = itr->next;
@@ -155,11 +184,24 @@ void printGraph(Graph* g) {
 	}
 }
 
+
+//bool graph::movearmies(string name, int movearmy, int src, int dest) {
+//	if (arr[src].t->getnumofarmies(name) < movearmy) {
+//		cout << "not sufficient armies to move.";
+//		return false;
+//	}
+//	else {
+//		arr[dest].t.updatearmylist(name, movearmy);
+//		g->arr[src].t.updatearmylist(name, -movearmy);
+//		return true;
+//	}
+//}
+
 void validate(Graph* g) {
 	int nedge = 0;
 	for (int i = 0; i < g->V; i++) {
-		AdjlistNode* itr=g->arr[i].head;
-		
+		AdjlistNode* itr = g->arr[i].head;
+
 		while (itr != NULL) {
 			nedge++;
 			itr = itr->next;
