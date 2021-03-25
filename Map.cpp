@@ -90,8 +90,9 @@ void Territory::updateowner()
 			owner = "";
 
 		temp = 0;
+		++it;
 	}
-
+	
 }
 //------------------------------Graph---------------------------------------
 
@@ -117,19 +118,21 @@ void Graph::moveArmies(string name, int movearmy, int src, int dest) {
 	arr[dest].t->updatearmylist(name, movearmy);
 	arr[src].t->updatearmylist(name, -movearmy);
 
-
 }
+
+
 void Graph::placeNewArmies(string name, int numOfArmies, int dest) {
 
-	if (dest < 0 || dest >= V) {
+	cout << "PLACE NEW ARMIES";
 
+	if (dest < 0 || dest >= V) 
+	{
 		cout << "Destination was not found";
-
 	}
-	else {
 
-		arr->t->updatearmylist(name, numOfArmies);
-
+	else 
+	{
+		(arr+dest)->t->updatearmylist(name, numOfArmies);
 	}
 }
 

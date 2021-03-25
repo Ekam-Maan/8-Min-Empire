@@ -9,6 +9,8 @@ Game::Game()
 
     graph = MapLoader::loadBoard();
 
+    graph->placeNewArmies("SPD",0,0);
+
     cout << "\n\nCreating Deck and drawing 6 cards\n\n";
     hand = new Hand();
     hand->Show();

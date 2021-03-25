@@ -66,7 +66,5 @@ void validate(Graph* g);
 bool isAdj(Graph* g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
 bool isLandConn(Graph* g, int id1, int id2);
 void printGraph(Graph* g);
-//bool placeNewArmies(Graph* g, string name, int numOfArmies, int dest);
-//bool moveArmies(Graph* g, string name, int moveArmy, int src, int dest);
 bool moveOverLand(Graph* g, string name, int move);
 
