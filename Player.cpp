@@ -145,6 +145,9 @@ bool Player :: PLaceNewArmies(int armiesNum, int vertex)
         valueVertex *armyIn = NoOfArmiesInCountry(vertex);
         armies = armies - armiesNum;
         armyIn->second = armyIn->second + armiesNum;
+
+        graph->placeNewArmies(getname(),armiesNum,vertex);
+
         cout<<"Successfully added the armies";
    
         return true;
@@ -172,6 +175,9 @@ bool Player :: MoveArmies(int armiesNum, int src, int des)
     {
         armyTo->second= armyTo->second+ armiesNum;
         armyFrom->second= armyFrom->second-armiesNum;
+
+        graph->moveArmies(getname(),armiesNum,src,des);
+
         cout << "Succesfully moved " << armiesNum << " armies from " << src << " to " << des << endl;
         return true;
     }
@@ -208,6 +214,8 @@ bool Player :: DestroyArmy(int vertex)
         cout << "Successfully Destroyed army of " << getname() << " in " << vertex << endl;
         armies = armies+1;
         armyIn->second--;
+        //-----------------------------left------------------------
+        //take input of which player's army need to be destroyed
         return true;
     }
     else 
@@ -235,6 +243,9 @@ bool Player:: BuildCity(int country)
             noOfDisks = noOfDisks-1;
             valueVertex *cityIn = NoOfCitiesInCountry(country);
             cityIn->second++;
+
+            graph->buildCity(getname(),country);
+            
             cout << "Successfully built a city in " << country << endl;
             return true;
         }

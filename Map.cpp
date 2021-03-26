@@ -58,9 +58,6 @@ void Territory::updatearmylist(string name, int changeInNumOfarmy)
 	updateowner();
 }
 
- 
-
-
 
 void Territory::updatecitylist(string name, int changeInNumOfcity)
 {
