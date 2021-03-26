@@ -16,6 +16,7 @@ public:
 	int getnumOfarmies(string name) { return armylist[name]; }
 	int getID() { return id; }
 	int getCID() { return cont_id; }
+	string getOwner() { return owner; }
 	int getnumOfcities(string name) { return citylist[name]; }
 	void setCont_id(int cid) {
 		cont_id = cid;
@@ -55,10 +56,14 @@ struct Vertex {// each vertex stores a pointer to a region and a header pointer 
 
 struct Graph { // this represent the whole map 
 	int V;
+	int cont;
+	int numOfPlayers;
 	Vertex* arr; // it is the array consisting all vertices (a vertex =(Region + list of its adjacant regions))
 	Graph();
 	~Graph();
-	Graph(int v);
+	Graph(int v, int cont);
+	void setnumOfPlayer(int np) { numOfPlayers = np; }
+	int getNumOfPlayers() { return numOfPlayers; }
 	void placeNewArmies(string name, int numOfArmies, int dest);
 	void moveArmies(string name, int moveArmy, int src, int dest);
 	void buildCity(string name, int dest);

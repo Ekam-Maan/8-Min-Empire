@@ -19,7 +19,7 @@ Graph* MapLoader::loadBoard()
 	string rec = "B1.txt"; // rectangular config
 	string lsh = "B2.txt"; // L-shaped config
 	char c;
-	int numV;
+	int numV,numCont ;
 	int r1, r2, type, cont_id;
 	ifstream loader;
 
@@ -33,8 +33,9 @@ Graph* MapLoader::loadBoard()
 		loader.open(lsh);
 
 	loader >> numV;
+	loader >> numCont;
 	//cout << numV;
-	Graph* g = new Graph(numV);
+	Graph* g = new Graph(numV, numCont);
 	for (int i = 0; i < numV; i++) {
 		loader >> cont_id;
 		g->arr[i].t->setCont_id(cont_id);
