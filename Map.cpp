@@ -123,8 +123,6 @@ void Graph::moveArmies(string name, int movearmy, int src, int dest) {
 
 void Graph::placeNewArmies(string name, int numOfArmies, int dest) {
 
-	cout << "PLACE NEW ARMIES";
-
 	if (dest < 0 || dest >= V) 
 	{
 		cout << "Destination was not found";

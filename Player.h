@@ -10,6 +10,8 @@ class Player
         int money;
         int noOfDisks;
         int armies;
+        int VP;         //Victory Point
+        int Crystals;
 
     public:
         static int startingRegion;
@@ -35,6 +37,7 @@ class Player
         void display();
         void displayCards();
         void pickCard();
+        void performgood(string good);    
 
         string getname(){ return playerName; }
         void setname(string name){ playerName = name; }
@@ -47,5 +50,11 @@ class Player
 
         int getarmies() { return armies; }
         void setarmies(int a) { armies = a; }
+
+        int getVP() { return VP; }
+        void setVP(int a) { VP = a; }
+
+        int getCrystals() { return Crystals; }
+        void setCrystals(int a) { Crystals = a; }
 };
 

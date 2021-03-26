@@ -22,6 +22,8 @@ public:
     void setstash(int num) { stash = num; }
     void showQ();
     void loop();
+    bool GameEnded();
+    void DecideWinner();
     Game();
     ~Game();
 };

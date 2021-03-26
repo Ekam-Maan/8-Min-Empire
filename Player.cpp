@@ -12,6 +12,8 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     money = tokenNum;
     armies = armyNum;
     playerName = Name;
+    VP = 0;
+    Crystals = 0;
 
     this->graph = graph;
     this->hand=hand;
@@ -47,14 +49,18 @@ void Player :: display()
     cout << "\nArmies of the player \t";
 
     vector<valueVertex>::iterator index;
-    for (index = (armyList)->begin(); index !=(armyList)->end(); ++index) {
+    for (index = (armyList)->begin(); index !=(armyList)->end(); ++index) 
         cout << "\t" << (index->first) << ": " << index->second;
-    }
+    
+
     cout << "\nCities of the player:\t";
    // vector<valueVertex>::iterator index;
-    for (index = (cityList)->begin(); index !=(cityList)->end(); ++index) {
+    for (index = (cityList)->begin(); index !=(cityList)->end(); ++index) 
         cout << "\t" << (index->first) << ": " << index->second;
-    }
+
+
+    displayCards();
+    
     cout << "\n\n" << endl;
 
 }
@@ -84,6 +90,8 @@ void Player :: pickCard()
 
     Card card = hand->exchange(index);
     cout << "\nCard action: "<<card.action;
+
+    performgood(card.good);
 
     handList->push_back(make_pair(card.toString(),0));
 }
@@ -267,4 +275,43 @@ pair<int, int>* Player::NoOfCitiesInCountry(int vertex)
     }
 
     return &(*i);
+}
+
+
+
+void Player::performgood(string good)
+{
+    if (good == "VP Point")
+        setVP( getVP() + 1 );
+
+    else if (good.find("Crystal") != string::npos)
+    {
+        if (good.find("X") != string::npos)
+        {
+            int index = good.find("X");
+            int num = std::stoi( good.substr(0,index) );
+            setCrystals(getCrystals() + num);
+        }
+
+        else
+        {
+            setCrystals( getCrystals() + 1 );
+        }
+    }
+
+    else if (good.find("Coin") != string::npos)
+    {
+        if (good.find("X") != string::npos)
+        {
+            int index = good.find("X");
+            int num = std::stoi(good.substr(0, index));
+            setmoney(getmoney() + num);
+        }
+
+        else
+        {
+            setmoney(getmoney() + 1);
+        }
+    }
+
 }

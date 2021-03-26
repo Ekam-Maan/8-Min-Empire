@@ -8,7 +8,6 @@ using namespace::std;
 
 
 /*Card Information*/
-//https://cdn.1j1ju.com/medias/18/ae/df-eight-minute-empire-rulebook.pdf
 
 string titles[] = {
   "Ancient Phoenix",     "Ancient Sage",
@@ -34,20 +33,20 @@ string goods[] = {
     "Crystal",         "Coin",
     "2X Crystal",      "2X Coin",
     "3X Crystal",      "Coin",
-    "4X Crystal",      "2X Coin",
-    "Place Army",      "Move Army",
-    "VP Point",        "Cystal AND 2X Coin",
+    "4X Crystal",      "VP Point",
+    "VP Point",        "VP Point",
+    "VP Point",        "2X Coin",
     "Crystal",         "Coin",
     "2X Crystal",      "2X Coin",
-    "3X Crystal",      "Wing",
+    "3X Crystal",      "2X Crystal",
     "4X Crystal",      "2X Coin",
-    "Place Army",      "Move Army",
-    "VP Point",        "Cystal AND 2X Coin",
+    "VP Point",        "VP Point",
+    "VP Point",        "2X Coin",
     "Crystal",         "Coin",
     "2X Crystal",      "2X Coin",
     "3X Crystal",      "Coin",
     "4X Crystal",      "2X Coin",
-    "Place Army",      "Move Army"
+    "VP Point",        "VP Point"
 };
 
 string actions[] = {
