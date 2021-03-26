@@ -14,30 +14,36 @@ MapLoader ::~MapLoader()
 	cout << "\nMapLoader Destructor called.\n";
 }
 
-Graph* MapLoader::loadBoard() 
-{	
-	string rec = "B1.txt";
-	string lsh = "B2.txt";
+Graph* MapLoader::loadBoard()
+{
+	string rec = "B1.txt"; // rectangular config
+	string lsh = "B2.txt"; // L-shaped config
 	char c;
 	int numV;
-	int r1, r2, type;
+	int r1, r2, type, cont_id;
 	ifstream loader;
-	
+
 	cout << "Type R for Rectangle configuration or L for L-Shape configuration: ";
 	cin >> c;
-	
-	if (c == 'R') 
-		loader.open(rec);
-	
-	else 
-		loader.open(lsh);
-	
-	loader >> numV;
-	Graph* g = new Graph(numV);
 
-	while (loader >> r1 >> r2 >> type) 
+	if (c == 'R')
+		loader.open(rec);
+
+	else
+		loader.open(lsh);
+
+	loader >> numV;
+	//cout << numV;
+	Graph* g = new Graph(numV);
+	for (int i = 0; i < numV; i++) {
+		loader >> cont_id;
+		g->arr[i].t->setCont_id(cont_id);
+	}
+
+	while (loader >> r1 >> r2 >> type)
 	{
 		addEdge(g, r1, r2, type);
+		//cout << r1 << ", " << r2 << ", " << type<<"\n";
 	}
 
 	loader.close();
@@ -45,4 +51,5 @@ Graph* MapLoader::loadBoard()
 
 	return g;
 }
+
 

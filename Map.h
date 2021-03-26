@@ -14,12 +14,15 @@ private:
 	int cont_id;
 public:
 	int getnumOfarmies(string name) { return armylist[name]; }
+	int getID() { return id; }
+	int getCID() { return cont_id; }
 	int getnumOfcities(string name) { return citylist[name]; }
 	void setCont_id(int cid) {
 		cont_id = cid;
 	}
 	void updatearmylist(string name, int ChangeInnumOfarmies);
 	void updatecitylist(string name, int ChangeInnumOfcities);
+	void printRegionDetails();
 
 	void updateowner();
 	Territory();
@@ -58,6 +61,9 @@ struct Graph { // this represent the whole map
 	Graph(int v);
 	void placeNewArmies(string name, int numOfArmies, int dest);
 	void moveArmies(string name, int moveArmy, int src, int dest);
+	void buildCity(string name, int dest);
+	void destroyArmy(string name, int numOfCount, int dest);
+
 
 };
 

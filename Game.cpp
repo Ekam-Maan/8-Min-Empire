@@ -31,8 +31,14 @@ Game::Game()
     cout << "\n\nDisplaying PlayerList\n";
     cout << "\n--------------------------------------------------\n";
     
-    for (int i = 0; i < numOfPlayers; ++i)
-        players[i].display();
+    for (int i = 0; i < numOfPlayers; ++i) {
+       players[i].display();
+      /*  graph->placeNewArmies(players[i].getname(), 4, 0);
+        printGraph(graph);
+        graph->moveArmies(players[i].getname(), 2, 0, 1);
+        printGraph(graph);*/
+    }
+        
 
     //---------------------Bidding---------------------
     bidfac = new biddingfacility();
@@ -80,6 +86,7 @@ void Game::loop()
 
         temp = nullptr;
     }
+    
 
 }
 
