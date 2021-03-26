@@ -74,14 +74,17 @@ void Territory::updatecitylist(string name, int changeInNumOfcity)
 
 //Since a player can't have city where he doesn't have a army
 //Iterate over amrylist and see if the player has a city.
-void Territory::printRegionDetails() {
+void Territory::printRegionDetails() 
+{
 	unordered_map<string, int>::iterator index = armylist.begin();
 	int sn = 0;
 	for (index = (armylist).begin(); index != (armylist).end(); ++index) {
-		cout << sn++ << ". Player Name: " << index->first << " Armies:  " << index->second << ".\n";
+		cout << sn++ << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: "<<citylist[index->first] <<".\n";
 	}
 	
 }
+
+
 void Territory::updateowner()
 {
 	int maxVP = 0;
@@ -184,8 +187,11 @@ void addEdge(Graph* g, int src, int dest, bool type) {
 	ptr->next = g->arr[dest].head;
 	g->arr[dest].head = ptr;
 };
-void printGraph(Graph* g) {
-	for (int i = 0; i < g->V; i++) {
+
+void printGraph(Graph* g) 
+{
+	for (int i = 0; i < g->V; i++) 
+	{
 		cout << "\nShowing details of Region" << i << ": \n";
 		cout<<"ID: "<< g->arr[i].t->getID();
 		cout << "\ncont_ID: " << g->arr[i].t->getCID();
