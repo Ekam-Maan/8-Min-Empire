@@ -142,9 +142,8 @@ void Game::DecideWinner()
     for (int i = 0; i < numOfPlayers; ++i)
     {
         (players + i)->display();
-        //int VP = (players + i)->ComputeScore();
+        int VP = (players + i)->computeScore();
 
-        int VP = 0;
 
         if ((players + i)->getname() == maxCrystalowner)
             VP += 2;
