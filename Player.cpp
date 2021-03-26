@@ -258,7 +258,52 @@ bool Player:: BuildCity(int country)
     }
     
 }
- 
+
+ void Player::computeScore() {
+
+    int maxArmies = 0;
+    int vp = 0;
+
+    for (int i = 0; i < graph->V; i++) {
+
+        if (graph->arr[i].t->getOwner() == playerName) {   // cheking winner of a region
+            vp++;
+            cout << "\n " << i << "vp++ region ;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+        }
+    }
+    for (int i = 0; i < graph->cont; i++)
+    {   
+        unordered_map<string, int> ownerlist;
+        for (int j = 0; j < graph->V; j++) {
+            
+            if (graph->arr[j].t->getCID() == i) {
+                string owner = graph->arr[j].t->getOwner();
+                ownerlist[owner] ++;
+                
+            }
+        }
+        int max = 0;
+        unordered_map<string, int>::iterator itr = ownerlist.begin();
+        
+        bool tie = false;
+        for (itr = (ownerlist).begin(); itr != (ownerlist).end(); ++itr) {
+            if (itr->second > max) {
+                max = itr->second;
+                tie = false;
+            }
+            if (itr->second == max) {
+                tie = true;
+            }
+        }
+        if(tie){}
+        else if(ownerlist[playerName] == max) {
+            vp++;
+        }
+        
+    }
+    VP = vp;
+    
+}
 
 pair<int, int>* Player::NoOfArmiesInCountry(int vertex) 
 {

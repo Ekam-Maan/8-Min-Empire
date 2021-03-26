@@ -65,12 +65,7 @@ void Territory::updatecitylist(string name, int changeInNumOfcity)
 	updateowner();
 }
 
-//Count VP for each player, Player with highest VP is owner
-//if 2 players has same VP then no owner.
-//army and cities are equivalent while counting VP
 
-//Since a player can't have city where he doesn't have a army
-//Iterate over amrylist and see if the player has a city.
 void Territory::printRegionDetails() 
 {
 	unordered_map<string, int>::iterator index = armylist.begin();
@@ -81,6 +76,12 @@ void Territory::printRegionDetails()
 	
 }
 
+//Count VP for each player, Player with highest VP is owner
+//if 2 players has same VP then no owner.
+//army and cities are equivalent while counting VP
+
+//Since a player can't have city where he doesn't have a army
+//Iterate over amrylist and see if the player has a city.
 
 void Territory::updateowner()
 {
@@ -93,13 +94,16 @@ void Territory::updateowner()
 	{
 		temp = it->second + citylist[it->first];
 
-		if (temp > maxVP)
+		if (temp > maxVP) {
+			maxVP = temp; // correctted 
 			owner = it->first;
+		}
+			
 
-		if (temp == maxVP)
+		else if (temp == maxVP)
 			owner = "";
 
-		temp = 0;
+		//temp = 0;
 		++it;
 	}
 	
@@ -118,7 +122,7 @@ Graph::~Graph() {
 	cout << "\nGraph object DESTROYED.";
 }
 
-Graph::Graph(int v) :V(v) {
+Graph::Graph(int v, int cont) :V(v), cont(cont) {
 
 	arr = new Vertex[v];
 }

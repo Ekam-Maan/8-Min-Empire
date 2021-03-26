@@ -38,6 +38,7 @@ class Player
         void displayCards();
         void pickCard();
         void performgood(string good);    
+        void computeScore();
 
         string getname(){ return playerName; }
         void setname(string name){ playerName = name; }

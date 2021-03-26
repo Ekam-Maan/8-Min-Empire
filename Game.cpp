@@ -14,6 +14,7 @@ Game::Game()
     hand->Show();
 
     cout << "Enter number of Players: "; cin >> numOfPlayers;
+    graph->setnumOfPlayer(numOfPlayers);
     cout << "\n";
     cin.ignore(1, '\n');
 
@@ -30,13 +31,19 @@ Game::Game()
 
     cout << "\n\nDisplaying PlayerList\n";
     cout << "\n--------------------------------------------------\n";
-    
+  /*  printGraph(graph);
+    graph->placeNewArmies(players[0].getname(), 4, 1);
+    graph->placeNewArmies(players[0].getname(), 4, 1);
+    graph->placeNewArmies(players[0].getname(), 4, 2);
+    graph->placeNewArmies(players[1].getname(), 4, 2);
+    graph->placeNewArmies(players[1].getname(), 4, 3);
+    printGraph(graph);*/
+   // cout << "\n1.--------------------------------"<<players[0].computeScore();
+   // cout << "\n2.-------------------------------- " << players[1].computeScore();
+
     for (int i = 0; i < numOfPlayers; ++i) {
        players[i].display();
-      /*  graph->placeNewArmies(players[i].getname(), 4, 0);
-        printGraph(graph);
-        graph->moveArmies(players[i].getname(), 2, 0, 1);
-        printGraph(graph);*/
+    
     }
         
 
