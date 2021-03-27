@@ -99,6 +99,12 @@ string Card::toString()
 { return title+"\t\t"+good+"\t\t"+action; }
 
 
+ostream& operator << (ostream& out, Card& obj)
+{
+    out << obj.title << setw(30) << obj.good << setw(50) << obj.action << "\n";
+    return out;
+}
+
 /*Class Deck*/
 
 //Constuctor Chaining is not allowed
@@ -151,6 +157,14 @@ void Deck::Show()
 Card* Deck::draw()
 {
     return &pack_of_cards[curr_top++];
+}
+
+ostream& operator << (ostream& out, Deck& obj)
+{
+    for (int i = 0; i < obj.number_of_cards; ++i)
+        out << obj.pack_of_cards[i];
+
+    return out;
 }
 
 
@@ -218,4 +232,32 @@ Card Hand::exchange(int pos)
 Hand::~Hand()
 {
     cout<<"Destroyed Hand Object\n";
+}
+
+
+//------------------------------------Operator overloading------------------------------
+
+ostream& operator << (ostream& out, Hand& obj)
+{
+    out << "FACEUP CARDS" << "\n-------------------------------------------\n";
+    out << "Cost: " << 0 << setw(20);
+    out << obj.faceup_cards.at(0);
+
+    out << "Cost: " << 1 << setw(20);
+    out << obj.faceup_cards.at(1);
+
+    out << "Cost: " << 1 << setw(20);
+    out << obj.faceup_cards.at(2);
+
+    out << "Cost: " << 2 << setw(20);
+    out << obj.faceup_cards.at(3);
+
+    out << "Cost: " << 2 << setw(20);
+    out << obj.faceup_cards.at(4);
+
+    out << "Cost: " << 3 << setw(20);
+    out << obj.faceup_cards.at(5);
+
+    out << "\n";
+    return out;
 }

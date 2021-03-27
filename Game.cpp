@@ -91,6 +91,7 @@ void Game::loop()
         //if (GameEnded())
             break;
 
+        printGraph(graph);
         temp = nullptr;
     }
     
@@ -175,7 +176,7 @@ void Game::DecideWinner()
     cout << "\n\n---------------------------------------------------------------\n\n";
 
     delete Winner;
-    Winner = nullptr;
+    Winner = NULL;
 }
 
 Game::~Game()
