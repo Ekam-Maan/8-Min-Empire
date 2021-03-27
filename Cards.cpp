@@ -230,7 +230,11 @@ Card Hand::exchange(int pos)
 }
 
 Hand::~Hand()
-{
+{   
+    for (auto c : faceup_cards)
+        delete c;
+
+    faceup_cards.clear();
     cout<<"Destroyed Hand Object\n";
 }
 

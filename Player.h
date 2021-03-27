@@ -39,6 +39,9 @@ class Player
         void pickCard();
         void performgood(string good);    
         int computeScore();
+        friend ostream & operator << (ostream& out, Player& obj);
+        friend istream& operator >> (istream& in, Player& obj);
+        ~Player();
 
         string getname(){ return playerName; }
         void setname(string name){ playerName = name; }

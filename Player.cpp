@@ -375,3 +375,51 @@ int Player::computeScore() {
 
     return VP;
 }
+
+
+//Donot delete hand and graph since they are shared between all players
+//They will be deleted by the game class
+Player::~Player()
+{
+    delete handList;
+    delete cityList;
+    delete armyList;
+}
+
+
+
+//Overloaded stream insertion and output operaters;
+
+ostream& operator << (ostream& out, Player& obj)
+{
+    out << "\n** " << obj.playerName << " **" << endl;
+    out << "No of Disks of the player: " << obj.getdisks() << endl;
+    out << "Amount of Money of the player: " << obj.getmoney() << endl;
+    out << "No of armies of the player: " << obj.getarmies() << endl;
+    out << "\nArmies of the player \t";
+
+
+    vector<Player::valueVertex>::iterator index;
+    for (index = (obj.armyList)->begin(); index != (obj.armyList)->end(); ++index)
+        out << "\t" << (index->first) << ": " << index->second;
+
+
+    cout << "\nCities of the player:\t";
+    // vector<valueVertex>::iterator index;
+    for (index = (obj.cityList)->begin(); index != (obj.cityList)->end(); ++index)
+        out << "\t" << (index->first) << ": " << index->second;
+
+
+    return out;
+}
+
+
+istream& operator >> (istream& in, Player& obj)
+{
+    in>>obj.noOfDisks;
+    in>>obj.money;
+    in>>obj.armies;
+    in>>obj.playerName;
+
+    return in;
+}
