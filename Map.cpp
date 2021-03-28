@@ -77,7 +77,7 @@ ostream& operator << (ostream& out, Territory& t)
 	for (index = (t.armylist).begin(); index != (t.armylist).end(); ++index) {
 		out << ++sn << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: " << t.citylist[index->first] << ".\n";
 	}
-
+	return out;
 }
 
 istream& operator >> (istream& in, Territory& t) 
@@ -86,7 +86,7 @@ istream& operator >> (istream& in, Territory& t)
 	in >> t.id;
 	in >> t.cont_id;
 	in >> t.owner;
-
+	return in;
 }
 
 void Territory::updatearmylist(string name, int changeInNumOfarmy) 
