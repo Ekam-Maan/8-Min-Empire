@@ -334,13 +334,15 @@ int Player::computeScore() {
     int maxArmies = 0;
     int vp = 0;
 
-    for (int i = 0; i < graph->V; i++) {
-
-        if (graph->arr[i].t->getOwner() == playerName) {   // cheking winner of a region
-            vp++;
-            cout << "\n " << i << "vp++ region ;;;;;;;;;;;;;;;;;;;;;;;;;;\n";
+    for (int i = 0; i < graph->V; i++) 
+    {
+        if (graph->arr[i].t->getOwner() == playerName)
+        {  
+            ++vp;
+            ++controlledRegions;
         }
     }
+
     for (int i = 0; i < graph->cont; i++)
     {
         unordered_map<string, int> ownerlist;
@@ -366,10 +368,9 @@ int Player::computeScore() {
             }
         }
         if (tie) {}
-        else if (ownerlist[playerName] == max) {
+        
+        else if (ownerlist[playerName] == max) 
             vp++;
-        }
-
     }
     VP += vp;
 

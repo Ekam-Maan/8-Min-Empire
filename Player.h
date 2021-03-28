@@ -12,6 +12,7 @@ class Player
         int armies;
         int VP;         //Victory Point
         int Crystals;
+        int controlledRegions;
 
     public:
         static int startingRegion;
@@ -60,5 +61,8 @@ class Player
 
         int getCrystals() { return Crystals; }
         void setCrystals(int a) { Crystals = a; }
+
+        int getcontrolledRegions() { return controlledRegions; }
+        void setcontrolledRegions(int a) { controlledRegions = a; }
 };
 

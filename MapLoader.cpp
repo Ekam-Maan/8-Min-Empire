@@ -34,7 +34,6 @@ Graph* MapLoader::loadBoard()
 
 	loader >> numV;
 	loader >> numCont;
-	//cout << numV;
 	Graph* g = new Graph(numV, numCont);
 	for (int i = 0; i < numV; i++) {
 		loader >> cont_id;
@@ -44,7 +43,6 @@ Graph* MapLoader::loadBoard()
 	while (loader >> r1 >> r2 >> type)
 	{
 		addEdge(g, r1, r2, type);
-		//cout << r1 << ", " << r2 << ", " << type<<"\n";
 	}
 
 	loader.close();

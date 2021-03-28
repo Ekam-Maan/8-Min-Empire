@@ -142,7 +142,7 @@ void Game::DecideWinner()
 
     for (int i = 0; i < numOfPlayers; ++i)
     {
-        (players + i)->display();
+        //(players + i)->display();
         int VP = (players + i)->computeScore();
 
 
@@ -166,6 +166,13 @@ void Game::DecideWinner()
             {
                 if ((players + i)->getarmies() < Winner->getarmies())
                     Winner = (players + i);
+
+                //If armies are equal
+                else if ((players + i)->getarmies() == Winner->getarmies())
+                {
+                    if ((players + i)->getcontrolledRegions() > Winner->getcontrolledRegions())
+                        Winner = (players + i);
+                }
             }
         }
     }
