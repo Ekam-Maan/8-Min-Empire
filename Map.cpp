@@ -6,6 +6,15 @@ static int sid = 0;
 
 AdjlistNode::AdjlistNode() :id(-1), type(0), next(NULL) {
 }
+
+AdjlistNode::AdjlistNode(const AdjlistNode& adj) {
+	id = adj.id;
+	type = adj.type;
+}
+;
+void AdjlistNode::operator= (const AdjlistNode& adj) {
+
+};
 AdjlistNode::~AdjlistNode() {
 	delete next;
 	next = NULL;
@@ -251,17 +260,17 @@ void Graph::printGraph()
 
 
 
-void validate(Graph* g) {
+void Graph::validate() {
 	int nedge = 0;
-	for (int i = 0; i < g->V; i++) {
-		AdjlistNode* itr = g->arr[i].head;
+	for (int i = 0; i < V; i++) {
+		AdjlistNode* itr = arr[i].head;
 
 		while (itr != NULL) {
 			nedge++;
 			itr = itr->next;
 		}
 	}
-	if (((nedge / 2) - (g->V)) >= -1) {
+	if (((nedge / 2) - (V)) >= -1) {
 		cout << "\nThe graph is VALID [:-)}  ";
 	}
 	else {

@@ -42,6 +42,8 @@ struct AdjlistNode { // this is a link list that each vertex has its own. it rep
 	AdjlistNode* next;
 
 	AdjlistNode();
+	AdjlistNode(const AdjlistNode& adj);
+	void operator= (const AdjlistNode& adj);
 	~AdjlistNode();
 	AdjlistNode(int, bool, AdjlistNode*);
 };
@@ -52,6 +54,11 @@ struct Vertex {// each vertex stores a pointer to a region and a header pointer 
 	AdjlistNode* head;
 
 	Vertex();
+	Vertex(const Vertex& v) {
+		t = v.t;
+		id = v.id;
+
+	}
 	~Vertex();
 	Vertex(int id, AdjlistNode* head);
 };
@@ -72,13 +79,12 @@ struct Graph { // this represent the whole map
 	void buildCity(string name, int dest);
 	void destroyArmy(string name, int numOfCount, int dest);
 	void printGraph();
-
+	void validate();
 
 };
 
 void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first region ; dest= id of second region;
-void validate(Graph* g);
 bool isAdj(Graph* g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
 bool isLandConn(Graph* g, int id1, int id2);
-//void printGraph(Graph* g);
+
 
