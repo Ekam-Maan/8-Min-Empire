@@ -52,6 +52,43 @@ Territory::~Territory() {
 	cout << "\nTerritory object DESTROYED.";
 }
 
+Territory::Territory(const Territory& t) {
+	name = t.name;
+	id = sid++;
+	owner = t.owner;
+	cont_id = t.cont_id;
+	armylist = t.armylist;
+	citylist = t.citylist;
+}
+
+void Territory:: operator= (const Territory & t){
+	name = t.name;
+	id = sid++;
+	owner = t.owner;
+	cont_id = t.cont_id;
+	armylist = t.armylist;
+	citylist = t.citylist;
+}
+
+ostream& operator << (ostream& out, Territory& t) 
+{
+	unordered_map<string, int>::iterator index = t.armylist.begin();
+	int sn = 0;
+	for (index = (t.armylist).begin(); index != (t.armylist).end(); ++index) {
+		out << ++sn << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: " << t.citylist[index->first] << ".\n";
+	}
+
+}
+
+istream& operator >> (istream& in, Territory& t) 
+{
+	in >> t.name;
+	in >> t.id;
+	in >> t.cont_id;
+	in >> t.owner;
+
+}
+
 void Territory::updatearmylist(string name, int changeInNumOfarmy) 
 {
 	armylist[name] = armylist[name] + changeInNumOfarmy;
