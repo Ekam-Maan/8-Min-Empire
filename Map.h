@@ -27,7 +27,12 @@ public:
 
 	void updateowner();
 	Territory();
+	Territory(const Territory&);
+	void operator = (const Territory&);
 	~Territory();
+
+	friend ostream& operator << (ostream& out, Territory& obj);
+	friend istream& operator >> (istream& in, Territory& obj);
 	Territory(string s, int id);
 };
 
