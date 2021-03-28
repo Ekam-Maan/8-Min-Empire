@@ -61,6 +61,13 @@ Territory::Territory(const Territory& t) {
 	citylist = t.citylist;
 }
 
+//-------------------------getters and setters----------------------------
+int Territory::getnumOfcities(string name) { return citylist[name]; }
+void Territory::setCont_id(int cid) { cont_id = cid; }
+int Territory::getID() { return id; }
+int Territory::getCID() { return cont_id; }
+string Territory::getOwner() { return owner; }
+
 void Territory:: operator= (const Territory & t){
 	name = t.name;
 	id = sid++;
@@ -165,6 +172,9 @@ Graph::Graph(int v, int cont) :V(v), cont(cont) {
 	arr = new Vertex[v];
 }
 
+void Graph::setnumOfPlayer(int np) { numOfPlayers = np; }
+int Graph::getNumOfPlayers() { return numOfPlayers; }
+
 void Graph::moveArmies(string name, int movearmy, int src, int dest) {
 
 	arr[dest].t->updatearmylist(name, movearmy);
@@ -227,14 +237,14 @@ void addEdge(Graph* g, int src, int dest, bool type) {
 	g->arr[dest].head = ptr;
 };
 
-void printGraph(Graph* g) 
+void Graph::printGraph() 
 {
-	for (int i = 0; i < g->V; i++) 
+	for (int i = 0; i < V; i++) 
 	{
 		cout << "\nShowing details of Region" << i << ": \n";
-		cout<<"ID: "<< g->arr[i].t->getID();
-		cout << "\ncont_ID: " << g->arr[i].t->getCID();
-		g->arr[i].t->printRegionDetails();
+		cout<<"ID: "<< arr[i].t->getID();
+		cout << "\ncont_ID: " << arr[i].t->getCID();
+		arr[i].t->printRegionDetails();
 		cout << "\n=============================================\n";
 	}
 };
