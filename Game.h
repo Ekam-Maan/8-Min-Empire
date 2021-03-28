@@ -18,8 +18,8 @@ private:
     biddingfacility* bidfac;
 
 public:
-    int getstash() { return stash; }
-    void setstash(int num) { stash = num; }
+    int getstash();
+    void setstash(int num);
     void showQ();
     void loop();
     bool GameEnded();

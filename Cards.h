@@ -15,6 +15,7 @@ struct Card
     string toString();
 };
 
+ostream& operator << (ostream& out, Card& obj);
 
 //It holds all cards
 class Deck
@@ -59,5 +60,5 @@ class Hand : public Deck
         ~Hand();
 };
 
-ostream& operator << (ostream& out, Card& obj);
+
 

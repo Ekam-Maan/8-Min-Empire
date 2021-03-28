@@ -29,6 +29,7 @@ class Player
         pair<int, int>* NoOfCitiesInCountry(int country);
         Player();
         Player(Graph *graph, string playerName, int diskNum, int playerNum, int armyNum, Hand *hand);
+        Player(Player* obj);
         bool PayCoin(int coins);
         bool PLaceNewArmies(int armiesNum, int country);
         bool MoveArmies(int armiesNum, int src, int des);
@@ -45,25 +46,25 @@ class Player
         friend istream& operator >> (istream& in, Player& obj);
         ~Player();
 
-        string getname(){ return playerName; }
-        void setname(string name){ playerName = name; }
+        string getname();
+        void setname(string name);
 
-        int getmoney(){ return money; }
-        void setmoney(int m){ money = m; }
+        int getmoney();
+        void setmoney(int m);
 
-        int getdisks() { return noOfDisks; }
-        void setdisks(int d) { noOfDisks = d; }
+        int getdisks();
+        void setdisks(int d);
 
-        int getarmies() { return armies; }
-        void setarmies(int a) { armies = a; }
+        int getarmies();
+        void setarmies(int a);
 
-        int getVP() { return VP; }
-        void setVP(int a) { VP = a; }
+        int getVP();
+        void setVP(int a);
 
-        int getCrystals() { return Crystals; }
-        void setCrystals(int a) { Crystals = a; }
+        int getCrystals();
+        void setCrystals(int a);
 
-        int getcontrolledRegions() { return controlledRegions; }
-        void setcontrolledRegions(int a) { controlledRegions = a; }
+        int getcontrolledRegions();
+        void setcontrolledRegions(int a);
 };
 
