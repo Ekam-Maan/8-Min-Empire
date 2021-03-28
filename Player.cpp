@@ -90,6 +90,12 @@ void Player :: display()
     cout << "No of Disks of the player: " << getdisks() << endl;
     cout << "Amount of Money of the player: " << getmoney() << endl;
     cout << "No of armies of the player: " << getarmies() << endl;
+    
+    cout << "\nNo of controlledRegions of the player: " << getcontrolledRegions() << endl;
+    cout << "Crystals of the player: " << getCrystals() << endl;
+    cout << "Victory Points of the player: " << getVP() << endl;
+
+    
     cout << "\nArmies of the player \t";
 
     vector<valueVertex>::iterator index;

@@ -99,6 +99,15 @@ string Card::toString()
 { return title+"\t\t"+good+"\t\t"+action; }
 
 
+Card Card::operator = (Card* obj)
+{
+    title = obj->title;
+    good = obj->good;
+    action = obj->action;
+
+    return *this;
+}
+
 ostream& operator << (ostream& out, Card& obj)
 {
     out << obj.title << setw(30) << obj.good << setw(50) << obj.action << "\n";
@@ -147,6 +156,20 @@ Deck::Deck(const Deck &D)
     random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
 }
 
+Deck Deck::operator = (Deck* obj)
+{
+    number_of_cards = obj->number_of_cards;
+
+    pack_of_cards = new Card[number_of_cards];
+
+    for (int i = 0; i < number_of_cards; ++i)
+        pack_of_cards[i] = Card(titles[i], goods[i], actions[i]);
+
+    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+
+    return *this;
+}
+
 void Deck::Show()
 {  
     for ( int i = 0; i < number_of_cards; ++i )
@@ -193,6 +216,16 @@ Hand::Hand(const Hand &H) : Deck(H)
         faceup_cards.push_back(draw());
 }
 
+
+Hand Hand::operator = (Hand* obj)
+{
+    Deck::operator=(obj);
+
+    for (int i = 0; i < 6; ++i)
+        faceup_cards.push_back(draw());
+
+    return *this;
+}
 
 void Hand::Show()
 {
