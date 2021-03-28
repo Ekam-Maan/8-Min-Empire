@@ -19,6 +19,11 @@ void AdjlistNode::operator= (const AdjlistNode& adj) {
 	next = adj.next;
 };
 
+ostream& operator<< (ostream& out, AdjlistNode& adj) {
+	out << "\nID: " << adj.id << " type: " << adj.type;
+	return out;
+}
+
 AdjlistNode::~AdjlistNode() {
 	delete next;
 	next = NULL;
@@ -31,6 +36,24 @@ AdjlistNode::AdjlistNode(int id, bool tp, AdjlistNode* nxt) : id(id), type(tp), 
 Vertex::Vertex() : id(sid++), head(nullptr) {
 	string name = "T" + id;
 	t = new Territory(name, id);
+}
+
+Vertex::Vertex(const Vertex& v){
+	t = v.t;
+	id = v.id;
+	head = v.head;
+}
+
+void Vertex:: operator= (const Vertex& v)
+{
+	t = v.t;
+	id = v.id;
+	head = v.head;
+}
+ostream& operator<< (ostream& out, Vertex& adj)
+{
+	out << adj.t << "\n ID: " << adj.id;
+	return out;
 }
 Vertex::~Vertex() {
 	
@@ -164,7 +187,8 @@ void Territory::updateowner()
 }
 //------------------------------Graph---------------------------------------
 
-Graph::Graph() :V(0) {
+Graph::Graph() :V(0), cont(0),numOfPlayers(0)
+{
 	arr = new Vertex[0];
 }
 
@@ -176,7 +200,7 @@ Graph::~Graph() {
 	cout << "\nGraph object DESTROYED.";
 }
 
-Graph::Graph(int v, int cont) :V(v), cont(cont) {
+Graph::Graph(int v, int cont) :V(v), cont(cont),numOfPlayers(0){
 
 	arr = new Vertex[v];
 }

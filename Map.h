@@ -42,10 +42,12 @@ struct AdjlistNode { // this is a link list that each vertex has its own. it rep
 	AdjlistNode* next;
 
 	AdjlistNode();
+	AdjlistNode(int, bool, AdjlistNode*);
 	AdjlistNode(const AdjlistNode& adj);
 	void operator= (const AdjlistNode& adj);
 	~AdjlistNode();
-	AdjlistNode(int, bool, AdjlistNode*);
+	friend ostream& operator<< (ostream& out, AdjlistNode& adj);
+	
 };
 
 struct Vertex {// each vertex stores a pointer to a region and a header pointer to a link list(which store infomation of its adjacant regions)
@@ -54,13 +56,11 @@ struct Vertex {// each vertex stores a pointer to a region and a header pointer 
 	AdjlistNode* head;
 
 	Vertex();
-	Vertex(const Vertex& v) {
-		t = v.t;
-		id = v.id;
-
-	}
-	~Vertex();
+	Vertex(const Vertex& v);
+	void operator= (const Vertex&);
 	Vertex(int id, AdjlistNode* head);
+	~Vertex();
+	friend ostream& operator<< (ostream& out, Vertex& adj);
 };
 
 
