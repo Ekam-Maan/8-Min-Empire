@@ -381,9 +381,14 @@ int Player::computeScore() {
 //They will be deleted by the game class
 Player::~Player()
 {
+    cout << "\n\nDESTRUCTOR";
     delete handList;
     delete cityList;
     delete armyList;
+
+    handList = NULL;
+    cityList = NULL;
+    armyList = NULL;
 }
 
 
