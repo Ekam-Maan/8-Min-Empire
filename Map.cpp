@@ -87,6 +87,7 @@ istream& operator >> (istream& in, Territory& t)
 	in >> t.cont_id;
 	in >> t.owner;
 	return in;
+	
 }
 
 void Territory::updatearmylist(string name, int changeInNumOfarmy) 
