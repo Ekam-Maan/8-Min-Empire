@@ -40,9 +40,12 @@ class Player
         void pickCard();
         void performgood(string good);    
         int computeScore();
+        Player operator = (Player* obj);
         friend ostream & operator << (ostream& out, Player& obj);
         friend istream& operator >> (istream& in, Player& obj);
         ~Player();
+
+        Player operator=(Player* obj);
 
         string getname(){ return playerName; }
         void setname(string name){ playerName = name; }

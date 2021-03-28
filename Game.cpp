@@ -91,7 +91,7 @@ void Game::loop()
         //if (GameEnded())
             break;
 
-        printGraph(graph);
+        //printGraph(graph);
         temp = nullptr;
     }
     

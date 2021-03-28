@@ -4,7 +4,25 @@
 
 using namespace std;
 
-queue<Player> biddingfacility::bid( Player players[], int size )
+biddingfacility::biddingfacility(biddingfacility* obj)
+{
+    winningbid = obj->winningbid;
+}
+
+biddingfacility biddingfacility::operator = (biddingfacility* obj)
+{
+    winningbid = obj->winningbid;
+    return *this;
+}
+
+ostream& operator << (ostream& out, biddingfacility* obj)
+{
+    out<<"\nWinning bid: "<<obj->winningbid;
+    return out;
+}
+
+
+queue<Player> biddingfacility::bid( Player* players, int size )
 {   
     queue<Player> q;
     list<string> List;      //list of players having max bid, can be multiple if tie
