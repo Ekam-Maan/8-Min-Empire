@@ -13,14 +13,12 @@ private:
 	int id;
 	int cont_id;
 public:
-	int getnumOfarmies(string name) { return armylist[name]; }
-	int getID() { return id; }
-	int getCID() { return cont_id; }
-	string getOwner() { return owner; }
-	int getnumOfcities(string name) { return citylist[name]; }
-	void setCont_id(int cid) {
-		cont_id = cid;
-	}
+	int getnumOfarmies(string name);
+	int getID();
+	int getCID();
+	string getOwner();
+	int getnumOfcities(string name);
+	void setCont_id(int cid);
 	void updatearmylist(string name, int ChangeInnumOfarmies);
 	void updatecitylist(string name, int ChangeInnumOfcities);
 	void printRegionDetails();
@@ -67,12 +65,13 @@ struct Graph { // this represent the whole map
 	Graph();
 	~Graph();
 	Graph(int v, int cont);
-	void setnumOfPlayer(int np) { numOfPlayers = np; }
-	int getNumOfPlayers() { return numOfPlayers; }
+	void setnumOfPlayer(int np);
+	int getNumOfPlayers();
 	void placeNewArmies(string name, int numOfArmies, int dest);
 	void moveArmies(string name, int moveArmy, int src, int dest);
 	void buildCity(string name, int dest);
 	void destroyArmy(string name, int numOfCount, int dest);
+	void printGraph();
 
 
 };
@@ -81,6 +80,5 @@ void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first regi
 void validate(Graph* g);
 bool isAdj(Graph* g, int id1, int id2); // pass the IDs of the vertices/regions you want to check weather or not they are adjacant or not;
 bool isLandConn(Graph* g, int id1, int id2);
-void printGraph(Graph* g);
-bool moveOverLand(Graph* g, string name, int move);
+//void printGraph(Graph* g);
 

@@ -46,7 +46,7 @@ Graph* MapLoader::loadBoard()
 	}
 
 	loader.close();
-	validate(g);
+	g->validate();
 
 	return g;
 }
