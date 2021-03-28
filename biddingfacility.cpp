@@ -4,6 +4,11 @@
 
 using namespace std;
 
+biddingfacility::biddingfacility()
+{
+    winningbid = 0;
+}
+
 biddingfacility::biddingfacility(biddingfacility* obj)
 {
     winningbid = obj->winningbid;

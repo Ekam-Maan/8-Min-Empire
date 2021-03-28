@@ -45,8 +45,6 @@ class Player
         friend istream& operator >> (istream& in, Player& obj);
         ~Player();
 
-        Player operator=(Player* obj);
-
         string getname(){ return playerName; }
         void setname(string name){ playerName = name; }
 
