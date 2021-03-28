@@ -10,35 +10,35 @@ AdjlistNode::AdjlistNode() :id(-1), type(0), next(NULL) {
 AdjlistNode::AdjlistNode(const AdjlistNode& adj) {
 	id = adj.id;
 	type = adj.type;
-}
-;
-void AdjlistNode::operator= (const AdjlistNode& adj) {
-
+	next = adj.next;
 };
+
+void AdjlistNode::operator= (const AdjlistNode& adj) {
+	id = adj.id;
+	type = adj.type;
+	next = adj.next;
+};
+
 AdjlistNode::~AdjlistNode() {
 	delete next;
 	next = NULL;
-	//cout << "\n AdjlistNode object DESTROYED.";
 }
 
 
 AdjlistNode::AdjlistNode(int id, bool tp, AdjlistNode* nxt) : id(id), type(tp), next(nxt) {
 }
 
-//Vertex::Vertex() : t(nullptr), id(sid++), head(nullptr) {
-//
-//}
 Vertex::Vertex() : id(sid++), head(nullptr) {
 	string name = "T" + id;
 	t = new Territory(name, id);
 }
 Vertex::~Vertex() {
-	//t->~Territory();
+	
 	delete t;
 	t = NULL;
 	delete head;
 	head = NULL;
-	//cout << "\nVertex object DESTROYED.";
+	
 }
 Vertex::Vertex(int id, AdjlistNode* hd) :id(sid++), head(nullptr) {
 	string name = "T" + id;
