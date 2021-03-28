@@ -54,6 +54,36 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
    // cout << "Successfully added the 4 armies to the startingRegion\n";
 }
 
+Player::Player(Player* obj)
+{
+    noOfDisks = obj->getdisks();
+    money = obj->getmoney();
+    armies = obj->getarmies();
+    playerName = obj->getname();
+    VP = obj->getVP();
+    Crystals = obj->getCrystals();
+
+    graph = obj->graph;
+    hand = obj->hand;
+
+    cityList = new vector<valueVertex>;
+    armyList = new vector<valueVertex>;
+    handList = new vector<valueHandList>;
+
+    vector<valueVertex>::iterator index;
+
+    for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
+        armyList->push_back(make_pair(index->first, index->second));
+
+    for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
+        cityList->push_back(make_pair(index->first, index->second));
+
+    vector<valueHandList>::iterator index2;
+
+    for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
+        handList->push_back(make_pair(index2->first, index2->second));
+}
+
 void Player :: display()
 {
     cout << "\n** " << playerName << " **" << endl;
@@ -403,7 +433,6 @@ Player::~Player()
 
 Player Player::operator = (Player* obj)
 {
-    cout << "Assignment operator";
     noOfDisks = obj->getdisks();
     money = obj->getmoney();
     armies = obj->getarmies();

@@ -195,3 +195,9 @@ Game::~Game()
     delete graph;
     delete bidfac;
 }
+
+
+//Getter-Setter
+
+int Game::getstash() { return stash; }
+void Game::setstash(int num) { stash = num; }

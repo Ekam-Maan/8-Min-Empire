@@ -29,6 +29,7 @@ class Player
         pair<int, int>* NoOfCitiesInCountry(int country);
         Player();
         Player(Graph *graph, string playerName, int diskNum, int playerNum, int armyNum, Hand *hand);
+        Player(Player* obj);
         bool PayCoin(int coins);
         bool PLaceNewArmies(int armiesNum, int country);
         bool MoveArmies(int armiesNum, int src, int des);
