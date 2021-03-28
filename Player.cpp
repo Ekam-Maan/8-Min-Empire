@@ -4,7 +4,21 @@
 
 int Player::startingRegion = 0;
 
-Player::Player(){}
+Player::Player()
+{
+    noOfDisks = 3;
+    money = 14;
+    armies = 18;
+    playerName = "NO-NAME";
+    VP = 0;
+    Crystals = 0;
+
+    graph = NULL;
+    hand = NULL;
+    cityList = NULL;
+    handList = NULL;
+    armyList = NULL;
+}
 
 Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNum,Hand *hand)
 {
@@ -456,3 +470,27 @@ istream& operator >> (istream& in, Player& obj)
 
     return in;
 }
+
+
+
+//Getter-setter
+string Player::getname() { return playerName; }
+void Player::setname(string name) { playerName = name; }
+
+int Player::getmoney() { return money; }
+void Player::setmoney(int m) { money = m; }
+
+int Player::getdisks() { return noOfDisks; }
+void Player::setdisks(int d) { noOfDisks = d; }
+
+int Player::getarmies() { return armies; }
+void Player::setarmies(int a) { armies = a; }
+
+int Player::getVP() { return VP; }
+void Player::setVP(int a) { VP = a; }
+
+int Player::getCrystals() { return Crystals; }
+void Player::setCrystals(int a) { Crystals = a; }
+
+int Player::getcontrolledRegions() { return controlledRegions; }
+void Player::setcontrolledRegions(int a) { controlledRegions = a; }

@@ -100,7 +100,7 @@ void Game::loop()
 
 bool Game::GameEnded()
 {
-    int minimumReqNumCards;
+    int minimumReqNumCards = 0;
 
     if (numOfPlayers == 2)
         minimumReqNumCards = 13;
