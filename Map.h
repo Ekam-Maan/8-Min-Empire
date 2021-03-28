@@ -7,8 +7,8 @@ using namespace std;
 class Territory { // it represent a region/country
 private:
 	string name;
-	unordered_map<string, int> armylist;
-	unordered_map<string, int> citylist;
+	unordered_map<string, int> *armylist;
+	unordered_map<string, int> *citylist;
 	string owner;
 	int id;
 	int cont_id;

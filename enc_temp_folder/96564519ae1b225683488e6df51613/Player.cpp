@@ -12,7 +12,6 @@ Player::Player()
     playerName = "NO-NAME";
     VP = 0;
     Crystals = 0;
-    controlledRegions = 0;
 
     graph = NULL;
     hand = NULL;
@@ -29,7 +28,6 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     playerName = Name;
     VP = 0;
     Crystals = 0;
-    controlledRegions = 0;
 
     this->graph = graph;
     this->hand=hand;
@@ -64,7 +62,6 @@ Player::Player(Player* obj)
     playerName = obj->getname();
     VP = obj->getVP();
     Crystals = obj->getCrystals();
-    controlledRegions = 0;
 
     graph = obj->graph;
     hand = obj->hand;

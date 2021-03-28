@@ -58,6 +58,8 @@ Territory::Territory(string s, int id1) : name(s), id(id1)
 }
 
 Territory::~Territory() {
+	delete armylist;
+	delete citylist;
 	cout << "\nTerritory object DESTROYED.";
 }
 
@@ -71,7 +73,7 @@ Territory::Territory(const Territory& t) {
 }
 
 //-------------------------getters and setters----------------------------
-int Territory::getnumOfcities(string name) { return citylist[name]; }
+int Territory::getnumOfcities(string name) { return (*citylist)[name]; }
 void Territory::setCont_id(int cid) { cont_id = cid; }
 int Territory::getID() { return id; }
 int Territory::getCID() { return cont_id; }
@@ -88,10 +90,10 @@ void Territory:: operator= (const Territory & t){
 
 ostream& operator << (ostream& out, Territory& t) 
 {
-	unordered_map<string, int>::iterator index = t.armylist.begin();
+	unordered_map<string, int>::iterator index = t.armylist->begin();
 	int sn = 0;
-	for (index = (t.armylist).begin(); index != (t.armylist).end(); ++index) {
-		out << ++sn << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: " << t.citylist[index->first] << ".\n";
+	for (index = (t.armylist)->begin(); index != (t.armylist)->end(); ++index) {
+		out << ++sn << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: " << t.citylist->operator[](index->first) << ".\n";
 	}
 	return out;
 }
@@ -108,24 +110,24 @@ istream& operator >> (istream& in, Territory& t)
 
 void Territory::updatearmylist(string name, int changeInNumOfarmy) 
 {
-	armylist[name] = armylist[name] + changeInNumOfarmy;
+	(*armylist)[name] = (*armylist)[name] + changeInNumOfarmy;
 	updateowner();
 }
 
 
 void Territory::updatecitylist(string name, int changeInNumOfcity)
 {
-	citylist[name] = citylist[name] + changeInNumOfcity;
+	(*citylist)[name] = (*citylist)[name] + changeInNumOfcity;
 	updateowner();
 }
 
 
 void Territory::printRegionDetails() 
 {
-	unordered_map<string, int>::iterator index = armylist.begin();
+	unordered_map<string, int>::iterator index = armylist->begin();
 	int sn = 0;
-	for (index = (armylist).begin(); index != (armylist).end(); ++index) {
-		cout << sn++ << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: "<<citylist[index->first] <<".\n";
+	for (index = (armylist)->begin(); index != (armylist)->end(); ++index) {
+		cout << sn++ << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: "<<(*citylist)[index->first] <<".\n";
 	}
 	
 }
@@ -142,11 +144,11 @@ void Territory::updateowner()
 	int maxVP = 0;
 	int temp = 0;
 
-	unordered_map<string, int>::iterator it = armylist.begin();
+	unordered_map<string, int>::iterator it = armylist->begin();
 
-	while (it != armylist.end())
+	while (it != armylist->end())
 	{
-		temp = it->second + citylist[it->first];
+		temp = it->second + (*citylist)[it->first];
 
 		if (temp > maxVP) {
 			maxVP = temp; // correctted 
