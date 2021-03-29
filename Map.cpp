@@ -102,6 +102,7 @@ Territory::Territory(const Territory& t)
 }
 
 //-------------------------getters and setters----------------------------
+int Territory::getnumOfarmies(string name) { return (*armylist)[name]; }
 int Territory::getnumOfcities(string name) { return (*citylist)[name]; }
 void Territory::setCont_id(int cid) { cont_id = cid; }
 int Territory::getID() { return id; }

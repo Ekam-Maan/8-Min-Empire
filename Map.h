@@ -80,7 +80,6 @@ struct Graph { // this represent the whole map
 	void destroyArmy(string name, int numOfCount, int dest);
 	void printGraph();
 	void validate();
-
 };
 
 void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first region ; dest= id of second region;

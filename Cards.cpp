@@ -50,23 +50,23 @@ string goods[] = {
 };
 
 string actions[] = {
-    "Place new armies",             "Move armies",
-    "Move over land/water",         "Build City",
-    "Destroy army",                 "Move armies OR Destroy army", 
-    "Destroy army OR Build City",   "Place new armies OR Move over Land",
-    "Move armies AND Destroy army", "Build City AND Move armies",
-    "Destroy army AND Build City",  "Place new armies AND Move over Land",
-    "Place new armies",             "Move armies",
-    "Move over land/water",         "Build City",
-    "Destroy army",                 "Move armies OR Destroy army", 
-    "Destroy army OR Build City",   "Place new armies OR Move over Land",
-    "Move armies AND Destroy army", "Build City AND Move armies",
-    "Destroy army AND Build City",  "Place new armies AND Move over Land",
-    "Place new armies",             "Move armies",
-    "Move over land/water",         "Build City",
-    "Destroy army",                 "Move armies OR Destroy army", 
-    "Destroy army OR Build City",   "Place new armies OR Move over Land",
-    "Move armies AND Destroy army", "Build City AND Move armies"
+    "2-Place new armies",             "4-Move armies",
+    "2-Move over land/water",         "Build City",
+    "Destroy army",                   "2-Move armies OR Destroy army", 
+    "Destroy army OR Build City",     "4-Place new armies OR 3-Move over land/water",
+    "3-Move armies AND Destroy army", "Build City AND 3-Move armies",
+    "Destroy army AND Build City",    "4-Place new armies AND 4-Move over land/water",
+    "3-Place new armies",             "4-Move armies",
+    "2-Move over land/water",         "Build City",
+    "Destroy army",                   "4-Move armies OR Destroy army", 
+    "Destroy army OR Build City",     "3-Place new armies OR 2-Move over land/water",
+    "2-Move armies AND Destroy army", "Build City AND 2-Move armies",
+    "Destroy army AND Build City",    "3-Place new armies AND 3-Move over land/water",
+    "2-Place new armies",             "2-Move armies",
+    "2-Move over land/water",         "Build City",
+    "Destroy army",                   "3-Move armies OR Destroy army", 
+    "Destroy army OR Build City",     "2-Place new armies OR 3-Move over land/water",
+    "2-Move armies AND Destroy army", "Build City AND 3-Move armies"
 };
 
 /*Structure Card*/

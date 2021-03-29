@@ -33,14 +33,11 @@ Game::Game()
     two->display();
 
   
-        
-
     //---------------------Bidding---------------------
     bidfac = new biddingfacility();
     playerone_turn = bidfac->bid(one, two);
 
     //Get the biddingamount by subtracting inital number of coins to current and update the stash
-
     if (playerone_turn)
         setstash( getstash() + (14 - one->getmoney()) );
 
@@ -54,6 +51,7 @@ void Game::loop()
     cout << "\n\nStarting Game Loop";
     cout << "\n--------------------------------------------------\n";
     int ctr = 0;
+    string action = "";
     
     //Since there are players and each player picks one card during a turn
     //Game will stop when each player has 13 cards or a total of 26 turns have finished
@@ -62,13 +60,17 @@ void Game::loop()
         if (playerone_turn)
         {
             cout << "\n\n\n" << one->getname() << "'s turn\n\n";
-            one->pickCard();
+            action = one->pickCard();
+            one->performaction(action,two);
+            one->display();
         }
 
         else
         {
             cout << "\n\n\n" << two->getname() << "'s turn\n\n";
-            two->pickCard();
+            action = two->pickCard();
+            two->performaction(action,one);
+            two->display();
         }
 
         if (ctr == 3)

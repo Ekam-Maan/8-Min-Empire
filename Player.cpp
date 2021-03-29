@@ -122,7 +122,7 @@ void Player :: display()
 
 }
 
-void Player :: pickCard()
+string Player :: pickCard()
 {
     int cost, index = -1;
 
@@ -146,11 +146,11 @@ void Player :: pickCard()
     }
 
     Card card = hand->exchange(index);
-    cout << "\nCard action: "<<card.action;
-
     performgood(card.good);
 
     handList->push_back(make_pair(card.toString(),0));
+    
+    return card.action;
 }
 
 
@@ -217,21 +217,15 @@ bool Player :: MoveArmies(int armiesNum, int src, int des)
     valueVertex *armyTo = NoOfArmiesInCountry(des);
     valueVertex *armyFrom = NoOfArmiesInCountry(src);
 
-    if (isAdj(graph,des,src)==false) 
-    {
-        cout << src << " and " << des << " are not adjacent." << endl;
-        return false;
-    }
-
-    else if (armyFrom->second < armiesNum) 
+    if (armyFrom->second < armiesNum) 
     {
         cout << "Cant move the armies. Not enough amrmies available" << endl;
         return false; 
     } 
     else 
     {
-        armyTo->second= armyTo->second+ armiesNum;
-        armyFrom->second= armyFrom->second-armiesNum;
+        armyTo->second= armyTo->second + armiesNum;
+        armyFrom->second= armyFrom->second - armiesNum;
 
         graph->moveArmies(getname(),armiesNum,src,des);
 
@@ -241,6 +235,7 @@ bool Player :: MoveArmies(int armiesNum, int src, int des)
 
 
 }
+
 bool Player :: MoveOverLand(int armiesNum, int src, int des)
 {
     bool adjacency = isAdj(graph,src,des);
@@ -263,6 +258,29 @@ bool Player :: MoveOverLand(int armiesNum, int src, int des)
 }
 
 
+bool Player::MoveOverWater(int armiesNum, int src, int des)
+{
+    bool adjacency = isAdj(graph, src, des);
+    if (adjacency == false)
+    {
+        cout << src << " and " << des << " are not adjacent." << endl;
+        return false;
+    }
+
+    else if (adjacency == true)
+    {
+        bool checkLand = isLandConn(graph, src, des);
+        if (checkLand == true)
+        {
+            cout << "You can only move from " << src << " to " << des << " by Land." << endl;
+            return false;
+        }
+    }
+
+    return MoveArmies(armiesNum, src, des);
+}
+
+
 bool Player :: DestroyArmy(int vertex)
 {
     valueVertex *armyIn = NoOfArmiesInCountry(vertex);
@@ -271,13 +289,12 @@ bool Player :: DestroyArmy(int vertex)
         cout << "Successfully Destroyed army of " << getname() << " in " << vertex << endl;
         armies = armies+1;
         armyIn->second--;
-        //-----------------------------left------------------------
-        //take input of which player's army need to be destroyed
+        graph->destroyArmy(getname(),-1,vertex);
         return true;
     }
     else 
     {
-        cout << "Army cannot be destroyed" << endl;
+        cout << "Army cannot be destroyed, not enough armies" << endl;
         return false;
     }
 
@@ -385,6 +402,173 @@ void Player::performgood(string good)
 }
 
 
+void Player::performaction(string action, Player* otherPlayer)
+{
+    cout << "\nCard action: " << action;
+    char ans = 'y';
+    cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
+
+    if (ans == 'y')
+        return;
+
+    if (action.find("AND") != string::npos)
+    {
+        string actionone = action.substr(0, action.find("AND") - 1);
+        string actiontwo = action.substr(action.find("AND") + 4);
+
+        performaction(actionone,otherPlayer);
+        performaction(actiontwo,otherPlayer);
+        return;
+    }
+
+
+    else if (action.find("OR") != string::npos)
+    {
+        string actionone = action.substr(0, action.find("OR") - 1);
+        string actiontwo = action.substr(action.find("OR") + 3);
+
+        int num = 1;
+        cout << "Enter which action you want to perform (1 or 2): ";
+        cin >> num;
+
+        if ( num == 1 )
+            performaction(actionone, otherPlayer);
+        
+        else 
+            performaction(actiontwo, otherPlayer);
+        
+        return;
+    }
+
+
+    else if ( action.find("Place new armies") != string::npos )
+    {
+        int numOfarmies = stoi(action.substr(0,1));
+        int vertex = -1;
+        
+        while (vertex < 0 || vertex >= graph->V)
+        {
+            cout << "Enter vertex: "; cin >> vertex;
+        }
+
+        bool res = PLaceNewArmies(numOfarmies, vertex);
+
+        if (!res)     //action failed, redo
+            performaction(action,otherPlayer);
+    }
+
+
+
+    else if ( action.find("Move armies") != string::npos )
+    {
+        int numOfarmies = stoi(action.substr(0,1));
+        int src = -1;
+        int dest = -1;
+
+        while (src < 0 || src >= graph->V)
+        {
+            cout << "Enter vertex: "; cin >> src;
+        }
+
+        while (dest > -1 || dest < graph->V)
+        {
+            cout << "Enter vertex: "; cin >> dest;
+        }
+
+        bool res = MoveOverLand(numOfarmies, src, dest);
+
+        if (!res)     //action failed, redo
+            performaction(action, otherPlayer);
+    }
+
+
+    else if (action.find("Move over land/water") != string::npos)
+    {
+        int numOfarmies = stoi(action.substr(0, 1));
+        int src = -1;
+        int dest = -1;
+        int num = 1;
+        bool res = true;
+
+
+        cout << "Enter which action you want to perform (1-Move over Land or 2-Move our Water)";
+        cout << "\nRemember moving over water takes 3 movement speed: ";
+        cin >> num;
+
+
+        while (src < 0 || src >= graph->V)
+        {
+            cout << "Enter source vertex: "; cin >> src;
+        }
+
+        while (dest < 0 || dest >= graph->V)
+        {
+            cout << "Enter destination vertex: "; cin >> dest;
+        } 
+
+        if ( num == 1 )
+            res = MoveOverLand(numOfarmies, src, dest);
+
+        else
+            res = MoveOverWater(numOfarmies/3, src, dest);
+
+        if (!res)     //action failed, redo
+            performaction(action, otherPlayer);
+    }
+
+
+
+
+    else if (action.find("Build City") != string::npos)
+    {
+        int numOfarmies = -1;
+        int vertex = -1;
+
+        while (vertex < 0 || vertex >= graph->V)
+        {
+            cout << "Enter vertex where to build city: "; cin >> vertex;
+        }
+
+
+        bool res = BuildCity(vertex);
+
+        if (!res)     //action failed, redo
+            performaction(action, otherPlayer);
+    }
+
+
+
+
+    else if (action.find("Destroy army") != string::npos)
+    {
+        int numOfarmiesInVertex = 0;
+        int src = -1;
+
+
+        while ( numOfarmiesInVertex <= 0 )
+        {
+            cout << "Enter vertex where to build city: "; cin >> src;
+
+            if (src < 0 || src >= graph->V)
+            {
+                cout << "Enter valid vertex\n";
+                continue;
+            }
+
+            valueVertex* armyIn = NoOfArmiesInCountry(src);
+            numOfarmiesInVertex = armyIn->second;
+            
+            if (numOfarmiesInVertex <= 0)
+                cout << "You dont have enough armies there\n";
+        }
+
+
+        bool res = otherPlayer->DestroyArmy(src);
+
+        if (!res)     //action failed, redo
+            performaction(action, otherPlayer);
+    }
+}
 
 int Player::computeScore() {
 
@@ -440,6 +624,13 @@ int Player::computeScore() {
 Player::~Player()
 {
     cout << "\n\n\n\nPLAYER DESRUCTOR";
+    delete armyList;
+    delete cityList;
+    delete handList;
+
+    armyList = NULL;
+    cityList = NULL;
+    handList = NULL;
 }
 
 //Assignment operator

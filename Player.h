@@ -34,12 +34,14 @@ class Player
         bool PLaceNewArmies(int armiesNum, int country);
         bool MoveArmies(int armiesNum, int src, int des);
         bool MoveOverLand(int armiesNum, int src, int des);
+        bool MoveOverWater(int armiesNum, int src, int des);
         bool BuildCity(int country);
         bool DestroyArmy(int country);
         void display();
         void displayCards();
-        void pickCard();
-        void performgood(string good);    
+        string pickCard();
+        void performgood(string good); 
+        void performaction(string action,Player* otherobj);
         int computeScore();
         Player operator = (Player* obj);
         friend ostream & operator << (ostream& out, Player& obj);
