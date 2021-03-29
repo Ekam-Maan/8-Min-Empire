@@ -88,6 +88,8 @@ void Game::loop()
 //If its a tie, no one receives any points
 void Game::DecideWinner()
 {   
+    one->computeScore();
+    two->computeScore();
     cout << "\n\n\n Game Ended. Deciding Winner\n\n\n";
     one->display();
     two->display();
