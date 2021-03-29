@@ -91,6 +91,8 @@ void Game::DecideWinner()
     cout << "\n\n\n Game Ended. Deciding Winner\n\n\n";
     one->display();
     two->display();
+    graph->printGraph();
+
 
     int Crystalsone = one->getCrystals();
     int Crystalstwo = two->getCrystals();

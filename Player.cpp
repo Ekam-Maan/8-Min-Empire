@@ -467,12 +467,12 @@ void Player::performaction(string action, Player* otherPlayer)
 
         while (src < 0 || src >= graph->V)
         {
-            cout << "Enter vertex: "; cin >> src;
+            cout << "Enter source vertex: "; cin >> src;
         }
 
-        while (dest > -1 || dest < graph->V)
+        while (dest < 0 || dest >= graph->V)
         {
-            cout << "Enter vertex: "; cin >> dest;
+            cout << "Enter destination vertex: "; cin >> dest;
         }
 
         bool res = MoveOverLand(numOfarmies, src, dest);
