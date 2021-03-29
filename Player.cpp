@@ -4,6 +4,7 @@
 
 int Player::startingRegion = 0;
 
+//Default constructor
 Player::Player()
 {
     noOfDisks = 3;
@@ -21,6 +22,7 @@ Player::Player()
     armyList = NULL;
 }
 
+//Parameterized Constructor
 Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNum,Hand *hand)
 {
     noOfDisks = diskNum;
@@ -32,7 +34,7 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     controlledRegions = 0;
 
     this->graph = graph;
-    this->hand=hand;
+    this->hand = hand;
 
     cityList = new vector<valueVertex>;
 
@@ -53,8 +55,9 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     valueVertex* armyIn = NoOfArmiesInCountry(startingRegion);
     armies = armies - 4;
     armyIn->second = armyIn->second + 4;
-   // cout << "Successfully added the 4 armies to the startingRegion\n";
+    graph->placeNewArmies(getname(),4,startingRegion);
 }
+
 
 Player::Player(Player* obj)
 {
@@ -87,6 +90,8 @@ Player::Player(Player* obj)
         handList->push_back(make_pair(index2->first, index2->second));
 }
 
+
+
 void Player :: display()
 {
     cout << "\n** " << playerName << " **" << endl;
@@ -99,22 +104,21 @@ void Player :: display()
     cout << "Victory Points of the player: " << getVP() << endl;
 
     
-    cout << "\nArmies of the player \t";
-
     vector<valueVertex>::iterator index;
+
+    cout << "\nArmies of the player \t";
     for (index = (armyList)->begin(); index !=(armyList)->end(); ++index) 
-        cout << "\t" << (index->first) << ": " << index->second;
+        cout << "    " << (index->first) << ": " << index->second;
     
 
     cout << "\nCities of the player:\t";
-   // vector<valueVertex>::iterator index;
     for (index = (cityList)->begin(); index !=(cityList)->end(); ++index) 
-        cout << "\t" << (index->first) << ": " << index->second;
+        cout << "    " << (index->first) << ": " << index->second;
 
 
     displayCards();
     
-    cout << "\n\n" << endl;
+    cout << "\n\n\n" << endl;
 
 }
 
@@ -435,7 +439,7 @@ int Player::computeScore() {
 //They will be deleted by the game class
 Player::~Player()
 {
- 
+    cout << "\n\n\n\nPLAYER DESRUCTOR";
 }
 
 //Assignment operator

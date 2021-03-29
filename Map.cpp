@@ -72,21 +72,27 @@ Vertex::Vertex(int id, AdjlistNode* hd) :id(sid++), head(nullptr) {
 //----------------------------Terrritory----------------------------------
 Territory::Territory() : name("not defined"), id(-1)
 {
+	armylist = new unordered_map<string, int>;
+	citylist = new unordered_map<string, int>;
 	owner = "";
 }
 
 Territory::Territory(string s, int id1) : name(s), id(id1)
 {
+	armylist = new unordered_map<string, int>;
+	citylist = new unordered_map<string, int>;
 	owner = "";
 }
 
-Territory::~Territory() {
+Territory::~Territory() 
+{
 	delete armylist;
 	delete citylist;
 	cout << "\nTerritory object DESTROYED.";
 }
 
-Territory::Territory(const Territory& t) {
+Territory::Territory(const Territory& t) 
+{
 	name = t.name;
 	id = sid++;
 	owner = t.owner;
@@ -102,7 +108,8 @@ int Territory::getID() { return id; }
 int Territory::getCID() { return cont_id; }
 string Territory::getOwner() { return owner; }
 
-void Territory:: operator= (const Territory & t){
+void Territory:: operator = (const Territory & t)
+{
 	name = t.name;
 	id = sid++;
 	owner = t.owner;
@@ -127,8 +134,7 @@ istream& operator >> (istream& in, Territory& t)
 	in >> t.id;
 	in >> t.cont_id;
 	in >> t.owner;
-	return in;
-	
+	return in;	
 }
 
 void Territory::updatearmylist(string name, int changeInNumOfarmy) 

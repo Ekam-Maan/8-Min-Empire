@@ -13,176 +13,147 @@ Game::Game()
     hand = new Hand();
     hand->Show();
 
-    cout << "Enter number of Players: "; cin >> numOfPlayers;
-    graph->setnumOfPlayer(numOfPlayers);
-    cout << "\n";
     cin.ignore(1, '\n');
+    string name;
 
-    players = new Player[numOfPlayers];
+    cout << "Enter Player one's name: ";
+    getline(cin, name);
+    one = new Player(graph, name, 3, 14, 18, hand);
 
-    for (int i = 0; i < numOfPlayers; ++i)
-    {
-        string name;
-        cout << "Enter Player " << i + 1 << " name: ";
-        getline(cin, name);
 
-        players[i] = Player(graph, name, 3, 14, 18, hand);
-    }
 
-    cout << "\n\nDisplaying PlayerList\n";
+    cout << "Enter Player two's name: ";
+    getline(cin, name);
+    two = new Player(graph, name, 3, 14, 18, hand);
+
+
+    cout << "\n\n\nDisplaying PlayerList\n";
     cout << "\n--------------------------------------------------\n";
-  /*  printGraph(graph);
-    graph->placeNewArmies(players[0].getname(), 4, 1);
-    graph->placeNewArmies(players[0].getname(), 4, 1);
-    graph->placeNewArmies(players[0].getname(), 4, 2);
-    graph->placeNewArmies(players[1].getname(), 4, 2);
-    graph->placeNewArmies(players[1].getname(), 4, 3);
-    printGraph(graph);*/
-   // cout << "\n1.--------------------------------"<<players[0].computeScore();
-   // cout << "\n2.-------------------------------- " << players[1].computeScore();
+    one->display();
+    two->display();
 
-    for (int i = 0; i < numOfPlayers; ++i) {
-       players[i].display();
-    
-    }
+  
         
 
     //---------------------Bidding---------------------
     bidfac = new biddingfacility();
-    Queue = bidfac->bid(players, numOfPlayers);
+    playerone_turn = bidfac->bid(one, two);
 
-    cout << "\nPlayer's Queue\n";
-    cout << "--------------------------------------------------\n";
+    //Get the biddingamount by subtracting inital number of coins to current and update the stash
 
-    showQ();
+    if (playerone_turn)
+        setstash( getstash() + (14 - one->getmoney()) );
+
+    else
+        setstash(getstash() + (14 - two->getmoney()));
 }
 
-void Game::showQ()
-{
-    for (int i = 0; i < numOfPlayers; ++i)
-    {
-        Player p = Queue.front();
-        cout << p.getname() << "     ";
-        Queue.pop();
-        Queue.push(p);
-    }
-    cout << endl;
-}
 
 void Game::loop()
 {
     cout << "\n\nStarting Game Loop";
     cout << "\n--------------------------------------------------\n";
-    int brk = 0;
-    Player* temp = nullptr;
-
-    while (true)
+    int ctr = 0;
+    
+    //Since there are players and each player picks one card during a turn
+    //Game will stop when each player has 13 cards or a total of 26 turns have finished
+    while (ctr < 26)
     {
-        temp = &Queue.front();
-        cout << "\n"<<temp->getname()<<"'s turn\n\n";
+        if (playerone_turn)
+        {
+            cout << "\n\n\n" << one->getname() << "'s turn\n\n";
+            one->pickCard();
+        }
 
-        temp->pickCard();
+        else
+        {
+            cout << "\n\n\n" << two->getname() << "'s turn\n\n";
+            two->pickCard();
+        }
 
-        Queue.push(*temp);
-        Queue.pop();
-
-        ++brk;
-        if (brk == 5)
-        //if (GameEnded())
+        if (ctr == 3)
             break;
-
-        //printGraph(graph);
-        temp = nullptr;
+        
+        playerone_turn = !playerone_turn;
+        ++ctr;
     }
     
 
 }
 
-bool Game::GameEnded()
-{
-    int minimumReqNumCards = 0;
-
-    if (numOfPlayers == 2)
-        minimumReqNumCards = 13;
-
-    if (numOfPlayers == 3)
-        minimumReqNumCards = 10;
-
-    if (numOfPlayers == 4)
-        minimumReqNumCards = 8;
-
-    for (int i = 0; i < numOfPlayers; ++i)
-        if ((players + i)->handList->size() != minimumReqNumCards)
-            return false;
-
-    return true;
-}
 
 //Player having max num of Crystals receives 2 VP points
 //If its a tie, no one receives any points
 void Game::DecideWinner()
-{
-    int maxCrystals = 0;
-    string maxCrystalowner = "";
+{   
+    cout << "\n\n\n Game Ended. Deciding Winner\n\n\n";
+    one->display();
+    two->display();
 
-    for (int i = 0; i < numOfPlayers; ++i)
+    int Crystalsone = one->getCrystals();
+    int Crystalstwo = two->getCrystals();
+
+    if ( Crystalsone > Crystalstwo )
+        one->setVP( one->getVP() + 2 );
+    
+    else if (Crystalstwo > Crystalsone)
+        two->setVP(two->getVP() + 2);
+
+    else if ( Crystalsone == Crystalstwo )
     {
-        if ((players + i)->getCrystals() > maxCrystals)
-        {
-            maxCrystals = (players + i)->getCrystals();
-            maxCrystalowner = (players + i)->getname();
-        }
-
-        else if ((players + i)->getCrystals() == maxCrystals)
-            maxCrystalowner = "";
+        one->setVP(one->getVP() + 1);
+        two->setVP(two->getVP() + 1);
     }
 
-    int maxVP = 0;
-    Player *Winner = (players + 0);
 
-    for (int i = 0; i < numOfPlayers; ++i)
+    //--------------Deciding Winner-------------------------
+    Player *Winner = one;  
+    int VPone = one->getVP();
+    int VPtwo = two->getVP();
+
+    if ( VPone > VPtwo )
+        Winner = one;
+    
+    else if ( VPtwo > VPone )
+        Winner = two;
+
+    //Having equal VP
+    else if ( VPone == VPtwo )
     {
-        //(players + i)->display();
-        int VP = (players + i)->computeScore();
+        if ( one->getmoney() > two->getmoney()  )
+            Winner = one;
 
-
-        if ((players + i)->getname() == maxCrystalowner)
-            VP += 2;
-
-        if (VP > maxVP)
-        {
-            maxVP = VP;
-            Winner = (players + i);
-            continue;
-        }
-
-        if (VP == maxVP)
-        {
-            if ( (players + i)->getmoney() > Winner->getmoney()  )
-                Winner = (players + i);
+        else if ( two->getmoney() > one->getmoney() )
+            Winner = two;
      
-            //Having lesser armies meaning more armies are on the board
-            else if ((players + i)->getmoney() == Winner->getmoney())
-            {
-                if ((players + i)->getarmies() < Winner->getarmies())
-                    Winner = (players + i);
+       //Having same money
+        else if ( one->getmoney() == two->getmoney())
+        {
+            //Having lesser armies offboard meaning more armies are on the board
+            if ( one->getarmies() < two->getarmies() )
+                Winner = one;
 
-                //If armies are equal
-                else if ((players + i)->getarmies() == Winner->getarmies())
-                {
-                    if ((players + i)->getcontrolledRegions() > Winner->getcontrolledRegions())
-                        Winner = (players + i);
-                }
+            if ( two->getarmies() < one->getarmies())
+                Winner = two;
+
+            //Having equal armies
+            else if ( one->getarmies() == two->getarmies() )
+            {
+                if ( one->getcontrolledRegions() > two->getcontrolledRegions() )
+                    Winner = one;
+
+                else if ( two->getcontrolledRegions() > one->getcontrolledRegions() )
+                    Winner = two;
             }
         }
     }
-
-
+    
+   
     cout << "\n\n---------------------------------------------------------------\n\n";
     cout << Winner->getname() << " has won the game";
     cout << "\n\n---------------------------------------------------------------\n\n";
 
-    delete Winner;
+    //delete Winner;
     Winner = NULL;
 }
 
@@ -190,7 +161,8 @@ Game::~Game()
 {
     cout << "\nCalling Game destruction";
 
-    delete[] players;
+    delete one;
+    delete two;
     delete hand;
     delete graph;
     delete bidfac;

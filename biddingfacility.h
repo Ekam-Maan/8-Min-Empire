@@ -8,7 +8,7 @@ class biddingfacility
     private:
         int winningbid;
     public:
-        queue<Player> bid( Player*, int );
+        bool bid( Player*, Player* );
         biddingfacility();
         biddingfacility(biddingfacility* obj);
         biddingfacility operator = (biddingfacility* obj);

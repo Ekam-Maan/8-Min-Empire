@@ -11,6 +11,7 @@ struct Card
     Card();
     Card(string t,string g,string a); 
     Card(const Card &C);
+    ~Card();
     Card operator = (Card* obj);
     void show();
     string toString();
@@ -32,16 +33,18 @@ class Deck
         Deck(const Deck &D);
         void Show();
         Card* draw();    //returns the card at index curr_top
-                        //and increments 
+                           //and increments 
         Deck operator = (Deck* obj);
         friend ostream& operator << (ostream& out, Deck& obj);
         ~Deck();
 };
 
 //Represents the 6 cards that are placed infront of the players from the deck
-class Hand : public Deck
+class Hand 
 {
     private:
+        Deck* deck;
+        int numOfplayers;
         vector<Card*> faceup_cards; //Represents the 6 cards placed in front of players
         const int CardCost[6] = {0,1,1,2,2,3};
     public:

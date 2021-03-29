@@ -108,6 +108,8 @@ Card Card::operator = (Card* obj)
     return *this;
 }
 
+Card::~Card() {}
+
 ostream& operator << (ostream& out, Card& obj)
 {
     out << obj.title << setw(30) << obj.good << setw(50) << obj.action << "\n";
@@ -203,26 +205,32 @@ Deck::~Deck()
 
 Hand::Hand() : Hand::Hand(2) {}
 
-Hand::Hand(int number_of_players = 2) : Deck(number_of_players)
+Hand::Hand(int number_of_players = 2) 
 {
+    numOfplayers = number_of_players;
+    deck = new Deck(number_of_players);
+
     for (int i = 0; i < 6; ++i)     //Adding 6 cards to the faceup_cards array
-        faceup_cards.push_back(draw());    
+        faceup_cards.push_back( deck->draw() );    
 }
 
 
-Hand::Hand(const Hand &H) : Deck(H)
+Hand::Hand(const Hand &H) 
 {
+    deck = new Deck(H.numOfplayers);
+    
+    numOfplayers = H.numOfplayers;
+
     for (int i = 0; i < 6; ++i)
-        faceup_cards.push_back(draw());
+        faceup_cards.push_back( deck->draw() );
 }
 
 
 Hand Hand::operator = (Hand* obj)
 {
-    Deck::operator=(obj);
-
+    deck = obj->deck;
     for (int i = 0; i < 6; ++i)
-        faceup_cards.push_back(draw());
+        faceup_cards.push_back( deck->draw() );
 
     return *this;
 }
@@ -257,16 +265,13 @@ Card Hand::exchange(int pos)
     Card *temp = faceup_cards.at(pos); //Selects the card at specific index
     faceup_cards.erase(faceup_cards.begin()+pos);   //removes it from faceup_cards
 
-    faceup_cards.push_back(draw()); //Adding a new card to the back of faceup_cards
+    faceup_cards.push_back( deck->draw() ); //Adding a new card to the back of faceup_cards
 
     return *temp;
 }
 
 Hand::~Hand()
-{   
-    for (auto c : faceup_cards)
-        delete c;
-
+{
     faceup_cards.clear();
     cout<<"Destroyed Hand Object\n";
 }
