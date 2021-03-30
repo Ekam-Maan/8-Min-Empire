@@ -17,11 +17,15 @@ private:
     biddingfacility* bidfac;
 
 public:
+    Game();
+    Game(Game* obj);
+    Game operator = (Game* obj);
+    friend ostream& operator << (ostream& out, Game* obj);
     int getstash();
     void setstash(int num);
     void loop();
     void DecideWinner();
-    Game();
+
     ~Game();
 };
 

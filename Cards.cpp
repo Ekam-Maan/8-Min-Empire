@@ -215,11 +215,11 @@ Hand::Hand(int number_of_players = 2)
 }
 
 
-Hand::Hand(const Hand &H) 
+Hand::Hand( Hand* H )  
 {
-    deck = new Deck(H.numOfplayers);
+    deck = new Deck(H->numOfplayers);
     
-    numOfplayers = H.numOfplayers;
+    numOfplayers = H->numOfplayers;
 
     for (int i = 0; i < 6; ++i)
         faceup_cards.push_back( deck->draw() );

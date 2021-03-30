@@ -44,7 +44,7 @@ class Player
         void performaction(string action,Player* otherobj);
         int computeScore();
         Player operator = (Player* obj);
-        friend ostream & operator << (ostream& out, Player& obj);
+        friend ostream& operator << (ostream& out, Player& obj);
         friend istream& operator >> (istream& in, Player& obj);
         ~Player();
 
