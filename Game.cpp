@@ -8,6 +8,7 @@ Game::Game()
     stash = 0;
 
     graph = MapLoader::loadBoard();
+    graph->printGraph();
 
     cout << "\n\nCreating Deck and drawing 6 cards\n\n";
     hand = new Hand();
@@ -62,6 +63,7 @@ void Game::loop()
             cout << "\n\n\n" << one->getname() << "'s turn\n\n";
             action = one->pickCard();
             one->performaction(action,two);
+            cout << "\n\n";
             one->display();
         }
 
@@ -70,6 +72,7 @@ void Game::loop()
             cout << "\n\n\n" << two->getname() << "'s turn\n\n";
             action = two->pickCard();
             two->performaction(action,one);
+            cout << "\n\n";
             two->display();
         }
 
@@ -193,7 +196,7 @@ Game::Game(Game* obj)
     bidfac = new biddingfacility( obj->bidfac );
 }
 
-Game Game::operator = ( Game* obj )
+Game& Game::operator = ( Game* obj )
 {
     stash = obj->getstash();
     one = new Player(obj->one);

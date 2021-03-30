@@ -158,7 +158,7 @@ void Territory::printRegionDetails()
 	unordered_map<string, int>::iterator index = armylist->begin();
 	int sn = 0;
 	for (index = (armylist)->begin(); index != (armylist)->end(); ++index) {
-		cout << sn++ << ". Player Name: " << index->first << " Armies:  " << index->second << " Cities: "<<(*citylist)[index->first] <<".\n";
+		cout <<"\n"<< ++sn << ". Player Name: " << index->first << " Armies: " << index->second << ", Cities: "<<(*citylist)[index->first] <<".\n";
 	}
 	
 }
@@ -305,11 +305,11 @@ void Graph::printGraph()
 {
 	for (int i = 0; i < V; i++) 
 	{
-		cout << "\nShowing details of Region" << i << ": \n";
+		cout << "\nShowing details of Region" << i << ": \n\n";
 		cout<<"ID: "<< arr[i].t->getID();
-		cout << "\ncont_ID: " << arr[i].t->getCID();
+		cout << "\n\ncont_ID: " << arr[i].t->getCID();
 		AdjlistNode* itr = arr[i].head;
-		cout << "\nAdjacency list of vertex " << i << endl;
+		cout << "\n\nAdjacency list of vertex " << i<< ": #" ;
 		while (itr != NULL) {
 			if (itr->type == 0) {
 				cout << " ->[" << itr->id << "-Land]";

@@ -7,7 +7,10 @@ class MapLoader
 {
 	public:
 		MapLoader();
-		static Graph* loadBoard();
+		MapLoader(const MapLoader &);
+		void operator= (const MapLoader&);
+		friend ostream& operator<< (ostream& out, MapLoader& ml);
+        static Graph* loadBoard();
 		~MapLoader();
 
 };

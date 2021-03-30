@@ -13,7 +13,7 @@ MapLoader::MapLoader(const MapLoader&){}
 
 void MapLoader::operator= (const MapLoader&){}
 
-ostream& operator<< (ostream& out, MapLoader& ml){}
+ostream& operator<< (ostream& out, MapLoader& ml) { return out; }
 
 MapLoader ::~MapLoader()
 {
