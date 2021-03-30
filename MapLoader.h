@@ -7,7 +7,7 @@ class MapLoader
 {
 	public:
 		MapLoader();
-		~MapLoader();
 		static Graph* loadBoard();
+		~MapLoader();
 
 };

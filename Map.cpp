@@ -1,6 +1,7 @@
 #include<string>
 #include<iostream>
 #include"Map.h"
+#include <vector>
 
 static int sid = 0;
 
@@ -201,6 +202,26 @@ Graph::Graph() :V(0), cont(0),numOfPlayers(0)
 	arr = new Vertex[0];
 }
 
+Graph::Graph(const Graph& g) {
+	V = g.V;
+	cont = g.cont;
+	numOfPlayers = g.numOfPlayers;
+	arr = g.arr;
+}
+
+void Graph:: operator=(const Graph& g) {
+	V = g.V;
+	cont = g.cont;
+	numOfPlayers = g.numOfPlayers;
+	arr = g.arr;
+}
+
+ostream& operator << (ostream& out, Graph& g) {
+	out << "Vertex: " << g.V << " continents: " << g.cont << " numOfPlayer: " << g.numOfPlayers;
+	return out;
+}
+
+
 Graph::~Graph() {
 
 	delete[] arr;
@@ -257,6 +278,7 @@ bool isAdj(Graph* g, int id1, int id2) { // pass the IDs of the vertices/regions
 	}
 	return false;
 }
+
 bool isLandConn(Graph* g, int id1, int id2) {
 	AdjlistNode* itr;
 	itr = g->arr[id1].head;
@@ -286,6 +308,21 @@ void Graph::printGraph()
 		cout << "\nShowing details of Region" << i << ": \n";
 		cout<<"ID: "<< arr[i].t->getID();
 		cout << "\ncont_ID: " << arr[i].t->getCID();
+		AdjlistNode* itr = arr[i].head;
+		cout << "\nAdjacency list of vertex " << i << endl;
+		while (itr != NULL) {
+			if (itr->type == 0) {
+				cout << " ->[" << itr->id << "-Land]";
+			}
+			else {
+				cout << " ->[" << itr->id << "-Water]";
+			}
+			itr = itr->next;
+		}
+		cout << endl;
+		delete itr;
+		itr = NULL;
+
 		arr[i].t->printRegionDetails();
 		cout << "\n=============================================\n";
 	}
@@ -293,9 +330,10 @@ void Graph::printGraph()
 
 
 
-void Graph::validate() {
+void Graph::validate() { // checking if the graph is valid or not.
+
 	int nedge = 0;
-	for (int i = 0; i < V; i++) {
+	for (int i = 0; i < V; i++) { // counting number of edges
 		AdjlistNode* itr = arr[i].head;
 
 		while (itr != NULL) {
@@ -303,11 +341,52 @@ void Graph::validate() {
 			itr = itr->next;
 		}
 	}
+
+	for (int i = 0; i < cont; i++) { //  Checking if continent are connected.
+		int numOfReg = 0;
+		int numOfEdges = 0;
+		vector<int> ver;
+
+		for (int j = 0; j < V; j++) // counting number of reigons within a continent
+		{
+			if (arr[j].t->getCID() == i) {
+				++numOfReg;
+				ver.push_back(arr[j].t->getID());
+			}
+		}
+	
+		for (int v = 0; v < V; v++) //  counting number of edges in a particular continent
+		{
+			int key = arr[v].t->getID();
+			if (std::count(ver.begin(), ver.end(), key)) {
+				
+				AdjlistNode* itr;
+				itr = arr[v].head;
+				while (itr != NULL) {
+					if (arr[itr->id].t->getCID() == i){
+						++numOfEdges;
+					}
+					itr = itr->next;
+				}
+			}
+			
+		}
+		
+		if (!(((numOfEdges / 2) - (numOfReg)) >= -1)) {
+			cout << "continent with ID: " << i << " is not a connected graph, So Graph is INVALID!\n";
+			cout << "Exiting.........\n";
+			exit(1);
+		}
+	}
+	
 	if (((nedge / 2) - (V)) >= -1) {
 		cout << "\nThe graph is VALID [:-)}  ";
 	}
 	else {
 		cout << "\nThe graph is INLVALID [:-(} ";
+		cout << "Exiting.........\n";
+		exit(1);
+
 	}
 }
 

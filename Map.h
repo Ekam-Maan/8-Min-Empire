@@ -70,8 +70,11 @@ struct Graph { // this represent the whole map
 	int numOfPlayers;
 	Vertex* arr; // it is the array consisting all vertices (a vertex =(Region + list of its adjacant regions))
 	Graph();
-	~Graph();
+	Graph(const Graph& g);
+	void operator= (const Graph& g);
+	friend ostream& operator << (ostream& out, Graph& g);
 	Graph(int v, int cont);
+	~Graph();
 	void setnumOfPlayer(int np);
 	int getNumOfPlayers();
 	void placeNewArmies(string name, int numOfArmies, int dest);
@@ -80,6 +83,7 @@ struct Graph { // this represent the whole map
 	void destroyArmy(string name, int numOfCount, int dest);
 	void printGraph();
 	void validate();
+
 };
 
 void addEdge(Graph* arr, int src, int dest, bool type); // src= id of first region ; dest= id of second region;
