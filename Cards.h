@@ -50,7 +50,7 @@ class Hand
     public:
         Hand();
         Hand(int number_of_players);
-        Hand(const Hand &H);
+        Hand(Hand* H);
         void Show();
         int getCardCost(int index) { return CardCost[index]; };
         Card exchange(int pos);     //Returns the card from the specified index

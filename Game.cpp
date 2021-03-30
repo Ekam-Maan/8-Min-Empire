@@ -73,7 +73,7 @@ void Game::loop()
             two->display();
         }
 
-        if (ctr == 3)
+        if (ctr == 6)
             break;
         
         playerone_turn = !playerone_turn;
@@ -88,6 +88,8 @@ void Game::loop()
 //If its a tie, no one receives any points
 void Game::DecideWinner()
 {   
+    one->computeScore();
+    two->computeScore();
     cout << "\n\n\n Game Ended. Deciding Winner\n\n\n";
     one->display();
     two->display();
@@ -177,3 +179,43 @@ Game::~Game()
 
 int Game::getstash() { return stash; }
 void Game::setstash(int num) { stash = num; }
+
+
+//Copy constructor
+Game::Game(Game* obj)
+{
+    stash = obj->getstash();
+    one = new Player( obj->one );
+    two = new Player( obj->two );
+    playerone_turn = obj->playerone_turn;
+    graph = new Graph( *obj->graph );
+    hand = new Hand( obj->hand );
+    bidfac = new biddingfacility( obj->bidfac );
+}
+
+Game Game::operator = ( Game* obj )
+{
+    stash = obj->getstash();
+    one = new Player(obj->one);
+    two = new Player(obj->two);
+    playerone_turn = obj->playerone_turn;
+    graph = new Graph(*obj->graph);
+    hand = new Hand(obj->hand);
+    bidfac = new biddingfacility(obj->bidfac);
+
+    return *this;
+}
+
+ostream& operator << (ostream& out, Game* obj)
+{
+    out << "\n\n--------------Current Game Status-------------------\n\n";
+    out << "\nStash: " << obj->getstash();
+    out << "\n-------Displaying the PlayerList-------";
+    out << obj->one;
+    out << obj->two;
+
+    out << obj->graph;
+    out << obj->hand;
+
+    return out;
+}
