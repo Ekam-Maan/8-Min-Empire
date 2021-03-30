@@ -50,23 +50,23 @@ string goods[] = {
 };
 
 string actions[] = {
-    "2-Place new armies",             "4-Move armies",
-    "2-Move over land/water",         "Build City",
-    "Destroy army",                   "2-Move armies OR Destroy army", 
-    "Destroy army OR Build City",     "4-Place new armies OR 3-Move over land/water",
-    "3-Move armies AND Destroy army", "Build City AND 3-Move armies",
-    "Destroy army AND Build City",    "4-Place new armies AND 4-Move over land/water",
-    "3-Place new armies",             "4-Move armies",
-    "2-Move over land/water",         "Build City",
-    "Destroy army",                   "4-Move armies OR Destroy army", 
-    "Destroy army OR Build City",     "3-Place new armies OR 2-Move over land/water",
-    "2-Move armies AND Destroy army", "Build City AND 2-Move armies",
-    "Destroy army AND Build City",    "3-Place new armies AND 3-Move over land/water",
-    "2-Place new armies",             "2-Move armies",
-    "2-Move over land/water",         "Build City",
-    "Destroy army",                   "3-Move armies OR Destroy army", 
-    "Destroy army OR Build City",     "2-Place new armies OR 3-Move over land/water",
-    "2-Move armies AND Destroy army", "Build City AND 3-Move armies"
+    "2-Place new armies",                       "4-Move armies over land",
+    "3-Move over land/water",                   "Build City",
+    "Destroy army",                             "2-Move armies over land OR Destroy army", 
+    "Destroy army OR Build City",               "4-Place new armies OR 3-Move over land/water",
+    "3-Move armies over land AND Destroy army", "Build City AND 3-Move armies over land",
+    "Destroy army AND Build City",              "4-Place new armies AND 4-Move over land/water",
+    "3-Place new armies",                       "4-Move armies over land",
+    "6-Move over land/water",                   "Build City",
+    "Destroy army",                             "4-Move armies over land OR Destroy army", 
+    "Destroy army OR Build City",               "3-Place new armies OR 6-Move over land/water",
+    "2-Move armies over land AND Destroy army", "Build City AND 2-Move armies over land",
+    "Destroy army AND Build City",              "3-Place new armies AND 3-Move over land/water",
+    "2-Place new armies",                       "2-Move armies over land",
+    "3-Move over land/water",                   "Build City",
+    "Destroy army",                             "3-Move armies over land OR Destroy army", 
+    "Destroy army OR Build City",               "2-Place new armies OR 6-Move over land/water",
+    "2-Move armies over land AND Destroy army", "Build City AND 3-Move armies over land"
 };
 
 /*Structure Card*/
@@ -238,21 +238,27 @@ Hand Hand::operator = (Hand* obj)
 void Hand::Show()
 {
     cout<<"FACEUP CARDS"<<"\n-------------------------------------------\n";
+    cout << "1." << setw(20);
     cout<<"Cost: "<<0<<setw(20);
     faceup_cards.at(0)->show();
 
+    cout << "2." << setw(20);
     cout<<"Cost: "<<1<<setw(20);
     faceup_cards.at(1)->show();
 
+    cout << "3." << setw(20);
     cout<<"Cost: "<<1<<setw(20);
     faceup_cards.at(2)->show();
 
+    cout << "4." << setw(20);
     cout<<"Cost: "<<2<<setw(20);
     faceup_cards.at(3)->show();
 
+    cout << "5." << setw(20);
     cout<<"Cost: "<<2<<setw(20);
     faceup_cards.at(4)->show();
 
+    cout << "6." << setw(20);
     cout<<"Cost: "<<3<<setw(20);
     faceup_cards.at(5)->show();
 

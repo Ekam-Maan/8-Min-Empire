@@ -76,9 +76,6 @@ void Game::loop()
             two->display();
         }
 
-        if (ctr == 6)
-            break;
-        
         playerone_turn = !playerone_turn;
         ++ctr;
     }

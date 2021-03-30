@@ -245,15 +245,14 @@ bool Player :: MoveOverLand(int armiesNum, int src, int des)
         return false;
     }
 
-    else if(adjacency == true)
+ 
+    bool checkLand = isLandConn(graph, src, des);
+    if(checkLand == false)
     {
-        bool checkLand = isLandConn(graph, src, des);
-        if(checkLand == false)
-        {
-            cout << "You can only move from " << src << " to " << des << " by water." << endl;
-            return false;
-        }        
-    }
+        cout << "You can only move from " << src << " to " << des << " by water." << endl;
+        return false;
+    }        
+    
     return MoveArmies(armiesNum, src, des);
 }
 
@@ -547,7 +546,7 @@ void Player::performaction(string action, Player* otherPlayer)
 
         while ( numOfarmiesInVertex <= 0 )
         {
-            cout << "Enter vertex where to build city: "; cin >> src;
+            cout << "Enter vertex where to destroy army: "; cin >> src;
 
             if (src < 0 || src >= graph->V)
             {

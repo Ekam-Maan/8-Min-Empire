@@ -9,8 +9,6 @@ int main()
     game.DecideWinner();
 
 
-
-
     //MapLoader* ml = new MapLoader();
     //Graph* graph = ml->loadBoard();
     //Hand* hand = new Hand();
@@ -36,12 +34,9 @@ int main()
     //std::cout << "\n\n===============Showing Details after the performing the moves==================\n\n";
     //graph->printGraph();
 
-  
-
-
 
     //delete ml;
-    //delete  graph;
+    //delete graph;
     //delete hand;
     //delete p1;
     //delete p2;
@@ -49,5 +44,6 @@ int main()
     //ml = NULL;
     //graph = NULL;
     //p1 = p2 = NULL;
+
     return 0;
 }

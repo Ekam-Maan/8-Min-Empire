@@ -283,7 +283,7 @@ bool isLandConn(Graph* g, int id1, int id2) {
 	AdjlistNode* itr;
 	itr = g->arr[id1].head;
 	while (itr != NULL) {
-		if (itr->id == id2 && itr->type) {
+		if (itr->id == id2 && !itr->type) {
 			return true;
 		}
 		itr = itr->next;
