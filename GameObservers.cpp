@@ -53,5 +53,5 @@ PhaseObserver::PhaseObserver(Subject* sub) : Observer(sub)
 
 void PhaseObserver::update(string message)
 {
-	cout << message;
+	cout << message << endl;
 }

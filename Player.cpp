@@ -94,6 +94,8 @@ Player::Player(Player* obj)
 
 void Player :: display()
 {
+    cout << "\n\n";
+
     cout << "\n** " << playerName << " **" << endl;
     cout << "No of Disks of the player: " << getdisks() << endl;
     cout << "Amount of Money of the player: " << getmoney() << endl;
@@ -118,39 +120,45 @@ void Player :: display()
 
     displayCards();
     
-    cout << "\n\n\n" << endl;
+    cout << "\n" << endl;
 
 }
 
-string Player :: pickCard()
+Card Player :: pickCard()
 {
-    int cost, index = -1;
+    //PHASE-OBSERVER
+    notify("\n\n\n"+getname()+"'s turn\n");
 
+    int cost, index = -1;
     hand->Show();
 
     while (index > 6 || index < 1)
     {
-        cout << "\nEnter Index to Buy card (1-Index): "; cin >> index;
+        cout << "\nEnter Index to Buy card (1-Index): "; 
+        cin >> index;
     }
 
-    --index;    //To make it 0-index
-
-    cost = hand->getCardCost(index);
+    cost = hand->getCardCost(index-1);         //To make it 0-index
 
     while (!PayCoin(cost))
     {
-        cout << "\nYou donot have enough money, pick another card";
+        //PHASE-OBSERVER
+        notify("\nYou donot have enough money, pick another card");
+        
         cout << "\nEnter Index to Buy card: "; cin >> index;
-        --index;
-        cost = hand->getCardCost(index);
+        cost = hand->getCardCost(index-1);
     }
 
-    Card card = hand->exchange(index);
-    performgood(card.good);
+    Card card = hand->exchange(index - 1);
+    handList->push_back(make_pair(card.toString(), 0));
 
-    handList->push_back(make_pair(card.toString(),0));
+    //PHASE-OBSERVER
+    notify("\n"+getname()+" picked card "+to_string(index)+" from top");
+    notify("Title: " + card.title);
+    notify("Good: " + card.good);
+    notify("Action: " + card.action);
     
-    return card.action;
+    return card;
 }
 
 
@@ -167,12 +175,14 @@ bool Player :: PayCoin(int coins)
 {
     if(getmoney()<coins)
     {
-            cout << "The player doesn't have enough money to pay." << endl;
+            //PHASE-OBSERVER
+            notify(getname()+" doesn't have enough money to pay.");
             return false;
     }
     else
     {
-            cout << "Payment Successfull. Player payed: " <<coins<< endl;
+            //PHASE-OBSERVER
+            notify("Payment Successfull. "+getname()+" payed: " + to_string(coins) );
             setmoney( getmoney()-coins );
             return true;
     }
@@ -403,7 +413,7 @@ void Player::performgood(string good)
 
 void Player::performaction(string action, Player* otherPlayer)
 {
-    cout << "\nCard action: " << action;
+    cout <<"\n" << action;
     char ans = 'y';
     cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
 

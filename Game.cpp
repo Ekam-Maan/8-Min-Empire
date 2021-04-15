@@ -16,17 +16,20 @@ Game::Game()
 
     cin.ignore(1, '\n');
     string name;
+    string name2;
 
     cout << "Enter Player one's name: ";
     getline(cin, name);
-    one = new Player(graph, name, 3, 14, 18, hand);
-
-
-
     cout << "Enter Player two's name: ";
-    getline(cin, name);
-    two = new Player(graph, name, 3, 14, 18, hand);
+    getline(cin, name2);
 
+    one = new Player(graph, name, 3, 14, 18, hand);
+    two = new Player(graph, name2, 3, 14, 18, hand);
+
+
+    //INITIALIZING PHASE OBERVER AND ATTACHING THEM TO SUBJECT
+    PlayerOneObs = new PhaseObserver(one);
+    PlayerTwoObs = new PhaseObserver(two);
 
     cout << "\n\n\nDisplaying PlayerList\n";
     cout << "\n--------------------------------------------------\n";
@@ -52,27 +55,25 @@ void Game::loop()
     cout << "\n\nStarting Game Loop";
     cout << "\n--------------------------------------------------\n";
     int ctr = 0;
-    string action = "";
-    
+    //string action = "";
+    Card card;
     //Since there are players and each player picks one card during a turn
     //Game will stop when each player has 13 cards or a total of 26 turns have finished
     while (ctr < 3)
     {
         if (playerone_turn)
         {
-            cout << "\n\n\n" << one->getname() << "'s turn\n\n";
-            action = one->pickCard();
-            one->performaction(action,two);
-            cout << "\n\n";
+            card = one->pickCard();
+            one->performgood(card.good);
+            one->performaction(card.action,two);
             one->display();
         }
 
         else
         {
-            cout << "\n\n\n" << two->getname() << "'s turn\n\n";
-            action = two->pickCard();
-            two->performaction(action,one);
-            cout << "\n\n";
+            card = two->pickCard();
+            two->performgood(card.good);
+            two->performaction(card.action,one);
             two->display();
         }
 
@@ -90,7 +91,8 @@ void Game::DecideWinner()
 {   
     one->computeScore();
     two->computeScore();
-    cout << "\n\n\n Game Ended. Deciding Winner\n\n\n";
+    cout << "\n\n--------------------------------------------------\n\n";
+    cout<<"Game Ended. Deciding Winner\n\n\n";
     one->display();
     two->display();
     graph->printGraph();

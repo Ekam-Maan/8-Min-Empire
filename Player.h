@@ -1,9 +1,10 @@
 #include "Map.h"
 #include "Cards.h"
+#include "GameObservers.h"
 
 #pragma once
 
-class Player
+class Player : public Subject
 {
     private:
         string playerName;
@@ -39,7 +40,7 @@ class Player
         bool DestroyArmy(int country);
         void display();
         void displayCards();
-        string pickCard();
+        Card pickCard();
         void performgood(string good); 
         void performaction(string action,Player* otherobj);
         int computeScore();
