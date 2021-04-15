@@ -2,6 +2,7 @@
 #include "Player.h"
 
 
+
 int Player::startingRegion = 0;
 
 //Default constructor
@@ -91,11 +92,46 @@ Player::Player(Player* obj)
 }
 
 
+void Player::setStrategy() {
+
+    int choice;
+   
+    cout << "\n\nEnter 1 for Human Strategy.\n";
+    cout << "\nEnter 2 for Greedy Strategy.\n";
+    cout << "\nEnter 3 for Moderate Strategy.\n";
+    cout << "\n please enter your choice here: ";
+    cin >> choice;
+
+    if (choice == 1) 
+    {
+        //delete strategy;
+        strategy = new HumanStrategy();
+    }
+
+    else if (choice == 2) 
+    {
+        //delete strategy;
+        strategy = new GreedyStrategy();
+    }
+
+    else if(choice ==3 )
+    {
+       // delete strategy;
+        strategy = new ModerateStrategy();
+    }
+
+    else {
+        cout << "You did not enter a valid choice. ";
+    }
+    
+}
+
+void Player::executeStrategy(Player* otherPlayer) {
+    strategy->execute(this, otherPlayer);
+}
 
 void Player :: display()
 {
-    cout << "\n\n";
-
     cout << "\n** " << playerName << " **" << endl;
     cout << "No of Disks of the player: " << getdisks() << endl;
     cout << "Amount of Money of the player: " << getmoney() << endl;
@@ -120,44 +156,44 @@ void Player :: display()
 
     displayCards();
     
-    cout << "\n" << endl;
+    cout << "\n\n\n" << endl;
 
 }
 
 Card Player :: pickCard()
 {
     //PHASE-OBSERVER
-    notify("\n\n\n"+getname()+"'s turn\n");
+    notify("\n\n\n" + getname() + "'s turn\n");
 
     int cost, index = -1;
     hand->Show();
 
     while (index > 6 || index < 1)
     {
-        cout << "\nEnter Index to Buy card (1-Index): "; 
+        cout << "\nEnter Index to Buy card (1-Index): ";
         cin >> index;
     }
 
-    cost = hand->getCardCost(index-1);         //To make it 0-index
+    cost = hand->getCardCost(index - 1);         //To make it 0-index
 
     while (!PayCoin(cost))
     {
         //PHASE-OBSERVER
         notify("\nYou donot have enough money, pick another card");
-        
+
         cout << "\nEnter Index to Buy card: "; cin >> index;
-        cost = hand->getCardCost(index-1);
+        cost = hand->getCardCost(index - 1);
     }
 
     Card card = hand->exchange(index - 1);
     handList->push_back(make_pair(card.toString(), 0));
 
     //PHASE-OBSERVER
-    notify("\n"+getname()+" picked card "+to_string(index)+" from top");
+    notify("\n" + getname() + " picked card " + to_string(index) + " from top");
     notify("Title: " + card.title);
     notify("Good: " + card.good);
     notify("Action: " + card.action);
-    
+
     return card;
 }
 
@@ -175,14 +211,12 @@ bool Player :: PayCoin(int coins)
 {
     if(getmoney()<coins)
     {
-            //PHASE-OBSERVER
-            notify(getname()+" doesn't have enough money to pay.");
+            cout << "The player doesn't have enough money to pay." << endl;
             return false;
     }
     else
     {
-            //PHASE-OBSERVER
-            notify("Payment Successfull. "+getname()+" payed: " + to_string(coins) );
+            cout << "Payment Successfull. Player payed: " <<coins<< endl;
             setmoney( getmoney()-coins );
             return true;
     }
@@ -413,7 +447,7 @@ void Player::performgood(string good)
 
 void Player::performaction(string action, Player* otherPlayer)
 {
-    cout <<"\n" << action;
+    cout << "\nCard action: " << action;
     char ans = 'y';
     cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
 

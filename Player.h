@@ -1,8 +1,9 @@
+#pragma once
 #include "Map.h"
 #include "Cards.h"
+#include "PlayerStrategies.h"
 #include "GameObservers.h"
 
-#pragma once
 
 class Player : public Subject
 {
@@ -14,12 +15,13 @@ class Player : public Subject
         int VP;         //Victory Point
         int Crystals;
         int controlledRegions;
+        
 
     public:
         static int startingRegion;
         Graph *graph;
         Hand *hand;
-        
+        Strategy *strategy; //  player's strategy
         typedef pair<int, int> valueVertex;
         typedef pair<string,int> valueHandList;
         vector<valueHandList> *handList;
@@ -38,6 +40,10 @@ class Player : public Subject
         bool MoveOverWater(int armiesNum, int src, int des);
         bool BuildCity(int country);
         bool DestroyArmy(int country);
+
+        void setStrategy();   
+        void executeStrategy(Player* );
+
         void display();
         void displayCards();
         Card pickCard();

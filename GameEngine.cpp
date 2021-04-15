@@ -1,9 +1,18 @@
-#include "Game.h"
+#include "GameEngine.h"
 #include <iostream>
+#include <iomanip>
+using namespace std;
 
 Game::Game()
 {
-    cout << "Welcome to 8-min-empire legends\n";
+    
+    cout << "------------Welcome to 8-min-empire legends-----------\n\n";
+    cout << "Please select Mode for the game: \n";
+    cout << "Enter 1 for single game Mode.\n";
+    cout << "Enter 2 for Tournament Mode.\n";
+    cout << "Enter your choice here: ";
+    cin >> mode;
+    cout << endl;
 
     stash = 0;
 
@@ -16,34 +25,31 @@ Game::Game()
 
     cin.ignore(1, '\n');
     string name;
-    string name2;
 
     cout << "Enter Player one's name: ";
     getline(cin, name);
-    cout << "Enter Player two's name: ";
-    getline(cin, name2);
-
     one = new Player(graph, name, 3, 14, 18, hand);
-    two = new Player(graph, name2, 3, 14, 18, hand);
 
 
-    //INITIALIZING PHASE OBERVER AND ATTACHING THEM TO SUBJECT
-    PlayerOneObs = new PhaseObserver(one);
-    PlayerTwoObs = new PhaseObserver(two);
+
+    cout << "Enter Player two's name: ";
+    getline(cin, name);
+    two = new Player(graph, name, 3, 14, 18, hand);
+
 
     cout << "\n\n\nDisplaying PlayerList\n";
     cout << "\n--------------------------------------------------\n";
     one->display();
     two->display();
 
-  
+
     //---------------------Bidding---------------------
     bidfac = new biddingfacility();
     playerone_turn = bidfac->bid(one, two);
 
     //Get the biddingamount by subtracting inital number of coins to current and update the stash
     if (playerone_turn)
-        setstash( getstash() + (14 - one->getmoney()) );
+        setstash(getstash() + (14 - one->getmoney()));
 
     else
         setstash(getstash() + (14 - two->getmoney()));
@@ -55,32 +61,61 @@ void Game::loop()
     cout << "\n\nStarting Game Loop";
     cout << "\n--------------------------------------------------\n";
     int ctr = 0;
-    //string action = "";
-    Card card;
+    string action = "";
+
     //Since there are players and each player picks one card during a turn
     //Game will stop when each player has 13 cards or a total of 26 turns have finished
-    while (ctr < 3)
+    while (ctr < 2)
     {
+        char st;
+
         if (playerone_turn)
         {
-            card = one->pickCard();
-            one->performgood(card.good);
-            one->performaction(card.action,two);
-            one->display();
+            cout << "\n\n\n" << one->getname() << "'s turn\n\n";
+            cout << "\nDo you want to change strategy? (y/n): ";
+            cin >> st;
+            if (st == 'y')
+            {
+                one->setStrategy();
+                one->executeStrategy(two);
+
+            }
+            else
+            {
+                one->executeStrategy(two);
+                /*action = one->pickCard();
+                one->performaction(action, two);
+                cout << "\n\n";
+                one->display();*/
+            }
+
         }
 
         else
         {
-            card = two->pickCard();
-            two->performgood(card.good);
-            two->performaction(card.action,one);
-            two->display();
+            cout << "\n\n\n" << two->getname() << "'s turn\n\n";
+            cout << "\nDo you want to change strategy? (y/n): ";
+            cin >> st;
+            if (st == 'y')
+            {
+                two->setStrategy();
+                two->executeStrategy(one);
+
+            }
+            else {
+                two->executeStrategy(one);
+            }
+
+            /* action = two->pickCard();
+             two->performaction(action,one);
+             cout << "\n\n";
+             two->display();*/
         }
 
         playerone_turn = !playerone_turn;
         ++ctr;
     }
-    
+
 
 }
 
@@ -88,11 +123,10 @@ void Game::loop()
 //Player having max num of Crystals receives 2 VP points
 //If its a tie, no one receives any points
 void Game::DecideWinner()
-{   
+{
     one->computeScore();
     two->computeScore();
-    cout << "\n\n--------------------------------------------------\n\n";
-    cout<<"Game Ended. Deciding Winner\n\n\n";
+    cout << "\n\n\n Game Ended. Deciding Winner\n\n\n";
     one->display();
     two->display();
     graph->printGraph();
@@ -101,13 +135,13 @@ void Game::DecideWinner()
     int Crystalsone = one->getCrystals();
     int Crystalstwo = two->getCrystals();
 
-    if ( Crystalsone > Crystalstwo )
-        one->setVP( one->getVP() + 2 );
-    
+    if (Crystalsone > Crystalstwo)
+        one->setVP(one->getVP() + 2);
+
     else if (Crystalstwo > Crystalsone)
         two->setVP(two->getVP() + 2);
 
-    else if ( Crystalsone == Crystalstwo )
+    else if (Crystalsone == Crystalstwo)
     {
         one->setVP(one->getVP() + 1);
         two->setVP(two->getVP() + 1);
@@ -115,52 +149,59 @@ void Game::DecideWinner()
 
 
     //--------------Deciding Winner-------------------------
-    Player *Winner = one;  
+    Player* Winner = one;
     int VPone = one->getVP();
     int VPtwo = two->getVP();
 
-    if ( VPone > VPtwo )
+    if (VPone > VPtwo)
         Winner = one;
-    
-    else if ( VPtwo > VPone )
+
+    else if (VPtwo > VPone)
         Winner = two;
 
     //Having equal VP
-    else if ( VPone == VPtwo )
+    else if (VPone == VPtwo)
     {
-        if ( one->getmoney() > two->getmoney()  )
+        if (one->getmoney() > two->getmoney())
             Winner = one;
 
-        else if ( two->getmoney() > one->getmoney() )
+        else if (two->getmoney() > one->getmoney())
             Winner = two;
-     
-       //Having same money
-        else if ( one->getmoney() == two->getmoney())
+
+        //Having same money
+        else if (one->getmoney() == two->getmoney())
         {
             //Having lesser armies offboard meaning more armies are on the board
-            if ( one->getarmies() < two->getarmies() )
+            if (one->getarmies() < two->getarmies())
                 Winner = one;
 
-            if ( two->getarmies() < one->getarmies())
+            if (two->getarmies() < one->getarmies())
                 Winner = two;
 
             //Having equal armies
-            else if ( one->getarmies() == two->getarmies() )
+            else if (one->getarmies() == two->getarmies())
             {
-                if ( one->getcontrolledRegions() > two->getcontrolledRegions() )
+                if (one->getcontrolledRegions() > two->getcontrolledRegions())
                     Winner = one;
 
-                else if ( two->getcontrolledRegions() > one->getcontrolledRegions() )
+                else if (two->getcontrolledRegions() > one->getcontrolledRegions())
                     Winner = two;
             }
         }
     }
-    
-   
+
+
     cout << "\n\n---------------------------------------------------------------\n\n";
     cout << Winner->getname() << " has won the game";
     cout << "\n\n---------------------------------------------------------------\n\n";
-
+    if(mode==2){
+        cout << std::setw(40) << "-----------------------------------------\n";
+        cout << setw(10) << "player#   " << setw(10) << "cards" << setw(10) << "VP  " << setw(10) << "   coins" << endl;
+        cout << setw(10) << "1    " << setw(10) <<one->handList->size()<< setw(10) << one->getVP()<<"  " << setw(10) <<one->getmoney()<< "   " << endl;
+        cout << setw(10) << "2    " << setw(10) << two->handList->size() << setw(10) << two->getVP() << "  " << setw(10) << two->getmoney() << "   " << endl;
+        cout << std::setw(40) << "------------------------------------------\n";
+    
+    }
     //delete Winner;
     Winner = NULL;
 }
@@ -187,15 +228,15 @@ void Game::setstash(int num) { stash = num; }
 Game::Game(Game* obj)
 {
     stash = obj->getstash();
-    one = new Player( obj->one );
-    two = new Player( obj->two );
+    one = new Player(obj->one);
+    two = new Player(obj->two);
     playerone_turn = obj->playerone_turn;
-    graph = new Graph( *obj->graph );
-    hand = new Hand( obj->hand );
-    bidfac = new biddingfacility( obj->bidfac );
+    graph = new Graph(*obj->graph);
+    hand = new Hand(obj->hand);
+    bidfac = new biddingfacility(obj->bidfac);
 }
 
-Game& Game::operator = ( Game* obj )
+Game& Game::operator = (Game* obj)
 {
     stash = obj->getstash();
     one = new Player(obj->one);

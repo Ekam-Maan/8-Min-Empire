@@ -3,7 +3,7 @@
 #include <queue>
 #include <iomanip>   
 
-using namespace::std;
+using namespace std;
 
 
 /*Card Information*/
@@ -232,6 +232,10 @@ Hand Hand::operator = (Hand* obj)
         faceup_cards.push_back( deck->draw() );
 
     return *this;
+}
+
+vector<Card*> Hand::getFaceUpCards() {
+    return faceup_cards;
 }
 
 void Hand::Show()

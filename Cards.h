@@ -51,6 +51,7 @@ class Hand
         Hand();
         Hand(int number_of_players);
         Hand(Hand* H);
+        vector<Card*> getFaceUpCards();
         void Show();
         int getCardCost(int index) { return CardCost[index]; };
         Card exchange(int pos);     //Returns the card from the specified index
