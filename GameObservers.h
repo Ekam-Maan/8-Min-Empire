@@ -1,11 +1,11 @@
 #pragma once
-#include<iostream>
+#include <iostream>
 #include <list>
 #include <string>
 
+
 using namespace::std;
 
-class Subject;
 class Observer;
 
 class Subject 
@@ -17,26 +17,28 @@ public:
 	Subject();
 	virtual void attach(Observer* obj);
 	virtual void detach(Observer* obj);
-	virtual void notify(string message);
+	virtual void notify(string phase);
 	~Subject();
 };
 
 
 class Observer
 {
-private:
+protected:
 	Subject* sub;
 public:
 	Observer() = default;
 	Observer(Subject* s);
-	virtual void update(string message) = 0;
+	virtual void update(string phase) = 0;
 };
 
 
 class PhaseObserver : public Observer
 {
+private:
+	PhaseObserver() = default;
 public:
 	PhaseObserver(Subject* sub);
-	void update(string message);
+	void update(string phase);
 };
 
