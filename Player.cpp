@@ -127,7 +127,7 @@ void Player :: display()
 Card Player :: pickCard()
 {
     //PHASE-OBSERVER
-    notify("\n\n\n"+getname()+"'s turn\n");
+    notify("turn");
 
     int cost, index = -1;
     hand->Show();
@@ -143,20 +143,18 @@ Card Player :: pickCard()
     while (!PayCoin(cost))
     {
         //PHASE-OBSERVER
-        notify("\nYou donot have enough money, pick another card");
-        
+        notify("Not enough money");
+
         cout << "\nEnter Index to Buy card: "; cin >> index;
         cost = hand->getCardCost(index-1);
     }
 
     Card card = hand->exchange(index - 1);
-    handList->push_back(make_pair(card.toString(), 0));
+    handList->push_back(make_pair(card.toString(), index));
+    setlastCard(card);
 
     //PHASE-OBSERVER
-    notify("\n"+getname()+" picked card "+to_string(index)+" from top");
-    notify("Title: " + card.title);
-    notify("Good: " + card.good);
-    notify("Action: " + card.action);
+    notify("cardpicked");
     
     return card;
 }
@@ -175,14 +173,12 @@ bool Player :: PayCoin(int coins)
 {
     if(getmoney()<coins)
     {
-            //PHASE-OBSERVER
-            notify(getname()+" doesn't have enough money to pay.");
+            cout<<getname()<<" doesn't have enough money to pay.";
             return false;
     }
     else
     {
-            //PHASE-OBSERVER
-            notify("Payment Successfull. "+getname()+" payed: " + to_string(coins) );
+            cout<<"Payment Successfull. "+getname()+" payed: "<<coins;
             setmoney( getmoney()-coins );
             return true;
     }
@@ -370,8 +366,6 @@ pair<int, int>* Player::NoOfCitiesInCountry(int vertex)
 
     return &(*i);
 }
-
-
 
 void Player::performgood(string good)
 {
@@ -736,3 +730,6 @@ void Player::setCrystals(int a) { Crystals = a; }
 
 int Player::getcontrolledRegions() { return controlledRegions; }
 void Player::setcontrolledRegions(int a) { controlledRegions = a; }
+
+Card Player::getlastCard() { return lastCard; }
+void Player::setlastCard(Card card) { lastCard = card; }

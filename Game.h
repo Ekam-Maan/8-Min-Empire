@@ -6,6 +6,9 @@
 #include "biddingfacility.h"
 #include "GameObservers.h"
 
+//Subject* obj = new Player();
+//obj->getplayername();
+
 class Game
 {
 private:

@@ -1,8 +1,8 @@
+#pragma once
 #include "Map.h"
 #include "Cards.h"
 #include "GameObservers.h"
 
-#pragma once
 
 class Player : public Subject
 {
@@ -14,6 +14,8 @@ class Player : public Subject
         int VP;         //Victory Point
         int Crystals;
         int controlledRegions;
+        string phase;
+        Card lastCard;
 
     public:
         static int startingRegion;
@@ -69,5 +71,8 @@ class Player : public Subject
 
         int getcontrolledRegions();
         void setcontrolledRegions(int a);
+
+        Card getlastCard();
+        void setlastCard(Card card);
 };
 
