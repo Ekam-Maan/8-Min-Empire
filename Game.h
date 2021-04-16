@@ -1,13 +1,10 @@
 #pragma once
-
 #include "MapLoader.h"
 #include "Player.h"   
 #include "Cards.h"
 #include "biddingfacility.h"
 #include "GameObservers.h"
 
-//Subject* obj = new Player();
-//obj->getplayername();
 
 class Game
 {
