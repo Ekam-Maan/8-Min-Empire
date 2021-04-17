@@ -68,7 +68,7 @@ void Game::loop()
 
     //Since there are players and each player picks one card during a turn
     //Game will stop when each player has 13 cards or a total of 26 turns have finished
-    while (ctr < 8)
+    while (ctr < 11)
     {
         char st;
 

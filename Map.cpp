@@ -108,6 +108,8 @@ void Territory::setCont_id(int cid) { cont_id = cid; }
 int Territory::getID() { return id; }
 int Territory::getCID() { return cont_id; }
 string Territory::getOwner() { return owner; }
+unordered_map<string, int>* Territory::getArmyList() { return armylist; }
+unordered_map<string, int>* Territory::getCityList() { return citylist; }
 
 void Territory:: operator = (const Territory & t)
 {
@@ -339,11 +341,27 @@ void Graph::validate() { // checking if the graph is valid or not.
 			itr = itr->next;
 		}
 	}
+	
+	// checking if a regions belongs to two different continents.
+	for (int i = 0; i < V; i++) {
+		for(int j=i; j<V; j++){
+			if(i!=j && arr[j].id==arr[i].id){
+				cout << "Region with ID: " << arr[j].id<< " belongs to two different continents with IDs: "<<arr[j].t->getCID()<<" , "
+					                                       <<arr[i].t->getCID()<<": So Graph is INVALID!\n";
+				cout << "Exiting.........\n";
+				exit(1);
+			}
+		}
+	}
+	
+
 
 	for (int i = 0; i < cont; i++) { //  Checking if continent are connected.
 		int numOfReg = 0;
 		int numOfEdges = 0;
 		vector<int> ver;
+
+
 
 		for (int j = 0; j < V; j++) // counting number of reigons within a continent
 		{
@@ -377,7 +395,7 @@ void Graph::validate() { // checking if the graph is valid or not.
 		}
 	}
 	
-	if (((nedge / 2) - (V)) >= -1) {
+	if (((nedge / 2) - (V)) >= -1) { // checking if whole graph is connected
 		cout << "\nThe graph is VALID [:-)}  ";
 	}
 	else {

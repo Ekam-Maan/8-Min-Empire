@@ -1,23 +1,22 @@
-#pragma once
-#include "PlayerStrategies.h"
+# include"PlayerStrategies.h"
 #include "Player.h"
-#include <iostream>
+# include<iostream>
 #include <vector>
-
 using namespace std;
 
-void HumanStrategy::execute(Player* thisPlayer, Player* otherPlayer) 
-{   
+void HumanStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
+    string action = "";
     Card c = thisPlayer->pickCard();
-    thisPlayer->setlastCard(c);
-    thisPlayer->performaction(c.action, otherPlayer);
-    thisPlayer->performgood(c.good);
+    action = c.action;
+    thisPlayer->performaction(action, otherPlayer);
     cout << "\n\n";
     thisPlayer->display();
 }
 
-void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) 
-{
+void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
+
+   
+
     thisPlayer->hand->Show();
     
     vector <Card*> cards = thisPlayer->hand->getFaceUpCards();
@@ -39,15 +38,20 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
 
             if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
             {
+                
+                
                 Card card = thisPlayer->hand->exchange(i);
                 thisPlayer->performgood(card.good);
                 thisPlayer->performaction(action, otherPlayer);
 
-                thisPlayer->handList->push_back(make_pair(card.toString(), i+1));
-                
+                thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+                thisPlayer->setlastCard(card);
+                //PHASE-OBSERVER
+                thisPlayer->notify("cardpicked");
                 cout << "\n\n";
                 thisPlayer->display();
-                return;  
+                return;
+               
             }
            
         }
@@ -66,7 +70,10 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
                     thisPlayer->performgood(card.good);
                     thisPlayer->performaction(action, otherPlayer);
 
-                    thisPlayer->handList->push_back(make_pair(card.toString(), i+1));
+                    thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+                    thisPlayer->setlastCard(card);
+                    //PHASE-OBSERVER
+                    thisPlayer->notify("cardpicked");
                     cout << "\n\n";
                     thisPlayer->display();
                     return;
@@ -82,19 +89,23 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
             if (cards[i]->action.find("Destroy army") != string::npos && !foundDestroyArmy) {
                 destroyArmyIndex = i;
                 foundDestroyArmy = true;
+                break;
             }
-            else if (cards[i]->action.find("Build City") != string::npos && !foundDestroyArmy) {
+            else if (cards[i]->action.find("Build City") != string::npos && !foundDestroyArmy && !foundBuildCity) {
                 buildCityIndex = i;
                 foundBuildCity = true;
+                break;
             }
         }
         else if (cards[i]->action.find("Destroy army") != string::npos && !foundDestroyArmy) {
             destroyArmyIndex = i;
             foundDestroyArmy = true;
+            break;
         }
-        else if (cards[i]->action.find("Build City") != string::npos && !foundDestroyArmy) {
+        else if (cards[i]->action.find("Build City") != string::npos && !foundDestroyArmy && !foundBuildCity) {
             buildCityIndex = i;
             foundBuildCity = true;
+            break;
         }
            
     }
@@ -102,12 +113,15 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
         cost = thisPlayer->hand->getCardCost(destroyArmyIndex);
         if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
         {
+            thisPlayer->performaction("Destroy army", otherPlayer);
             Card card = thisPlayer->hand->exchange(destroyArmyIndex);
             thisPlayer->performgood(card.good);
-            thisPlayer->performaction("Destroy army", otherPlayer);
 
-
-            thisPlayer->handList->push_back(make_pair(card.toString(), destroyArmyIndex+1));
+            thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+            thisPlayer->setlastCard(card);
+            //PHASE-OBSERVER
+            thisPlayer->notify("cardpicked");
+            
             cout << "\n\n";
             thisPlayer->display();
             return;
@@ -118,12 +132,14 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
         cost = thisPlayer->hand->getCardCost(buildCityIndex);
         if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
         {
+            thisPlayer->performaction("Build City", otherPlayer);
             Card card = thisPlayer->hand->exchange(buildCityIndex);
             thisPlayer->performgood(card.good);
-            thisPlayer->performaction("Build City", otherPlayer);
 
-
-            thisPlayer->handList->push_back(make_pair(card.toString(), buildCityIndex+1));
+            thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+            thisPlayer->setlastCard(card);
+            //PHASE-OBSERVER
+            thisPlayer->notify("cardpicked");
             cout << "\n\n";
             thisPlayer->display();
             return;
@@ -134,10 +150,11 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
         
         Card card = thisPlayer->hand->exchange(0);
         thisPlayer->performgood(card.good);
+        thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+        thisPlayer->setlastCard(card);
+        //PHASE-OBSERVER
+        thisPlayer->notify("cardpicked");
         thisPlayer->performaction(cards[0]->action, otherPlayer);
- 
-        thisPlayer->handList->push_back(make_pair(card.toString(), 1));
-
         cout << "\n\n";
         thisPlayer->display();
         return;
@@ -177,9 +194,14 @@ bool  ModerateStrategy::tryPlaceNewArmies(int numOfArmies, Player* thisPlayer)
         {
             if (thisPlayer->graph->arr[j].t->getOwner() != thisPlayer->getname())
             {
+                
                 donePlacingNewArmies = thisPlayer->PLaceNewArmies(numOfArmies, j);
                 if (donePlacingNewArmies) break;
             }
+     }
+     if (!donePlacingNewArmies) {
+         donePlacingNewArmies = thisPlayer->PLaceNewArmies(numOfArmies, thisPlayer->startingRegion);
+         cout << "\n----Armies successfully at the starting region.----\n";
      }
      return donePlacingNewArmies;
 }
@@ -311,9 +333,9 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
 
             }
 
-            else if (paid|| actiontwo.find("Place new armies")!= string::npos)
+            else if (actiontwo.find("Place new armies")!= string::npos)
             {
-                if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
+                if (paid || thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
                 {
                     paid = true;
                     int numOfarmies = stoi(actiontwo.substr(0, 1));
@@ -336,8 +358,8 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         else if(action.find("OR")!= string::npos)
         {
             doneAction1 = doneAction2 = doneMovingbyLand = doneMovingbyWater = donePlacingNewArmies = false;
-            string actionone = action.substr(0, action.find("AND") - 1);
-            string actiontwo = action.substr(action.find("AND") + 4);
+            string actionone = action.substr(0, action.find("OR") - 1);
+            string actiontwo = action.substr(action.find("OR") + 4);
 
             if (action.find("Move armies over land") != string::npos && thisPlayer->armyList->size() > 0)
             {
@@ -482,7 +504,10 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
             Card card = thisPlayer->hand->exchange(i);
             thisPlayer->performgood(card.good);
 
-            thisPlayer->handList->push_back(make_pair(card.toString(), i+1));
+            thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+            thisPlayer->setlastCard(card);
+            //PHASE-OBSERVER
+            thisPlayer->notify("cardpicked");
             cout << "\n\n";
             thisPlayer->display();
             return;
@@ -494,7 +519,10 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         Card card = thisPlayer->hand->exchange(0);
         thisPlayer->performgood(card.good);
 
-        thisPlayer->handList->push_back(make_pair(card.toString(), 1));
+        thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+        thisPlayer->setlastCard(card);
+        //PHASE-OBSERVER
+        thisPlayer->notify("cardpicked");
         cout << "\n\n";
         thisPlayer->display();
         return;

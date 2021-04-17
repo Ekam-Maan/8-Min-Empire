@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Player.h"
 
+
+
 int Player::startingRegion = 1;
 
 //Default constructor
@@ -13,7 +15,6 @@ Player::Player()
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
-    Strategychoice = 1;
 
     strategy = new HumanStrategy();
     graph = NULL;
@@ -33,7 +34,6 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
-    Strategychoice = 1;
     strategy = new HumanStrategy();
 
     this->graph = graph;
@@ -71,9 +71,8 @@ Player::Player(Player* obj)
     VP = obj->getVP();
     Crystals = obj->getCrystals();
     controlledRegions = 0;
-    Strategychoice = 1;
-    strategy = new HumanStrategy();
 
+    strategy = new HumanStrategy();
     graph = obj->graph;
     hand = obj->hand;
 
@@ -97,33 +96,35 @@ Player::Player(Player* obj)
 
 
 void Player::setStrategy() {
+
+    int choice;
    
     cout << "\n\nEnter 1 for Human Strategy.\n";
     cout << "\nEnter 2 for Greedy Strategy.\n";
     cout << "\nEnter 3 for Moderate Strategy.\n";
     cout << "\n please enter your choice here: ";
-    cin >> Strategychoice;
+    cin >> choice;
 
-    if (Strategychoice == 1)
+    if (choice == 1) 
     {
         delete strategy;
         strategy = new HumanStrategy();
     }
 
-    else if (Strategychoice == 2)
+    else if (choice == 2) 
     {
         delete strategy;
         strategy = new GreedyStrategy();
     }
 
-    else if (Strategychoice == 3 )
+    else if(choice ==3 )
     {
         delete strategy;
         strategy = new ModerateStrategy();
     }
 
     else {
-        cout << "You did not enter a valid choice. ";
+        cout << "\nYou did not enter a valid choice. ";
     }
     
 }
@@ -211,12 +212,12 @@ bool Player :: PayCoin(int coins)
 {
     if(getmoney()<coins)
     {
-            cout<<getname()<<" doesn't have enough money to pay.";
+            cout<<"\n"<<getname()<<" doesn't have enough money to pay.";
             return false;
     }
     else
     {
-            cout<<"Payment Successfull. "+getname()+" payed: "<<coins;
+            cout<<"\nPayment Successfull. "+getname()+" payed: "<<coins;
             setmoney( getmoney()-coins );
             return true;
     }
@@ -227,7 +228,7 @@ bool Player :: PLaceNewArmies(int armiesNum, int vertex)
     
      if (getarmies() < armiesNum) 
      {
-            cout << "The player doesn't have armies to move." << endl;
+            cout << "\nThe player doesn't have armies to move." << endl;
             return false;
      }
      else
@@ -238,7 +239,7 @@ bool Player :: PLaceNewArmies(int armiesNum, int vertex)
         {
             if (cityIn->second <= 0 && vertex != startingRegion)
             {
-                cout << "Player does not have cities in that country.  Cant add armies" << endl;
+                cout << "\nPlayer does not have cities in that country.  Cant add armies" << endl;
                 return false;
             }
         }
@@ -249,7 +250,7 @@ bool Player :: PLaceNewArmies(int armiesNum, int vertex)
 
         graph->placeNewArmies(getname(),armiesNum,vertex);
 
-        cout<<"Successfully added the armies";
+        cout<<"\nSuccessfully added the armies";
    
         return true;
      }
@@ -263,7 +264,7 @@ bool Player :: MoveArmies(int armiesNum, int src, int des)
 
     if (armyFrom->second < armiesNum) 
     {
-        cout << "Cant move the armies. Not enough amrmies available" << endl;
+        cout << "\nCant move the armies. Not enough amrmies available" << endl;
         return false; 
     } 
     else 
@@ -273,7 +274,7 @@ bool Player :: MoveArmies(int armiesNum, int src, int des)
 
         graph->moveArmies(getname(),armiesNum,src,des);
 
-        cout << "Succesfully moved " << armiesNum << " armies from " << src << " to " << des << endl;
+        cout << "\nSuccesfully moved " << armiesNum << " armies from " << src << " to " << des << endl;
         return true;
     }
 
@@ -285,7 +286,7 @@ bool Player :: MoveOverLand(int armiesNum, int src, int des)
     bool adjacency = isAdj(graph,src,des);
     if (adjacency == false) 
     {
-        cout << src << " and " << des << " are not adjacent." << endl;
+        cout <<"\n"<< src << " and " << des << " are not adjacent." << endl;
         return false;
     }
 
@@ -293,7 +294,7 @@ bool Player :: MoveOverLand(int armiesNum, int src, int des)
     bool checkLand = isLandConn(graph, src, des);
     if(checkLand == false)
     {
-        cout << "You can only move from " << src << " to " << des << " by water." << endl;
+        cout << "\nYou can only move from " << src << " to " << des << " by water." << endl;
         return false;
     }        
     
@@ -306,7 +307,7 @@ bool Player::MoveOverWater(int armiesNum, int src, int des)
     bool adjacency = isAdj(graph, src, des);
     if (adjacency == false)
     {
-        cout << src << " and " << des << " are not adjacent." << endl;
+        cout<<"\n" << src << " and " << des << " are not adjacent." << endl;
         return false;
     }
 
@@ -315,7 +316,7 @@ bool Player::MoveOverWater(int armiesNum, int src, int des)
         bool checkLand = isLandConn(graph, src, des);
         if (checkLand == true)
         {
-            cout << "You can only move from " << src << " to " << des << " by Land." << endl;
+            cout << "\nYou can only move from " << src << " to " << des << " by Land." << endl;
             return false;
         }
     }
@@ -329,7 +330,7 @@ bool Player :: DestroyArmy(int vertex)
     valueVertex *armyIn = NoOfArmiesInCountry(vertex);
 
     if (armyIn->second > 0) {
-        cout << "Successfully Destroyed army of " << getname() << " in " << vertex << endl;
+        cout << "\nSuccessfully Destroyed army of " << getname() << " in " << vertex << endl;
         armies = armies+1;
         armyIn->second--;
         graph->destroyArmy(getname(),-1,vertex);
@@ -337,7 +338,7 @@ bool Player :: DestroyArmy(int vertex)
     }
     else 
     {
-        cout << "Army cannot be destroyed, not enough armies" << endl;
+        cout << "\nArmy cannot be destroyed, not enough armies" << endl;
         return false;
     }
 
@@ -348,7 +349,7 @@ bool Player:: BuildCity(int country)
 {
     if(getdisks() < 1) 
     {
-        cout << "Not enough disks available." << endl;
+        cout << "\nNot enough disks available." << endl;
         return false;
     }
     else
@@ -363,12 +364,12 @@ bool Player:: BuildCity(int country)
 
             graph->buildCity(getname(),country);
             
-            cout << "Successfully built a city in " << country << endl;
+            cout << "\nSuccessfully built a city in " << country << endl;
             return true;
         }
         else 
         {
-            cout << "Oops. Cannot build a city where player has no armies." << endl;
+            cout << "\nOops. Cannot build a city where player has no armies." << endl;
             return false;
         }
     
@@ -446,9 +447,8 @@ void Player::performgood(string good)
 void Player::performaction(string action, Player* otherPlayer)
 {
     cout << "\nCard action: " << action;
-
-    if (Strategychoice == 1)
-    {
+    if (Strategychoice == 1) {
+        
         char ans = 'y';
         cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
 
@@ -473,7 +473,7 @@ void Player::performaction(string action, Player* otherPlayer)
         string actiontwo = action.substr(action.find("OR") + 3);
 
         int num = 1;
-        cout << "Enter which action you want to perform (1 or 2): ";
+        cout << "\nEnter which action you want to perform (1 or 2): ";
         cin >> num;
 
         if ( num == 1 )
@@ -493,13 +493,19 @@ void Player::performaction(string action, Player* otherPlayer)
         
         while (vertex < 0 || vertex >= graph->V)
         {
-            cout << "Enter vertex: "; cin >> vertex;
+            cout << "\nEnter vertex: "; cin >> vertex;
         }
 
         bool res = PLaceNewArmies(numOfarmies, vertex);
 
-        if (!res)     //action failed, redo
-            performaction(action,otherPlayer);
+        if (!res) {   //action failed, redo
+            char ans = 'y';
+            cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
+
+            if (ans == 'y')
+                return;
+            performaction(action, otherPlayer);
+        }
     }
 
 
@@ -512,18 +518,24 @@ void Player::performaction(string action, Player* otherPlayer)
 
         while (src < 0 || src >= graph->V)
         {
-            cout << "Enter source vertex: "; cin >> src;
+            cout << "\nEnter source vertex: "; cin >> src;
         }
 
         while (dest < 0 || dest >= graph->V)
         {
-            cout << "Enter destination vertex: "; cin >> dest;
+            cout << "\nEnter destination vertex: "; cin >> dest;
         }
 
         bool res = MoveOverLand(numOfarmies, src, dest);
 
-        if (!res)     //action failed, redo
+        if (!res) {     //action failed, redo
+            char ans = 'y';
+            cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
+
+            if (ans == 'y')
+                return;
             performaction(action, otherPlayer);
+        }
     }
 
 
@@ -536,19 +548,19 @@ void Player::performaction(string action, Player* otherPlayer)
         bool res = true;
 
 
-        cout << "Enter which action you want to perform (1-Move over Land or 2-Move our Water)";
+        cout << "\nEnter which action you want to perform (1-Move over Land or 2-Move our Water)";
         cout << "\nRemember moving over water takes 3 movement speed: ";
         cin >> num;
 
 
         while (src < 0 || src >= graph->V)
         {
-            cout << "Enter source vertex: "; cin >> src;
+            cout << "\nEnter source vertex: "; cin >> src;
         }
 
         while (dest < 0 || dest >= graph->V)
         {
-            cout << "Enter destination vertex: "; cin >> dest;
+            cout << "\nEnter destination vertex: "; cin >> dest;
         } 
 
         if ( num == 1 )
@@ -557,8 +569,14 @@ void Player::performaction(string action, Player* otherPlayer)
         else
             res = MoveOverWater(numOfarmies/3, src, dest);
 
-        if (!res)     //action failed, redo
+        if (!res) {   //action failed, redo
             performaction(action, otherPlayer);
+            char ans = 'y';
+            cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
+
+            if (ans == 'y')
+                return;
+        }
     }
 
 
@@ -568,17 +586,37 @@ void Player::performaction(string action, Player* otherPlayer)
     {
         int numOfarmies = -1;
         int vertex = -1;
+        bool res = false;
+        bool res2 = false;
+        if (Strategychoice == 1) {
+            while (vertex < 0 || vertex >= graph->V)
+            {
+                cout << "\nEnter vertex where to build city: "; cin >> vertex;
+            }
 
-        while (vertex < 0 || vertex >= graph->V)
-        {
-            cout << "Enter vertex where to build city: "; cin >> vertex;
+
+            res = BuildCity(vertex);
         }
+        else
+        {
+            for (int i = 0; i < graph->V; i++) 
+            {
+                if (!(graph->arr[i].t->getArmyList()->find(playerName) == graph->arr[i].t->getArmyList()->end())) { // checking if player has army 
+                    if ((graph->arr[i].t->getCityList()->find(playerName) == graph->arr[i].t->getCityList()->end())&&( getdisks()>0)) {
+              
+                        res2 = BuildCity(i);
+                    }
+                }
+                if(res2) break;
+            }
+        }
+       
 
-
-        bool res = BuildCity(vertex);
-
-        if (!res)     //action failed, redo
+        if (!res && (Strategychoice==1))     //action failed, redo
             performaction(action, otherPlayer);
+        if (!res2) {
+            cout << "\n\n--CANNOT BUILD CITY because either you already has max cities or your armies are not present in other regions--\n\n";
+        }
     }
 
 
@@ -589,29 +627,52 @@ void Player::performaction(string action, Player* otherPlayer)
         int numOfarmiesInVertex = 0;
         int src = -1;
 
+        if (Strategychoice == 1) {
+           while ( numOfarmiesInVertex <= 0 )
+           {
+           
+                cout << "\nEnter vertex where to destroy army: "; cin >> src;
 
-        while ( numOfarmiesInVertex <= 0 )
+                if (src < 0 || src >= graph->V)
+                {
+                    cout << "\nEnter valid vertex\n";
+                    continue;
+                }
+
+                valueVertex* armyIn = NoOfArmiesInCountry(src);
+                numOfarmiesInVertex = armyIn->second;
+
+                if (numOfarmiesInVertex <= 0)
+                    cout << "\nYou dont have enough armies there\n";
+            }
+           bool res = otherPlayer->DestroyArmy(src);
+
+           if (!res)     //action failed, redo
+               performaction(action, otherPlayer);
+            
+        }
+        else
         {
-            cout << "Enter vertex where to destroy army: "; cin >> src;
-
-            if (src < 0 || src >= graph->V)
+            bool res = false;
+            for (int i = 0; i < graph->V; i++) 
             {
-                cout << "Enter valid vertex\n";
-                continue;
+                valueVertex* armyIn1 = NoOfArmiesInCountry(i);
+                valueVertex* armyIn2 = otherPlayer->NoOfArmiesInCountry(i);
+                
+                if ((armyIn1->second > 0) && (armyIn2->second > 0)) 
+                {
+                    res = otherPlayer->DestroyArmy(i);
+                    if (res) break;
+                }
             }
 
-            valueVertex* armyIn = NoOfArmiesInCountry(src);
-            numOfarmiesInVertex = armyIn->second;
-            
-            if (numOfarmiesInVertex <= 0)
-                cout << "You dont have enough armies there\n";
+            if (!res) {
+                cout << "\n\n--Could not able to destroy armies.--\n\n";
+            }
         }
 
 
-        bool res = otherPlayer->DestroyArmy(src);
-
-        if (!res)     //action failed, redo
-            performaction(action, otherPlayer);
+        
     }
 }
 
@@ -674,7 +735,6 @@ Player::~Player()
     delete cityList;
     delete handList;
 
-    strategy = NULL;
     armyList = NULL;
     cityList = NULL;
     handList = NULL;
@@ -684,47 +744,32 @@ Player::~Player()
 
 Player Player::operator = (Player* obj)
 {
-    if (obj != this)
-    {
-        delete strategy;
-        delete armyList;
-        delete cityList;
-        delete handList;
+    noOfDisks = obj->getdisks();
+    money = obj->getmoney();
+    armies = obj->getarmies();
+    playerName = obj->getname();
+    VP = obj->getVP();
+    Crystals = obj->getCrystals();
 
-        strategy = NULL;
-        armyList = NULL;
-        cityList = NULL;
-        handList = NULL;
+    graph = obj->graph;
+    hand = obj->hand;
 
-        noOfDisks = obj->getdisks();
-        money = obj->getmoney();
-        armies = obj->getarmies();
-        playerName = obj->getname();
-        VP = obj->getVP();
-        Crystals = obj->getCrystals();
-        strategy = obj->strategy;
-        Strategychoice = obj->Strategychoice;
+    cityList = new vector<valueVertex>;
+    armyList = new vector<valueVertex>;
+    handList = new vector<valueHandList>;
 
-        graph = obj->graph;
-        hand = obj->hand;
+    vector<valueVertex>::iterator index;
 
-        cityList = new vector<valueVertex>;
-        armyList = new vector<valueVertex>;
-        handList = new vector<valueHandList>;
+    for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
+        armyList->push_back(make_pair(index->first, index->second));
 
-        vector<valueVertex>::iterator index;
+    for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
+        cityList->push_back(make_pair(index->first, index->second));
 
-        for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
-            armyList->push_back(make_pair(index->first, index->second));
+    vector<valueHandList>::iterator index2;
 
-        for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
-            cityList->push_back(make_pair(index->first, index->second));
-
-        vector<valueHandList>::iterator index2;
-
-        for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
-            handList->push_back(make_pair(index2->first, index2->second));
-    }
+    for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
+        handList->push_back(make_pair(index2->first, index2->second));
 
     return *this;
 }
@@ -747,7 +792,7 @@ ostream& operator << (ostream& out, Player& obj)
 
 
     cout << "\nCities of the player:\t";
-
+   
     for (index = (obj.cityList)->begin(); index != (obj.cityList)->end(); ++index)
         out << "\t" << (index->first) << ": " << index->second;
 

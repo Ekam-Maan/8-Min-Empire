@@ -23,6 +23,9 @@ public:
 	void updatecitylist(string name, int ChangeInnumOfcities);
 	void printRegionDetails();
 
+	unordered_map<string, int>* getArmyList();
+	unordered_map<string, int>* getCityList();
+
 	void updateowner();
 	Territory();
 	Territory(const Territory&);
