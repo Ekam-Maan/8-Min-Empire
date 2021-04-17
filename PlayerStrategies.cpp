@@ -15,8 +15,12 @@ void HumanStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
 
 void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
 
+   
+
     thisPlayer->hand->Show();
+    
     vector <Card*> cards = thisPlayer->hand->getFaceUpCards();
+   
     string action = "";
     int cost = 0;
     int destroyArmyIndex = -1;
@@ -35,9 +39,10 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
             if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
             {
                 
-                thisPlayer->performaction(action, otherPlayer);
+                
                 Card card = thisPlayer->hand->exchange(i);
                 thisPlayer->performgood(card.good);
+                thisPlayer->performaction(action, otherPlayer);
 
                 thisPlayer->handList->push_back(make_pair(card.toString(), 0));
                 cout << "\n\n";
@@ -46,6 +51,32 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
                
             }
            
+        }
+        else if (cards[i]->action.find("AND") != string::npos) {
+            
+            
+            if (cards[i]->action.find("Destroy army") != string::npos || cards[i]->action.find("Build City") != string::npos) {
+                cost = thisPlayer->hand->getCardCost(i);
+                
+
+                if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
+                {
+
+
+                    Card card = thisPlayer->hand->exchange(i);
+                    thisPlayer->performgood(card.good);
+                    thisPlayer->performaction(action, otherPlayer);
+
+                    thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+                    cout << "\n\n";
+                    thisPlayer->display();
+                    return;
+
+                }
+                
+            }
+            
+
         }
         else if (cards[i]->action.find("OR") != string::npos) 
         {
@@ -57,6 +88,14 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
                 buildCityIndex = i;
                 foundBuildCity = true;
             }
+        }
+        else if (cards[i]->action.find("Destroy army") != string::npos && !foundDestroyArmy) {
+            destroyArmyIndex = i;
+            foundDestroyArmy = true;
+        }
+        else if (cards[i]->action.find("Build City") != string::npos && !foundDestroyArmy) {
+            buildCityIndex = i;
+            foundBuildCity = true;
         }
            
     }
@@ -115,7 +154,10 @@ bool ModerateStrategy::tryMoveOverLand(int numOfArmies,Player* thisPlayer) {
                 if (!itr->type) {
 
                     doneMovingbyLand = thisPlayer->MoveArmies(numOfArmies, itr->id, j);
-                    if (doneMovingbyLand) break;
+                    if (doneMovingbyLand) {
+                        cout << "\n\n---Armies successfully moved by Land from id: "<<itr->id <<" to "<<j<<".---\n\n";
+                        break;
+                    }
                 }
                 itr = itr->next;
             }
@@ -153,7 +195,10 @@ bool ModerateStrategy::tryMoveOverWater(int numOfArmies, Player* thisPlayer)
                 if (itr->type) {
 
                     doneMovingbyWater = thisPlayer->MoveArmies(numOfArmies / 3, itr->id, j); // trying moving by water
-                    if (doneMovingbyWater) break;
+                    if (doneMovingbyWater) { 
+                        cout << "\n\n---Armies successfully moved over Water from id: " << itr->id << " to " << j << ".---\n\n";
+                        break;
+                    }
                 }
             }
         }
@@ -178,13 +223,31 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
     for (int i = 0; i < 6; i++) {
         action = cards[i]->action;
         cost = thisPlayer->hand->getCardCost(i);
-        
+
+       
         if(action.find("AND")!=string::npos)
         {
             string actionone = action.substr(0, action.find("AND") - 1);
             string actiontwo = action.substr(action.find("AND") + 4);
+            if (actionone.find("Move over land/water") != string::npos && thisPlayer->armyList->size() > 0) // first trying moving by water , if not possible then trying moving by land
+            {
+               int numOfarmies = stoi(actionone.substr(0, 1));
+               if (paid || thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
+               {
+                  paid = true;
+                  if (thisPlayer->armyList->size() > 2)
+                    doneMovingbyWater = tryMoveOverWater(numOfarmies, thisPlayer);
 
-            if(actionone.find("Move armies over land")!=string::npos&& thisPlayer->armyList->size()>0)
+                  if (!doneMovingbyWater) // if moving by water was not possible then trying moving by land
+                  {
+                    doneMovingbyLand = tryMoveOverLand(numOfarmies, thisPlayer);
+                  }
+
+               }
+            doneAction1 = true;
+            }
+
+            else if(actionone.find("Move armies over land")!=string::npos&& thisPlayer->armyList->size()>0)
             { 
                 
                 if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
@@ -197,12 +260,11 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
                 doneAction1 = true;
             }
 
-            else if(actionone.find("Place new armies"))
+            else if(actionone.find("Place new armies")!=string::npos)
             {
                 if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
                 {
                     paid = true;
-                    cout << "Action one: " << actionone<<endl;
                     int numOfarmies = stoi(actionone.substr(0, 1));
                     donePlacingNewArmies = tryPlaceNewArmies(numOfarmies, thisPlayer);
                     
@@ -210,25 +272,30 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
                 doneAction1 = true;
             }
 
-            else if (actionone.find("Move over land/water") && thisPlayer->armyList->size()>0) // first trying moving by water , if not possible then trying moving by land
+            
+             // executing action two
+            if ( actiontwo.find("Move over land/water") != string::npos && thisPlayer->armyList->size() > 0) // first trying moving by water , if not possible then trying moving by land
             {
-                int numOfarmies = stoi(actionone.substr(0, 1));
-                if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
+                int numOfarmies = stoi(actiontwo.substr(0, 1));
+                if (paid || thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
                 {
                     paid = true;
-                    if(thisPlayer->armyList->size() > 2)
-                       doneMovingbyWater = tryMoveOverWater(numOfarmies, thisPlayer);
-                    
-                    if(!doneMovingbyWater) // if moving by water was not possible then trying moving by land
+
+                    if (thisPlayer->armyList->size() > 2) {
+                        
+                        doneMovingbyWater = tryMoveOverWater(numOfarmies, thisPlayer);
+                        
+                    }
+                    if (!doneMovingbyWater) // if moving by water was not possible then trying moving by land
                     {
+                       
                         doneMovingbyLand = tryMoveOverLand(numOfarmies, thisPlayer);
                     }
 
                 }
-                doneAction1 = true;
+                doneAction2 = true;
             }
-             // executing action two
-            if (actiontwo.find("Move armies over land") != string::npos && thisPlayer->armyList->size() > 0)
+            else if (actiontwo.find("Move armies over land") != string::npos && thisPlayer->armyList->size() > 0)
             {
                 if (paid || thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
                 {
@@ -241,7 +308,7 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
 
             }
 
-            else if (paid|| actiontwo.find("Place new armies"))
+            else if (paid|| actiontwo.find("Place new armies")!= string::npos)
             {
                 if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
                 {
@@ -252,24 +319,7 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
                 doneAction2 = true;
             }
 
-            else if (paid||actiontwo.find("Move over land/water") && thisPlayer->armyList->size() > 0) // first trying moving by water , if not possible then trying moving by land
-            {
-                int numOfarmies = stoi(actiontwo.substr(0, 1));
-                if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
-                {
-                    paid = true;
-
-                    if(thisPlayer->armyList->size() > 2)
-                       doneMovingbyWater = tryMoveOverWater(numOfarmies, thisPlayer);
-
-                    if (!doneMovingbyWater) // if moving by water was not possible then trying moving by land
-                    {
-                        doneMovingbyLand = tryMoveOverLand(numOfarmies, thisPlayer);
-                    }
-
-                }
-                doneAction2 = true;
-            }
+            
 
             if (!doneAction1&&doneAction2) {
                 thisPlayer->performaction(actionone, otherPlayer);
@@ -394,6 +444,7 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
             }
             if (action.find("Place new armies") != string::npos)
             {
+               
                 if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
                 {
                     paid = true;

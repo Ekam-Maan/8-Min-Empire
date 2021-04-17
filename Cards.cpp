@@ -173,6 +173,7 @@ Deck Deck::operator = (Deck* obj)
 
 void Deck::Show()
 {  
+    
     for ( int i = 0; i < number_of_cards; ++i )
         pack_of_cards[i].show();
 }
@@ -240,11 +241,13 @@ vector<Card*> Hand::getFaceUpCards() {
 
 void Hand::Show()
 {
+    
     cout<<"FACEUP CARDS"<<"\n-------------------------------------------\n";
     cout << "1." << setw(20);
     cout<<"Cost: "<<0<<setw(20);
+    
     faceup_cards.at(0)->show();
-
+    
     cout << "2." << setw(20);
     cout<<"Cost: "<<1<<setw(20);
     faceup_cards.at(1)->show();

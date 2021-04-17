@@ -3,7 +3,7 @@
 
 
 
-int Player::startingRegion = 0;
+int Player::startingRegion = 1;
 
 //Default constructor
 Player::Player()
@@ -16,6 +16,7 @@ Player::Player()
     Crystals = 0;
     controlledRegions = 0;
 
+    strategy = new HumanStrategy();
     graph = NULL;
     hand = NULL;
     cityList = NULL;
@@ -33,6 +34,7 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
+    strategy = new HumanStrategy();
 
     this->graph = graph;
     this->hand = hand;
@@ -70,6 +72,7 @@ Player::Player(Player* obj)
     Crystals = obj->getCrystals();
     controlledRegions = 0;
 
+    strategy = new HumanStrategy();
     graph = obj->graph;
     hand = obj->hand;
 
@@ -104,19 +107,19 @@ void Player::setStrategy() {
 
     if (choice == 1) 
     {
-        //delete strategy;
+        delete strategy;
         strategy = new HumanStrategy();
     }
 
     else if (choice == 2) 
     {
-        //delete strategy;
+        delete strategy;
         strategy = new GreedyStrategy();
     }
 
     else if(choice ==3 )
     {
-       // delete strategy;
+        delete strategy;
         strategy = new ModerateStrategy();
     }
 
@@ -663,6 +666,7 @@ int Player::computeScore() {
 Player::~Player()
 {
     cout << "\n\n\n\nPLAYER DESRUCTOR";
+    delete strategy;
     delete armyList;
     delete cityList;
     delete handList;

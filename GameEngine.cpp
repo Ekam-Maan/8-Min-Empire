@@ -65,7 +65,7 @@ void Game::loop()
 
     //Since there are players and each player picks one card during a turn
     //Game will stop when each player has 13 cards or a total of 26 turns have finished
-    while (ctr < 2)
+    while (ctr < 8)
     {
         char st;
 
@@ -83,10 +83,7 @@ void Game::loop()
             else
             {
                 one->executeStrategy(two);
-                /*action = one->pickCard();
-                one->performaction(action, two);
-                cout << "\n\n";
-                one->display();*/
+                
             }
 
         }
@@ -106,10 +103,7 @@ void Game::loop()
                 two->executeStrategy(one);
             }
 
-            /* action = two->pickCard();
-             two->performaction(action,one);
-             cout << "\n\n";
-             two->display();*/
+            
         }
 
         playerone_turn = !playerone_turn;

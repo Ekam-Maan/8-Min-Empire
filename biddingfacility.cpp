@@ -67,7 +67,7 @@ bool biddingfacility::bid( Player* one, Player* two )
 
     //Two players have same bid amount then compare and return their lastname
     //if lastname of player one is smaller he will go first and hence return true 
-    else 
+    else if(bidamountone== bidamounttwo)
     {
         string lastnameone = one->getname().substr( one->getname().find(" ") );
         string lastnametwo = two->getname().substr( two->getname().find(" "));
