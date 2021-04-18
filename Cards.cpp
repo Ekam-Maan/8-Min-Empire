@@ -1,7 +1,9 @@
 #include "Cards.h"
 #include <iostream>
 #include <queue>
-#include <iomanip>   
+#include <iomanip>
+#include <algorithm>
+#include <random>
 
 using namespace std;
 
@@ -144,8 +146,11 @@ Deck::Deck(int number_of_players = 2)
     for ( int i = 0; i < number_of_cards; ++i )
         pack_of_cards[i] = Card(titles[i],goods[i],actions[i]);
 
-    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards); 
     //Shuffles the deck randomly
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(pack_of_cards, pack_of_cards + number_of_cards, g);
 }
 
 
@@ -158,7 +163,10 @@ Deck::Deck(const Deck &D)
     for ( int i = 0; i < number_of_cards; ++i )
         pack_of_cards[i] = Card(titles[i],goods[i],actions[i]);
 
-    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(pack_of_cards, pack_of_cards + number_of_cards, g);
 }
 
 Deck Deck::operator = (Deck* obj)
@@ -174,7 +182,10 @@ Deck Deck::operator = (Deck* obj)
         for (int i = 0; i < number_of_cards; ++i)
             pack_of_cards[i] = Card(titles[i], goods[i], actions[i]);
 
-        random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+        std::random_device rd;
+        std::mt19937 g(rd());
+
+        std::shuffle(pack_of_cards, pack_of_cards + number_of_cards, g);
     }
 
     return *this;
