@@ -1,8 +1,6 @@
 #include <iostream>
 #include "Player.h"
 
-
-
 int Player::startingRegion = 1;
 
 //Default constructor
@@ -96,28 +94,26 @@ Player::Player(Player* obj)
 
 
 void Player::setStrategy() {
-
-    int choice;
    
     cout << "\n\nEnter 1 for Human Strategy.\n";
     cout << "\nEnter 2 for Greedy Strategy.\n";
     cout << "\nEnter 3 for Moderate Strategy.\n";
     cout << "\n please enter your choice here: ";
-    cin >> choice;
+    cin >> Strategychoice;
 
-    if (choice == 1) 
+    if (Strategychoice == 1)
     {
         delete strategy;
         strategy = new HumanStrategy();
     }
 
-    else if (choice == 2) 
+    else if (Strategychoice == 2)
     {
         delete strategy;
         strategy = new GreedyStrategy();
     }
 
-    else if(choice ==3 )
+    else if (Strategychoice == 3 )
     {
         delete strategy;
         strategy = new ModerateStrategy();
@@ -447,11 +443,15 @@ void Player::performgood(string good)
 void Player::performaction(string action, Player* otherPlayer)
 {
     cout << "\nCard action: " << action;
-    char ans = 'y';
-    cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
 
-    if (ans == 'y')
-        return;
+    if (Strategychoice == 1)
+    {
+        char ans = 'y';
+        cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
+
+        if (ans == 'y')
+            return;
+    }
 
     if (action.find("AND") != string::npos)
     {

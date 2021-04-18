@@ -17,6 +17,8 @@ class Player : public Subject
         int controlledRegions;
         string phase;
         Card lastCard;
+        int Strategychoice;
+
 
     public:
         static int startingRegion;

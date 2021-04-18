@@ -6,19 +6,18 @@
 
 using namespace std;
 
-void HumanStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
-    string action = "";
+void HumanStrategy::execute(Player* thisPlayer, Player* otherPlayer) 
+{   
     Card c = thisPlayer->pickCard();
-    action = c.action;
-    thisPlayer->performaction(action, otherPlayer);
+    thisPlayer->setlastCard(c);
+    thisPlayer->performaction(c.action, otherPlayer);
+    thisPlayer->performgood(c.good);
     cout << "\n\n";
     thisPlayer->display();
 }
 
-void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
-
-   
-
+void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) 
+{
     thisPlayer->hand->Show();
     
     vector <Card*> cards = thisPlayer->hand->getFaceUpCards();
@@ -40,17 +39,15 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
 
             if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
             {
-                
-                
                 Card card = thisPlayer->hand->exchange(i);
                 thisPlayer->performgood(card.good);
                 thisPlayer->performaction(action, otherPlayer);
 
-                thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+                thisPlayer->handList->push_back(make_pair(card.toString(), i+1));
+                
                 cout << "\n\n";
                 thisPlayer->display();
-                return;
-               
+                return;  
             }
            
         }
@@ -69,7 +66,7 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
                     thisPlayer->performgood(card.good);
                     thisPlayer->performaction(action, otherPlayer);
 
-                    thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+                    thisPlayer->handList->push_back(make_pair(card.toString(), i+1));
                     cout << "\n\n";
                     thisPlayer->display();
                     return;
@@ -105,11 +102,12 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         cost = thisPlayer->hand->getCardCost(destroyArmyIndex);
         if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
         {
-            thisPlayer->performaction("Destroy army", otherPlayer);
             Card card = thisPlayer->hand->exchange(destroyArmyIndex);
             thisPlayer->performgood(card.good);
+            thisPlayer->performaction("Destroy army", otherPlayer);
 
-            thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+
+            thisPlayer->handList->push_back(make_pair(card.toString(), destroyArmyIndex+1));
             cout << "\n\n";
             thisPlayer->display();
             return;
@@ -120,11 +118,12 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         cost = thisPlayer->hand->getCardCost(buildCityIndex);
         if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
         {
-            thisPlayer->performaction("Build City", otherPlayer);
             Card card = thisPlayer->hand->exchange(buildCityIndex);
             thisPlayer->performgood(card.good);
+            thisPlayer->performaction("Build City", otherPlayer);
 
-            thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+
+            thisPlayer->handList->push_back(make_pair(card.toString(), buildCityIndex+1));
             cout << "\n\n";
             thisPlayer->display();
             return;
@@ -135,8 +134,10 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         
         Card card = thisPlayer->hand->exchange(0);
         thisPlayer->performgood(card.good);
-        thisPlayer->handList->push_back(make_pair(card.toString(), 0));
         thisPlayer->performaction(cards[0]->action, otherPlayer);
+ 
+        thisPlayer->handList->push_back(make_pair(card.toString(), 1));
+
         cout << "\n\n";
         thisPlayer->display();
         return;
@@ -481,7 +482,7 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
             Card card = thisPlayer->hand->exchange(i);
             thisPlayer->performgood(card.good);
 
-            thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+            thisPlayer->handList->push_back(make_pair(card.toString(), i+1));
             cout << "\n\n";
             thisPlayer->display();
             return;
@@ -493,7 +494,7 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         Card card = thisPlayer->hand->exchange(0);
         thisPlayer->performgood(card.good);
 
-        thisPlayer->handList->push_back(make_pair(card.toString(), 0));
+        thisPlayer->handList->push_back(make_pair(card.toString(), 1));
         cout << "\n\n";
         thisPlayer->display();
         return;

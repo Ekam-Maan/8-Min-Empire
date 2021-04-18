@@ -74,18 +74,11 @@ void Game::loop()
             cout << "\n\n\n" << one->getname() << "'s turn\n\n";
             cout << "\nDo you want to change strategy? (y/n): ";
             cin >> st;
+            
             if (st == 'y')
-            {
                 one->setStrategy();
-                one->executeStrategy(two);
-
-            }
-            else
-            {
-                one->executeStrategy(two);
-                
-            }
-
+          
+            one->executeStrategy(two);
         }
 
         else
@@ -93,17 +86,11 @@ void Game::loop()
             cout << "\n\n\n" << two->getname() << "'s turn\n\n";
             cout << "\nDo you want to change strategy? (y/n): ";
             cin >> st;
-            if (st == 'y')
-            {
-                two->setStrategy();
-                two->executeStrategy(one);
-
-            }
-            else {
-                two->executeStrategy(one);
-            }
-
             
+            if (st == 'y')
+                two->setStrategy();
+
+            two->executeStrategy(one);
         }
 
         playerone_turn = !playerone_turn;
