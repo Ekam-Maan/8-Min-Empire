@@ -13,6 +13,7 @@ Player::Player()
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
+    Strategychoice = 1;
 
     strategy = new HumanStrategy();
     graph = NULL;
@@ -32,6 +33,7 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
+    Strategychoice = 1;
     strategy = new HumanStrategy();
 
     this->graph = graph;
@@ -69,8 +71,9 @@ Player::Player(Player* obj)
     VP = obj->getVP();
     Crystals = obj->getCrystals();
     controlledRegions = 0;
-
+    Strategychoice = 1;
     strategy = new HumanStrategy();
+
     graph = obj->graph;
     hand = obj->hand;
 
@@ -699,6 +702,8 @@ Player Player::operator = (Player* obj)
         playerName = obj->getname();
         VP = obj->getVP();
         Crystals = obj->getCrystals();
+        strategy = obj->strategy;
+        Strategychoice = obj->Strategychoice;
 
         graph = obj->graph;
         hand = obj->hand;

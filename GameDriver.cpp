@@ -18,5 +18,4 @@ int main()
         As subject's phase changes, obersers are notified : 
             The following places are uses the phase obeserver in player.cpp 
                 Pickcard
-                PayCoin
 */

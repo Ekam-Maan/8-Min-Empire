@@ -5,7 +5,6 @@ using namespace std;
 
 Game::Game()
 {
-    
     cout << "------------Welcome to 8-min-empire legends-----------\n\n";
     cout << "Please select Mode for the game: \n";
     cout << "Enter 1 for single game Mode.\n";
@@ -25,16 +24,20 @@ Game::Game()
 
     cin.ignore(1, '\n');
     string name;
+    string name2;
 
-    cout << "Enter Player one's name: (Format: FirstName LastName) ";
+    cout << "Enter Player one's name (Format: FirstName lastName): ";
     getline(cin, name);
+    cout << "Enter Player two's name (Format: FirstName lastName): ";
+    getline(cin, name2);
+
     one = new Player(graph, name, 3, 14, 18, hand);
+    two = new Player(graph, name2, 3, 14, 18, hand);
 
 
-
-    cout << "Enter Player two's name: (Format: FirstName LastName) ";
-    getline(cin, name);
-    two = new Player(graph, name, 3, 14, 18, hand);
+    //INITIALIZING PHASE OBERVER AND ATTACHING THEM TO SUBJECT
+    PlayerOneObs = new PhaseObserver(one);
+    PlayerTwoObs = new PhaseObserver(two);
 
 
     cout << "\n\n\nDisplaying PlayerList\n";
@@ -71,7 +74,10 @@ void Game::loop()
 
         if (playerone_turn)
         {
-            cout << "\n\n\n" << one->getname() << "'s turn\n\n";
+            //cout << "\n\n\n" << one->getname() << "'s turn\n\n";
+            //PHASE-OBSERVER
+            one->notify("turn");
+            
             cout << "\nDo you want to change strategy? (y/n): ";
             cin >> st;
             
@@ -83,7 +89,11 @@ void Game::loop()
 
         else
         {
-            cout << "\n\n\n" << two->getname() << "'s turn\n\n";
+            //cout << "\n\n\n" << two->getname() << "'s turn\n\n";
+            
+            //PHASE-OBSERVER
+            two->notify("turn");
+            
             cout << "\nDo you want to change strategy? (y/n): ";
             cin >> st;
             
