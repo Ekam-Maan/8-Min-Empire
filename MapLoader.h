@@ -1,6 +1,6 @@
+#pragma once
 #include "Map.h"
 
-#pragma once
 using namespace std;
 
 class MapLoader 

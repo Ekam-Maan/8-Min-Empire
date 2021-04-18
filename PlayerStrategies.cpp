@@ -1,7 +1,9 @@
-# include"PlayerStrategies.h"
+#pragma once
+#include "PlayerStrategies.h"
 #include "Player.h"
-# include<iostream>
+#include <iostream>
 #include <vector>
+
 using namespace std;
 
 void HumanStrategy::execute(Player* thisPlayer, Player* otherPlayer) {

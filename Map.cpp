@@ -181,7 +181,7 @@ void Territory::updateowner()
 		temp = it->second + (*citylist)[it->first];
 
 		if (temp > maxVP) {
-			maxVP = temp; // correctted 
+			maxVP = temp; 
 			owner = it->first;
 		}
 			
@@ -189,7 +189,6 @@ void Territory::updateowner()
 		else if (temp == maxVP)
 			owner = "";
 
-		//temp = 0;
 		++it;
 	}
 	

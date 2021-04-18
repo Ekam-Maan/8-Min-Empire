@@ -16,7 +16,9 @@ biddingfacility::biddingfacility(biddingfacility* obj)
 
 biddingfacility biddingfacility::operator = (biddingfacility* obj)
 {
-    winningbid = obj->winningbid;
+    if ( obj != this )
+        winningbid = obj->winningbid;
+    
     return *this;
 }
 

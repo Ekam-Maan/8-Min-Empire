@@ -671,6 +671,7 @@ Player::~Player()
     delete cityList;
     delete handList;
 
+    strategy = NULL;
     armyList = NULL;
     cityList = NULL;
     handList = NULL;
@@ -680,32 +681,45 @@ Player::~Player()
 
 Player Player::operator = (Player* obj)
 {
-    noOfDisks = obj->getdisks();
-    money = obj->getmoney();
-    armies = obj->getarmies();
-    playerName = obj->getname();
-    VP = obj->getVP();
-    Crystals = obj->getCrystals();
+    if (obj != this)
+    {
+        delete strategy;
+        delete armyList;
+        delete cityList;
+        delete handList;
 
-    graph = obj->graph;
-    hand = obj->hand;
+        strategy = NULL;
+        armyList = NULL;
+        cityList = NULL;
+        handList = NULL;
 
-    cityList = new vector<valueVertex>;
-    armyList = new vector<valueVertex>;
-    handList = new vector<valueHandList>;
+        noOfDisks = obj->getdisks();
+        money = obj->getmoney();
+        armies = obj->getarmies();
+        playerName = obj->getname();
+        VP = obj->getVP();
+        Crystals = obj->getCrystals();
 
-    vector<valueVertex>::iterator index;
+        graph = obj->graph;
+        hand = obj->hand;
 
-    for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
-        armyList->push_back(make_pair(index->first, index->second));
+        cityList = new vector<valueVertex>;
+        armyList = new vector<valueVertex>;
+        handList = new vector<valueHandList>;
 
-    for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
-        cityList->push_back(make_pair(index->first, index->second));
+        vector<valueVertex>::iterator index;
 
-    vector<valueHandList>::iterator index2;
+        for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
+            armyList->push_back(make_pair(index->first, index->second));
 
-    for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
-        handList->push_back(make_pair(index2->first, index2->second));
+        for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
+            cityList->push_back(make_pair(index->first, index->second));
+
+        vector<valueHandList>::iterator index2;
+
+        for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
+            handList->push_back(make_pair(index2->first, index2->second));
+    }
 
     return *this;
 }
@@ -728,7 +742,7 @@ ostream& operator << (ostream& out, Player& obj)
 
 
     cout << "\nCities of the player:\t";
-    // vector<valueVertex>::iterator index;
+
     for (index = (obj.cityList)->begin(); index != (obj.cityList)->end(); ++index)
         out << "\t" << (index->first) << ": " << index->second;
 

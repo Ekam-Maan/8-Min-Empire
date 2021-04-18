@@ -100,9 +100,13 @@ string Card::toString()
 
 Card Card::operator = (Card* obj)
 {
-    title = obj->title;
-    good = obj->good;
-    action = obj->action;
+    if (obj != this)
+    {
+        title = obj->title;
+        good = obj->good;
+        action = obj->action;
+    }
+
 
     return *this;
 }
@@ -159,14 +163,19 @@ Deck::Deck(const Deck &D)
 
 Deck Deck::operator = (Deck* obj)
 {
-    number_of_cards = obj->number_of_cards;
+    if (obj != this)
+    {
+        delete[] pack_of_cards;
 
-    pack_of_cards = new Card[number_of_cards];
+        number_of_cards = obj->number_of_cards;
+        pack_of_cards = new Card[number_of_cards];
+        curr_top = obj->curr_top;
 
-    for (int i = 0; i < number_of_cards; ++i)
-        pack_of_cards[i] = Card(titles[i], goods[i], actions[i]);
+        for (int i = 0; i < number_of_cards; ++i)
+            pack_of_cards[i] = Card(titles[i], goods[i], actions[i]);
 
-    random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+        random_shuffle(pack_of_cards, pack_of_cards + number_of_cards);
+    }
 
     return *this;
 }
@@ -228,20 +237,26 @@ Hand::Hand( Hand* H )
 
 Hand Hand::operator = (Hand* obj)
 {
-    deck = obj->deck;
-    for (int i = 0; i < 6; ++i)
-        faceup_cards.push_back( deck->draw() );
+    if (obj != this)
+    {
+        delete deck;
+        faceup_cards.clear();
+        
+        deck = obj->deck;
+        for (int i = 0; i < 6; ++i)
+            faceup_cards.push_back(deck->draw());
+    }
 
     return *this;
 }
 
-vector<Card*> Hand::getFaceUpCards() {
+vector<Card*> Hand::getFaceUpCards() 
+{
     return faceup_cards;
 }
 
 void Hand::Show()
 {
-    
     cout<<"FACEUP CARDS"<<"\n-------------------------------------------\n";
     cout << "1." << setw(20);
     cout<<"Cost: "<<0<<setw(20);
@@ -284,12 +299,13 @@ Card Hand::exchange(int pos)
 
 Hand::~Hand()
 {
+    delete deck;
     faceup_cards.clear();
     cout<<"Destroyed Hand Object\n";
 }
 
 
-//------------------------------------Operator overloading------------------------------
+//------------------------------------Free Operator overloading------------------------------
 
 ostream& operator << (ostream& out, Hand& obj)
 {

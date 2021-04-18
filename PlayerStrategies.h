@@ -1,6 +1,8 @@
 #pragma once
-//#include"Player.h"
+
+
 class Player;
+
 class Strategy {
 public: 
 	virtual void execute(Player*, Player*) = 0;

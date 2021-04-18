@@ -26,13 +26,13 @@ Game::Game()
     cin.ignore(1, '\n');
     string name;
 
-    cout << "Enter Player one's name: ";
+    cout << "Enter Player one's name: (Format: FirstName LastName) ";
     getline(cin, name);
     one = new Player(graph, name, 3, 14, 18, hand);
 
 
 
-    cout << "Enter Player two's name: ";
+    cout << "Enter Player two's name: (Format: FirstName LastName) ";
     getline(cin, name);
     two = new Player(graph, name, 3, 14, 18, hand);
 
@@ -196,7 +196,7 @@ void Game::DecideWinner()
         cout << std::setw(40) << "------------------------------------------\n";
     
     }
-    //delete Winner;
+
     Winner = NULL;
 }
 
@@ -232,13 +232,22 @@ Game::Game(Game* obj)
 
 Game& Game::operator = (Game* obj)
 {
-    stash = obj->getstash();
-    one = new Player(obj->one);
-    two = new Player(obj->two);
-    playerone_turn = obj->playerone_turn;
-    graph = new Graph(*obj->graph);
-    hand = new Hand(obj->hand);
-    bidfac = new biddingfacility(obj->bidfac);
+    if (obj != this)
+    {
+        delete one;
+        delete two;
+        delete hand;
+        delete graph;
+        delete bidfac;
+
+        stash = obj->getstash();
+        one = new Player(obj->one);
+        two = new Player(obj->two);
+        playerone_turn = obj->playerone_turn;
+        graph = new Graph(*obj->graph);
+        hand = new Hand(obj->hand);
+        bidfac = new biddingfacility(obj->bidfac);
+    }
 
     return *this;
 }
