@@ -32,10 +32,14 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
     for (int i = 0; i < 6; i++)
     {
         action = cards[i]->action;
+        
+        cost = thisPlayer->hand->getCardCost(i);
+        
+        if (cost > thisPlayer->getmoney())
+            continue;
+
         if (cards[i]->action.find(" Destroy army AND Build City") != string::npos)
         {
-            cost = thisPlayer->hand->getCardCost(i);
-
             if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
             {
                 Card card = thisPlayer->hand->exchange(i);
@@ -55,37 +59,40 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
             }
 
         }
-        else if (cards[i]->action.find("AND") != string::npos) {
+        else if (cards[i]->action.find("AND") != string::npos && (cards[i]->action.find("Destroy army") != string::npos || cards[i]->action.find("Build City") != string::npos) )
+        {            
+            if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
+            {
+                Card card = thisPlayer->hand->exchange(i);
+                thisPlayer->handList->push_back(make_pair(card.toString(), i + 1));
+                thisPlayer->setlastCard(card);
+
+                //PHASE-OBSERVER
+                thisPlayer->notify("cardpicked");
+
+                thisPlayer->performgood(card.good);
 
 
-            if (cards[i]->action.find("Destroy army") != string::npos || cards[i]->action.find("Build City") != string::npos) {
-                cost = thisPlayer->hand->getCardCost(i);
+                string actionone = action.substr(0, action.find("AND") - 1);
+                string actiontwo = action.substr(action.find("AND") + 4);
 
+                //only perform if it is destroy army or build city
+                if (actionone.find("Destroy army") != string::npos || actionone.find("Build City") != string::npos)
+                    thisPlayer->performaction(actionone, otherPlayer);
 
-                if (thisPlayer->PayCoin(cost)) // checking if the player has enough money to pay the amount 
-                {
-                    Card card = thisPlayer->hand->exchange(i);
-                    thisPlayer->handList->push_back(make_pair(card.toString(), i + 1));
-                    thisPlayer->setlastCard(card);
+                if (actiontwo.find("Destroy army") != string::npos || actiontwo.find("Build City") != string::npos)
+                    thisPlayer->performaction(actiontwo, otherPlayer);
 
-                    //PHASE-OBSERVER
-                    thisPlayer->notify("cardpicked");
-
-                    thisPlayer->performgood(card.good);
-                    thisPlayer->performaction(action, otherPlayer);
-
-
-                    cout << "\n\n";
-                    thisPlayer->display();
-                    return;
-
-                }
-
+                
+                cout << "\n\n";
+                thisPlayer->display();
+                return;
             }
+
+        }
             
 
 
-        }
         else if (cards[i]->action.find("OR") != string::npos)
         {
             if (cards[i]->action.find("Destroy army") != string::npos && !foundDestroyArmy) {
@@ -147,8 +154,8 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
         }
 
     }
-    else {
-
+    else 
+    {
         Card card = thisPlayer->hand->exchange(0);
         thisPlayer->setlastCard(card);
         thisPlayer->handList->push_back(make_pair(card.toString(), 1));
@@ -157,7 +164,11 @@ void GreedyStrategy::execute(Player* thisPlayer, Player* otherPlayer)
         thisPlayer->notify("cardpicked");
         
         thisPlayer->performgood(card.good);
-        thisPlayer->performaction(cards[0]->action, otherPlayer);
+
+        //Left the below commented line delibrately
+        //if we don't find any valid card with action which is build city or destroy army,
+        //we will take the first card but wont play the action  
+        //thisPlayer->performaction(cards[0]->action, otherPlayer);
 
         cout << "\n\n";
         thisPlayer->display();
@@ -249,6 +260,8 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         action = cards[i]->action;
         cost = thisPlayer->hand->getCardCost(i);
 
+        if (cost > thisPlayer->getmoney())
+            continue;
 
         if (action.find("AND") != string::npos)
         {
@@ -518,7 +531,6 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
     }
     if (!doneAction1 && !doneAction2)
     {
-        thisPlayer->performaction(action, otherPlayer);
         Card card = thisPlayer->hand->exchange(0);
         thisPlayer->handList->push_back(make_pair(card.toString(), 1));
         thisPlayer->setlastCard(card);
@@ -527,6 +539,11 @@ void ModerateStrategy::execute(Player* thisPlayer, Player* otherPlayer) {
         thisPlayer->notify("cardpicked");
 
         thisPlayer->performgood(card.good);
+
+        //Left the below commented line delibrately
+        //if we don't find any valid card action
+        //we will take the first card but wont play the action  
+        //thisPlayer->performaction(action, otherPlayer);
 
         cout << "\n\n";
         thisPlayer->display();
