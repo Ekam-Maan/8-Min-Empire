@@ -8,6 +8,10 @@ int main()
 
     game.DecideWinner();
 
+    char ch;
+    cout << "Press any character to exit";
+    cin >> ch;
+
     return 0;
 }
 

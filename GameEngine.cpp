@@ -34,6 +34,15 @@ Game::Game()
     one = new Player(graph, name, 3, 14, 18, hand);
     two = new Player(graph, name2, 3, 14, 18, hand);
 
+    if (mode == 2)
+    {
+        cout << "\nSet player one strategy: ";
+        one->setStrategy();
+
+        cout << "\nSet player two strategy: ";
+        two->setStrategy();
+    }
+
 
     //INITIALIZING PHASE OBERVER AND ATTACHING THEM TO SUBJECT
     PlayerOneObs = new PhaseObserver(one);
@@ -74,33 +83,38 @@ void Game::loop()
 
         if (playerone_turn)
         {
-            //cout << "\n\n\n" << one->getname() << "'s turn\n\n";
-            //PHASE-OBSERVER
+           //PHASE-OBSERVER
             one->notify("turn");
             
-            cout << "\nDo you want to change strategy? (y/n): ";
-            cin >> st;
-            
-            if (st == 'y')
-                one->setStrategy();
-          
-            one->executeStrategy(two);
+            if (mode == 1)
+            {
+                Card card = one->pickCard();
+                one->performgood(card.good);
+                one->performaction(card.action, two);
+                one->display();
+            }
+
+
+            else
+                one->executeStrategy(two);
         }
 
         else
-        {
-            //cout << "\n\n\n" << two->getname() << "'s turn\n\n";
-            
+        {            
             //PHASE-OBSERVER
             two->notify("turn");
             
-            cout << "\nDo you want to change strategy? (y/n): ";
-            cin >> st;
-            
-            if (st == 'y')
-                two->setStrategy();
+            if (mode == 1)
+            {
+                Card card = two->pickCard();
+                two->performgood(card.good);
+                two->performaction(card.action, one);
+                two->display();
+            }
 
-            two->executeStrategy(one);
+
+            else
+                two->executeStrategy(one);
         }
 
         playerone_turn = !playerone_turn;

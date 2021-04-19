@@ -15,6 +15,7 @@ Player::Player()
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
+    Strategychoice = 1;
 
     strategy = new HumanStrategy();
     graph = NULL;
@@ -34,6 +35,7 @@ Player:: Player(Graph *graph, string Name, int diskNum, int tokenNum, int armyNu
     VP = 0;
     Crystals = 0;
     controlledRegions = 0;
+    Strategychoice = 1;
     strategy = new HumanStrategy();
 
     this->graph = graph;
@@ -72,6 +74,7 @@ Player::Player(Player* obj)
     Crystals = obj->getCrystals();
     controlledRegions = 0;
 
+    Strategychoice = 1;
     strategy = new HumanStrategy();
     graph = obj->graph;
     hand = obj->hand;
@@ -96,28 +99,26 @@ Player::Player(Player* obj)
 
 
 void Player::setStrategy() {
-
-    int choice;
    
     cout << "\n\nEnter 1 for Human Strategy.\n";
     cout << "\nEnter 2 for Greedy Strategy.\n";
     cout << "\nEnter 3 for Moderate Strategy.\n";
     cout << "\n please enter your choice here: ";
-    cin >> choice;
+    cin >> Strategychoice;
 
-    if (choice == 1) 
+    if (Strategychoice == 1)
     {
         delete strategy;
         strategy = new HumanStrategy();
     }
 
-    else if (choice == 2) 
+    else if (Strategychoice == 2)
     {
         delete strategy;
         strategy = new GreedyStrategy();
     }
 
-    else if(choice ==3 )
+    else if(Strategychoice == 3)
     {
         delete strategy;
         strategy = new ModerateStrategy();
@@ -447,8 +448,9 @@ void Player::performgood(string good)
 void Player::performaction(string action, Player* otherPlayer)
 {
     cout << "\nCard action: " << action;
-    if (Strategychoice == 1) {
-        
+    
+    if (Strategychoice == 1) 
+    {    
         char ans = 'y';
         cout << "\n\nDo you want to ignore the action (y|n)?: "; cin >> ans;
 
@@ -600,21 +602,19 @@ void Player::performaction(string action, Player* otherPlayer)
         else
         {
             for (int i = 0; i < graph->V; i++) 
-            {
-                if (!(graph->arr[i].t->getArmyList()->find(playerName) == graph->arr[i].t->getArmyList()->end())) { // checking if player has army 
-                    if ((graph->arr[i].t->getCityList()->find(playerName) == graph->arr[i].t->getCityList()->end())&&( getdisks()>0)) {
-              
-                        res2 = BuildCity(i);
-                    }
-                }
-                if(res2) break;
+            {             
+                if ( graph->arr[i].t->getnumOfarmies(playerName) > 0 && graph->arr[i].t->getnumOfcities(playerName) <= 0 && getdisks() > 0)
+                    res2 = BuildCity(i);
+
+                if (res2) 
+                    break;
+
             }
-        }
-       
+        }     
 
         if (!res && (Strategychoice==1))     //action failed, redo
             performaction(action, otherPlayer);
-        if (!res2) {
+        else if (!res2 && Strategychoice != 1) {
             cout << "\n\n--CANNOT BUILD CITY because either you already has max cities or your armies are not present in other regions--\n\n";
         }
     }
@@ -744,33 +744,48 @@ Player::~Player()
 
 Player Player::operator = (Player* obj)
 {
-    noOfDisks = obj->getdisks();
-    money = obj->getmoney();
-    armies = obj->getarmies();
-    playerName = obj->getname();
-    VP = obj->getVP();
-    Crystals = obj->getCrystals();
+    if (obj != this)
+    {
+        delete strategy;
+        delete armyList;
+        delete cityList;
+        delete handList;
 
-    graph = obj->graph;
-    hand = obj->hand;
+        strategy = NULL;
+        armyList = NULL;
+        cityList = NULL;
+        handList = NULL;
 
-    cityList = new vector<valueVertex>;
-    armyList = new vector<valueVertex>;
-    handList = new vector<valueHandList>;
+        noOfDisks = obj->getdisks();
+        money = obj->getmoney();
+        armies = obj->getarmies();
+        playerName = obj->getname();
+        VP = obj->getVP();
+        Crystals = obj->getCrystals();
+        Strategychoice = obj->Strategychoice;
+        strategy = obj->strategy;
 
-    vector<valueVertex>::iterator index;
+        graph = obj->graph;
+        hand = obj->hand;
 
-    for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
-        armyList->push_back(make_pair(index->first, index->second));
+        cityList = new vector<valueVertex>;
+        armyList = new vector<valueVertex>;
+        handList = new vector<valueHandList>;
 
-    for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
-        cityList->push_back(make_pair(index->first, index->second));
+        vector<valueVertex>::iterator index;
 
-    vector<valueHandList>::iterator index2;
+        for (index = (obj->armyList)->begin(); index != (obj->armyList)->end(); ++index)
+            armyList->push_back(make_pair(index->first, index->second));
 
-    for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
-        handList->push_back(make_pair(index2->first, index2->second));
+        for (index = (obj->cityList)->begin(); index != (obj->cityList)->end(); ++index)
+            cityList->push_back(make_pair(index->first, index->second));
 
+        vector<valueHandList>::iterator index2;
+
+        for (index2 = (obj->handList)->begin(); index2 != (obj->handList)->end(); ++index)
+            handList->push_back(make_pair(index2->first, index2->second));
+
+    }
     return *this;
 }
 

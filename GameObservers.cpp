@@ -65,7 +65,7 @@ void PhaseObserver::update(string phase)
 			cout << "Action: " + obj->getlastCard().action << endl;
 		}
 
-		else if ( phase == "Not enough money" )
+		else
 			cout << "\nYou donot have enough money, pick another card";
 
 	}
