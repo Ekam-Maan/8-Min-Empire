@@ -96,7 +96,14 @@ void Game::loop()
 
 
             else
+            {
+                char ans;
+                cout << "Do you want change the strategy(y/n) ?"; cin >> ans;
+                if (ans == 'y')
+                    one->setStrategy();
+
                 one->executeStrategy(two);
+            }
         }
 
         else
@@ -114,7 +121,15 @@ void Game::loop()
 
 
             else
+            {
+                char ans;
+                cout << "Do you want change the strategy(y/n) ?"; cin >> ans;
+                if (ans == 'y')
+                    two->setStrategy();
+
                 two->executeStrategy(one);
+            }
+               
         }
 
         playerone_turn = !playerone_turn;
